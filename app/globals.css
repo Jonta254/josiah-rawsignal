@@ -441,6 +441,199 @@ body::after {
   border-bottom-color: rgba(184,115,51,0.3);
 }
 
+/* ── Holographic / iridescent text ───────────────────────────────────────── */
+.holographic {
+  background: linear-gradient(
+    135deg,
+    var(--color-copper)  0%,
+    var(--neon-cyan)     20%,
+    var(--neon-pink)     35%,
+    var(--color-wire)    50%,
+    var(--geo-purple)    65%,
+    var(--geo-teal)      80%,
+    var(--color-copper)  100%
+  );
+  background-size: 400% 400%;
+  animation: holographicShift 5s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@keyframes holographicShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Animated gradient border ─────────────────────────────────────────────── */
+.animated-border {
+  position: relative;
+  border-radius: 12px;
+}
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    var(--border-angle, 0deg),
+    var(--neon-cyan), var(--color-copper), var(--geo-purple), var(--neon-pink), var(--neon-cyan)
+  );
+  background-size: 300% 300%;
+  animation: borderSpin 4s linear infinite, borderShift 3s ease infinite;
+  z-index: -1;
+}
+.animated-border::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(12px - 1px);
+  background: var(--color-void);
+  z-index: -1;
+}
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes borderSpin   { to { --border-angle: 360deg; } }
+@keyframes borderShift  { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+
+/* ── Neon input focus ─────────────────────────────────────────────────────── */
+.neon-input:focus {
+  outline: none;
+  border-color: var(--neon-cyan) !important;
+  box-shadow: 0 0 0 1px var(--neon-cyan), 0 0 16px rgba(0,255,255,0.15);
+}
+
+/* ── Floating label form ──────────────────────────────────────────────────── */
+.float-label-group { position: relative; }
+.float-label-group input,
+.float-label-group textarea {
+  background: rgba(13,11,7,0.7);
+  border: 1px solid rgba(184,115,51,0.25);
+  color: var(--color-chalk);
+  border-radius: 4px;
+  padding: 20px 16px 8px;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: border-color 300ms, box-shadow 300ms;
+}
+.float-label-group input:focus,
+.float-label-group textarea:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 1px var(--neon-cyan), 0 0 20px rgba(0,255,255,0.1);
+}
+.float-label-group label {
+  position: absolute;
+  left: 16px; top: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--color-stone);
+  pointer-events: none;
+  transition: all 200ms ease;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.float-label-group input:focus ~ label,
+.float-label-group input:not(:placeholder-shown) ~ label,
+.float-label-group textarea:focus ~ label,
+.float-label-group textarea:not(:placeholder-shown) ~ label {
+  top: 6px;
+  font-size: 9px;
+  color: var(--neon-cyan);
+}
+
+/* ── Custom scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar              { width: 6px; }
+::-webkit-scrollbar-track        { background: var(--color-void); }
+::-webkit-scrollbar-thumb        { background: rgba(184,115,51,0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover  { background: var(--color-copper); box-shadow: 0 0 8px var(--color-copper); }
+
+/* ── Marquee ticker ───────────────────────────────────────────────────────── */
+.marquee-track {
+  display: flex;
+  animation: marquee 25s linear infinite;
+  width: max-content;
+}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ── Blob morphing ────────────────────────────────────────────────────────── */
+.blob {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: blobMorph 8s ease-in-out infinite alternate;
+}
+@keyframes blobMorph {
+  0%   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%  { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50%  { border-radius: 50% 60% 40% 30% / 40% 50% 60% 50%; }
+  75%  { border-radius: 70% 30% 50% 50% / 30% 40% 70% 60%; }
+  100% { border-radius: 40% 60% 60% 40% / 60% 40% 40% 60%; }
+}
+
+/* ── Text scramble effect ─────────────────────────────────────────────────── */
+.scramble { display: inline-block; }
+
+/* ── Stagger children ─────────────────────────────────────────────────────── */
+.stagger > * { opacity: 0; transform: translateY(20px); }
+.stagger.revealed > *:nth-child(1) { animation: staggerIn 500ms ease 0ms   forwards; }
+.stagger.revealed > *:nth-child(2) { animation: staggerIn 500ms ease 80ms  forwards; }
+.stagger.revealed > *:nth-child(3) { animation: staggerIn 500ms ease 160ms forwards; }
+.stagger.revealed > *:nth-child(4) { animation: staggerIn 500ms ease 240ms forwards; }
+.stagger.revealed > *:nth-child(5) { animation: staggerIn 500ms ease 320ms forwards; }
+@keyframes staggerIn { to { opacity:1; transform:translateY(0); } }
+
+/* ── Ticker text ──────────────────────────────────────────────────────────── */
+.ticker-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 32px;
+}
+
+/* ── Noise button ─────────────────────────────────────────────────────────── */
+.btn-holographic {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--color-void), var(--color-void)),
+    linear-gradient(135deg, var(--neon-cyan), var(--color-copper), var(--geo-purple), var(--neon-pink));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  color: var(--color-chalk);
+  transition: transform 200ms, box-shadow 200ms;
+}
+.btn-holographic::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,255,255,0.08), rgba(184,115,51,0.08), rgba(127,90,240,0.08));
+  background-size: 200% 200%;
+  animation: holographicShift 3s ease infinite;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.btn-holographic:hover::before { opacity: 1; }
+.btn-holographic:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,255,255,0.2), 0 0 0 1px rgba(0,255,255,0.3);
+}
+.btn-holographic span { position: relative; z-index: 1; }
+
+/* ── Section number ───────────────────────────────────────────────────────── */
+.section-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--color-stone);
+  opacity: 0.5;
+}
+
 /* ── Reduced motion ───────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
