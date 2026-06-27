@@ -3,31 +3,41 @@
 
 /* ── CSS Custom Properties ────────────────────────────────────── */
 :root {
-  --void:    #09090B;
-  --earth:   #0F1012;
-  --carbon:  #16181C;
-  --smoke:   #1E2126;
-  --chalk:   #EAEDF2;
-  --stone:   #8A8F9A;
-  --mist:    #5A606E;
-  --copper:  #C87B2F;
-  --wire:    #D4A843;
-  --ember:   #E05C1A;
-  --signal-electrical: #D4A843;
-  --signal-dev:        #00C8FF;
-  --signal-design:     #A855F7;
-  --signal-nature:     #34D399;
-  --signal-human:      #F5F0E8;
-  --cyan:    #00C8FF;
-  --ice:     #64DAFF;
-  --violet:  #A855F7;
-  --magenta: #D946EF;
-  --emerald: #34D399;
-  --glass-bg:     rgba(255,255,255,0.03);
+  /* ── Deep space backgrounds ──────────────────────────────────── */
+  --void:    #020208;
+  --earth:   #06080F;
+  --carbon:  #0C1018;
+  --smoke:   #141820;
+  --chalk:   #F0F3FA;
+  --stone:   #8A90A8;
+  --mist:    #545A6E;
+
+  /* ── Winning signal colours — vivid, electric ─────────────────── */
+  --copper:  #E8832A;
+  --gold:    #FFB800;
+  --wire:    #F0C040;
+  --ember:   #FF5500;
+  --cyan:    #00DFFF;
+  --ice:     #80F4FF;
+  --violet:  #BF5FFF;
+  --magenta: #FF40EE;
+  --emerald: #00FF80;
+
+  /* ── Legacy signal aliases ────────────────────────────────────── */
+  --signal-electrical: #F0C040;
+  --signal-dev:        #00DFFF;
+  --signal-design:     #BF5FFF;
+  --signal-nature:     #00FF80;
+  --signal-human:      #F0F3FA;
+
+  /* ── Glass & shadows ─────────────────────────────────────────── */
+  --glass-bg:     rgba(255,255,255,0.025);
   --glass-border: rgba(255,255,255,0.06);
-  --shadow-copper: 0 0 40px rgba(200,123,47,0.12), 0 0 80px rgba(200,123,47,0.06);
-  --shadow-cyan:   0 0 40px rgba(0,200,255,0.12), 0 0 80px rgba(0,200,255,0.06);
-  --shadow-card:   0 4px 32px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-copper: 0 0 40px rgba(232,131,42,0.2), 0 0 80px rgba(232,131,42,0.08);
+  --shadow-cyan:   0 0 40px rgba(0,223,255,0.18), 0 0 80px rgba(0,223,255,0.07);
+  --shadow-card:   0 4px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.04);
+
+  /* ── Easing ──────────────────────────────────────────────────── */
   --ease-out-quart: cubic-bezier(0.25,1,0.5,1);
   --ease-spring:    cubic-bezier(0.34,1.56,0.64,1);
 }

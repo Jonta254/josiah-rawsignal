@@ -7,7 +7,8 @@ import MagneticButton from "./components/MagneticButton";
 import TypeWriter from "./components/TypeWriter";
 import Signature from "./components/Signature";
 
-const HeroOrb = dynamic(() => import("./components/SignalOrb"), { ssr: false });
+const HeroOrb   = dynamic(() => import("./components/SignalOrb"),  { ssr: false });
+const HeroScene = dynamic(() => import("./components/HeroScene"), { ssr: false });
 
 /* ─── Parallax ────────────────────────────────────────────────── */
 function useParallax(speed = 0.25) {
@@ -139,24 +140,41 @@ export default function Home() {
   return (
     <>
       {/* ══════════════════ HERO ══════════════════════════════════ */}
-      <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "#000" }}>
+      <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "#020208" }}>
 
-        {/* Full-bleed photo */}
-        <div ref={parallax1} style={{ position: "absolute", inset: "-15%", zIndex: 0 }}>
+        {/* ── 3D deep-space background scene ── */}
+        {mounted && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+            <HeroScene scrollY={scrollY} mouse={mouse} />
+          </div>
+        )}
+
+        {/* ── Subtle radial vignette over 3D scene ── */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
+          background: "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(2,2,8,0.55) 100%)" }} />
+
+        {/* ── Photo texture — very dim, grounds the scene ── */}
+        <div ref={parallax1} style={{ position: "absolute", inset: "-15%", zIndex: 1, pointerEvents: "none", opacity: 0.1, mixBlendMode: "luminosity" }}>
           <Image src="/images/hero.jpg" alt="" fill style={{ objectFit: "cover", objectPosition: "center" }} priority sizes="100vw" />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.6) 65%, rgba(0,0,0,0.97) 100%)" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.18) 55%, transparent 80%)" }} />
         </div>
 
-        {/* 3D orb — desktop right side, scroll-driven */}
+        {/* ── Bottom fade to page ── */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
+          background: "linear-gradient(to bottom, transparent 0%, transparent 55%, rgba(2,2,8,0.85) 80%, #020208 100%)" }} />
+
+        {/* ── Left text fade ── */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
+          background: "linear-gradient(to right, rgba(2,2,8,0.6) 0%, rgba(2,2,8,0.2) 40%, transparent 65%)" }} />
+
+        {/* ── 3D orb — desktop right side ── */}
         {mounted && (
-          <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 1, pointerEvents: "none" }}>
-            <HeroOrb mouse={mouse} scrollY={scrollY} fov={44} distance={5} glowIntensity={1.8} />
+          <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 3, pointerEvents: "none" }}>
+            <HeroOrb mouse={mouse} scrollY={scrollY} fov={44} distance={5} glowIntensity={2.2} />
           </div>
         )}
 
         {/* Available badge */}
-        <div style={{ position: "absolute", top: "clamp(5rem,10vw,7rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 3, display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ position: "absolute", top: "clamp(5rem,10vw,7rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 5, display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#34D399", boxShadow: "0 0 8px #34D399", animation: "sig-pulse 2s ease-in-out infinite" }} />
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(9px,1.2vw,11px)", letterSpacing: "0.18em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
             Available for work
@@ -164,7 +182,7 @@ export default function Home() {
         </div>
 
         {/* Hero content — responsive via .hero-content class */}
-        <div className="hero-content" style={{ position: "relative", zIndex: 3, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>
+        <div className="hero-content" style={{ position: "relative", zIndex: 5, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>
 
           <h1 style={{ margin: 0, lineHeight: 0.85, marginBottom: "clamp(1rem,2.5vw,1.75rem)" }}>
             <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4.5rem,20vw,20rem)", letterSpacing: "0.01em", display: "block" }}>
