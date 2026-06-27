@@ -14,11 +14,12 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline'",        // Next.js needs unsafe-eval in dev
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob:",
-      "connect-src 'self'",
+      "img-src 'self' data: blob: https:",
+      "connect-src 'self' https://api.github.com https://dl.polyhaven.org blob:",
+      "worker-src blob:",
       "frame-ancestors 'none'",
     ].join("; "),
   },
