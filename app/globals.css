@@ -3,41 +3,43 @@
 
 /* ── CSS Custom Properties ────────────────────────────────────── */
 :root {
-  /* ── Deep space backgrounds ──────────────────────────────────── */
-  --void:    #020208;
-  --earth:   #06080F;
-  --carbon:  #0C1018;
-  --smoke:   #141820;
-  --chalk:   #F0F3FA;
-  --stone:   #8A90A8;
-  --mist:    #545A6E;
+  /* ── Deep space backgrounds ───────────────────────────────────── */
+  --void:    #010108;   /* near-black with deep blue-violet tint */
+  --earth:   #05060E;   /* section backgrounds */
+  --carbon:  #090B16;   /* card surfaces */
+  --smoke:   #10121E;   /* borders, elevated surfaces */
+  --chalk:   #F2F4FC;   /* primary text — slightly cool white */
+  --stone:   #8890B0;   /* secondary text */
+  --mist:    #50587A;   /* placeholder / disabled */
 
-  /* ── Winning signal colours — vivid, electric ─────────────────── */
-  --copper:  #E8832A;
-  --gold:    #FFB800;
-  --wire:    #F0C040;
-  --ember:   #FF5500;
-  --cyan:    #00DFFF;
-  --ice:     #80F4FF;
-  --violet:  #BF5FFF;
-  --magenta: #FF40EE;
-  --emerald: #00FF80;
+  /* ── Signal colours — vivid, electric, intentional ───────────── */
+  --copper:  #FF8820;   /* primary brand — warm amber fire */
+  --gold:    #FFB800;   /* bright gold accent */
+  --wire:    #F0C030;   /* electrical yellow-gold */
+  --ember:   #FF5000;   /* hot orange-red */
+  --cyan:    #00DFFF;   /* electric cyan — cold counterpoint */
+  --ice:     #80F2FF;   /* light cyan */
+  --violet:  #B040FF;   /* deep space violet */
+  --indigo:  #6020D0;   /* nebula background tint */
+  --magenta: #FF30EE;   /* rare accent */
+  --emerald: #00FF88;   /* nature green */
 
-  /* ── Legacy signal aliases ────────────────────────────────────── */
-  --signal-electrical: #F0C040;
+  /* ── Signal aliases ───────────────────────────────────────────── */
+  --signal-electrical: #F0C030;
   --signal-dev:        #00DFFF;
-  --signal-design:     #BF5FFF;
-  --signal-nature:     #00FF80;
-  --signal-human:      #F0F3FA;
+  --signal-design:     #B040FF;
+  --signal-nature:     #00FF88;
+  --signal-human:      #F2F4FC;
 
-  /* ── Glass & shadows ─────────────────────────────────────────── */
-  --glass-bg:     rgba(255,255,255,0.025);
-  --glass-border: rgba(255,255,255,0.06);
-  --shadow-copper: 0 0 40px rgba(232,131,42,0.2), 0 0 80px rgba(232,131,42,0.08);
-  --shadow-cyan:   0 0 40px rgba(0,223,255,0.18), 0 0 80px rgba(0,223,255,0.07);
-  --shadow-card:   0 4px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.04);
+  /* ── Glass & shadows ──────────────────────────────────────────── */
+  --glass-bg:     rgba(255,255,255,0.022);
+  --glass-border: rgba(255,255,255,0.055);
+  --shadow-copper: 0 0 48px rgba(255,136,32,0.22), 0 0 96px rgba(255,136,32,0.09);
+  --shadow-cyan:   0 0 48px rgba(0,223,255,0.20), 0 0 96px rgba(0,223,255,0.08);
+  --shadow-violet: 0 0 48px rgba(176,64,255,0.18), 0 0 96px rgba(176,64,255,0.07);
+  --shadow-card:   0 6px 40px rgba(0,0,0,0.65), 0 1px 0 rgba(255,255,255,0.04);
 
-  /* ── Easing ──────────────────────────────────────────────────── */
+  /* ── Easing ───────────────────────────────────────────────────── */
   --ease-out-quart: cubic-bezier(0.25,1,0.5,1);
   --ease-spring:    cubic-bezier(0.34,1.56,0.64,1);
 }
@@ -52,6 +54,9 @@ body {
   line-height: 1.65;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
 
 /* ── Grain ────────────────────────────────────────────────────── */
@@ -90,11 +95,11 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Gradient text ────────────────────────────────────────────── */
 .text-copper {
-  background: linear-gradient(135deg, var(--copper) 0%, var(--wire) 50%, var(--ember) 100%);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--copper) 45%, var(--ember) 100%);
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
 .text-signal {
-  background: linear-gradient(135deg, var(--copper) 0%, var(--cyan) 35%, var(--violet) 65%, var(--copper) 100%);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--cyan) 35%, var(--violet) 65%, var(--copper) 100%);
   background-size: 300% 300%;
   animation: signalShift 6s ease infinite;
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
@@ -105,12 +110,21 @@ a { color: inherit; text-decoration: none; }
   animation: connectShift 4s ease infinite;
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
-@keyframes signalShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-@keyframes connectShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+/* Hero name gradient */
+.text-hero-name {
+  background: linear-gradient(125deg, #FFD060 0%, #FF8820 40%, #FF5000 70%, #FF8820 100%);
+  background-size: 200% 200%;
+  animation: heroShift 5s ease infinite;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+@keyframes signalShift  { 0%,100%{background-position:0% 50%}  50%{background-position:100% 50%} }
+@keyframes connectShift { 0%,100%{background-position:0% 50%}  50%{background-position:100% 50%} }
+@keyframes heroShift    { 0%,100%{background-position:0% 50%}  50%{background-position:100% 50%} }
 
 /* ── Glow text ────────────────────────────────────────────────── */
-.glow-copper { text-shadow: 0 0 30px rgba(200,123,47,0.5), 0 0 60px rgba(200,123,47,0.2); }
-.glow-cyan   { text-shadow: 0 0 30px rgba(0,200,255,0.5); }
+.glow-copper { text-shadow: 0 0 40px rgba(255,136,32,0.6), 0 0 80px rgba(255,136,32,0.25); }
+.glow-cyan   { text-shadow: 0 0 40px rgba(0,223,255,0.6), 0 0 80px rgba(0,223,255,0.25); }
+.glow-violet { text-shadow: 0 0 40px rgba(176,64,255,0.55), 0 0 80px rgba(176,64,255,0.2); }
 
 /* ── Glass ────────────────────────────────────────────────────── */
 .glass {

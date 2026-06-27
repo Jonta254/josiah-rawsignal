@@ -184,11 +184,17 @@ export default function Home() {
         {/* Hero content — responsive via .hero-content class */}
         <div className="hero-content" style={{ position: "relative", zIndex: 5, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>
 
-          <h1 style={{ margin: 0, lineHeight: 0.85, marginBottom: "clamp(1rem,2.5vw,1.75rem)" }}>
-            <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4.5rem,20vw,20rem)", letterSpacing: "0.01em", display: "block" }}>
-              <span style={{ color: "var(--chalk)" }}>JOS</span>
-              <span style={{ color: "var(--copper)" }}>I</span>
-              <span style={{ color: "var(--chalk)" }}>AH</span>
+          <h1 style={{ margin: 0, lineHeight: 0.82, marginBottom: "clamp(1rem,2.5vw,1.75rem)" }}>
+            <span
+              className="text-hero-name glow-copper"
+              style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: "clamp(4.5rem,20vw,20rem)",
+                letterSpacing: "-0.01em",
+                display: "block",
+              }}
+            >
+              JOSIAH
             </span>
           </h1>
 
