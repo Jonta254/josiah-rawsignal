@@ -621,6 +621,61 @@ main { overflow-x: hidden; }
   header { padding-top: env(safe-area-inset-top); }
 }
 
+/* ── Split-line text reveal ───────────────────────────────────── */
+.line-reveal { overflow: hidden; display: block; }
+.line-inner {
+  display: block;
+  transform: translateY(108%) skewY(1.5deg);
+  transition: transform 0.95s cubic-bezier(0.16,1,0.3,1), filter 0.95s ease;
+  filter: blur(6px);
+}
+.line-inner.in { transform: translateY(0) skewY(0); filter: blur(0); }
+
+/* ── 3D card tilt base ────────────────────────────────────────── */
+.card-3d {
+  transition: box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ── Shimmer sweep on card hover ──────────────────────────────── */
+@keyframes shimmerSweep {
+  0%   { transform: translateX(-130%) skewX(-15deg); }
+  100% { transform: translateX(260%)  skewX(-15deg); }
+}
+.card-shimmer-wrap { position: relative; overflow: hidden; }
+.card-shimmer-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
+  transform: translateX(-130%) skewX(-15deg);
+  pointer-events: none;
+}
+.card-shimmer-wrap:hover::after { animation: shimmerSweep 0.7s ease forwards; }
+
+/* ── Neon work card border on hover ──────────────────────────── */
+.neon-card-hover {
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.neon-card-hover:hover {
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 0 60px rgba(255,255,255,0.02);
+}
+
+/* ── Manifesto word stagger ───────────────────────────────────── */
+.manifesto-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) skewY(2deg);
+  filter: blur(8px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+              transform 0.8s cubic-bezier(0.16,1,0.3,1),
+              filter 0.8s ease;
+}
+.manifesto-word.in { opacity: 1; transform: none; filter: blur(0); }
+
 /* Raw Signal cockpit */
 .signal-cockpit {
   position: relative;

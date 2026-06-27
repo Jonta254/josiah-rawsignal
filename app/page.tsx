@@ -7,9 +7,25 @@ import MagneticButton from "./components/MagneticButton";
 import TypeWriter from "./components/TypeWriter";
 import Signature from "./components/Signature";
 import SignalCockpit from "./components/SignalCockpit";
+import ScrambleText from "./components/ScrambleText";
 
-const HeroOrb   = dynamic(() => import("./components/SignalOrb"),  { ssr: false });
-const HeroScene = dynamic(() => import("./components/HeroScene"), { ssr: false });
+const HeroOrb              = dynamic(() => import("./components/SignalOrb"),          { ssr: false });
+const HeroScene            = dynamic(() => import("./components/HeroScene"),          { ssr: false });
+const ConstellationCanvas  = dynamic(() => import("./components/ConstellationCanvas"),{ ssr: false });
+
+/* ─── In-view boolean ─────────────────────────────────────────── */
+function useInView(threshold = 0.12) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, visible] as const;
+}
 
 /* ─── Parallax ────────────────────────────────────────────────── */
 function useParallax(speed = 0.25) {
@@ -132,6 +148,39 @@ function SectionOrbs({ orbs }: { orbs: { x: string; y: string; w: string; color:
   );
 }
 
+/* ─── Manifesto stagger word ────────────────────────────────────── */
+function ManifestoStagger({ lines }: { lines: { text: string; color?: string; dim?: boolean }[] }) {
+  const [ref, visible] = useInView(0.1);
+  const allWords = lines.map((l) => ({ ...l, words: l.text.split(" ") }));
+  let globalIdx = 0;
+  return (
+    <div ref={ref}>
+      {allWords.map((line, li) => (
+        <div key={li} style={{ lineHeight: 0.88, marginBottom: 6 }}>
+          <span className="manifesto-xl">
+            {line.words.map((word) => {
+              const idx = globalIdx++;
+              return (
+                <span
+                  key={idx}
+                  className={`manifesto-word${visible ? " in" : ""}`}
+                  style={{
+                    transitionDelay: `${idx * 80}ms`,
+                    color: line.dim ? "rgba(255,255,255,0.1)" : (line.color ?? "var(--chalk)"),
+                    marginRight: "0.18em",
+                  }}
+                >
+                  {word}
+                </span>
+              );
+            })}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ─── Accent word ─────────────────────────────────────────────── */
 function Accent({ word, idx, color = "var(--copper)", size = "clamp(4rem,14vw,11rem)" }: {
   word: string; idx: number; color?: string; size?: string;
@@ -167,6 +216,11 @@ const POSTS = [
 export default function Home() {
   const parallax1 = useParallax(0.18);
   const parallax2 = useParallax(0.12);
+  const [s1ref, s1visible] = useInView();
+  const [s2ref, s2visible] = useInView();
+  const [s3ref, s3visible] = useInView();
+  const [s4ref, s4visible] = useInView();
+  const [s5ref, s5visible] = useInView();
   const r1 = useReveal(0), r2 = useReveal(80);
   const r3 = useReveal(0), r4 = useReveal(0), r5 = useReveal(0), r6 = useReveal(0);
   const [mounted, setMounted] = useState(false);
@@ -174,17 +228,47 @@ export default function Home() {
   const mouse       = useRef({ x: 0, y: 0 });
   const scrollY     = useRef(0);
   const cursorRef   = useRef<HTMLDivElement>(null);
+  const dotRef      = useRef<HTMLDivElement>(null);
+  const ringRef     = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  const ringPosRef  = useRef({ x: 0, y: 0 });
+  const targetRef   = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     setMounted(true);
     const onMouse = (e: MouseEvent) => {
       mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
       mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+      targetRef.current = { x: e.clientX, y: e.clientY };
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate(${e.clientX - 160}px, ${e.clientY - 160}px)`;
       }
+      if (dotRef.current) {
+        dotRef.current.style.left = `${e.clientX}px`;
+        dotRef.current.style.top  = `${e.clientY}px`;
+      }
     };
+
+    // Cursor ring: lerp toward target
+    let raf: number;
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const animateRing = () => {
+      ringPosRef.current.x = lerp(ringPosRef.current.x, targetRef.current.x, 0.12);
+      ringPosRef.current.y = lerp(ringPosRef.current.y, targetRef.current.y, 0.12);
+      if (ringRef.current) {
+        ringRef.current.style.left = `${ringPosRef.current.x}px`;
+        ringRef.current.style.top  = `${ringPosRef.current.y}px`;
+      }
+      raf = requestAnimationFrame(animateRing);
+    };
+    animateRing();
+
+    // Expand ring on interactive elements
+    const onEnter = () => { if (ringRef.current) { ringRef.current.style.width = "56px"; ringRef.current.style.height = "56px"; ringRef.current.style.borderColor = "rgba(200,123,47,0.9)"; } };
+    const onLeave = () => { if (ringRef.current) { ringRef.current.style.width = "32px"; ringRef.current.style.height = "32px"; ringRef.current.style.borderColor = "rgba(200,123,47,0.5)"; } };
+    const links = document.querySelectorAll("a, button");
+    links.forEach((l) => { l.addEventListener("mouseenter", onEnter); l.addEventListener("mouseleave", onLeave); });
+
     const onScroll = () => {
       scrollY.current = window.scrollY;
       if (progressRef.current) {
@@ -202,14 +286,18 @@ export default function Home() {
     return () => {
       window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+      links.forEach((l) => { l.removeEventListener("mouseenter", onEnter); l.removeEventListener("mouseleave", onLeave); });
     };
   }, []);
 
   return (
     <>
-      {/* Scroll progress + cursor glow */}
+      {/* Scroll progress + cursor elements */}
       <div ref={progressRef} className="scroll-progress-bar" />
       <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
+      <div ref={dotRef}  className="cursor-dot"  aria-hidden="true" />
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
 
       {/* ══════════════════ HERO ══════════════════════════════════ */}
       <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #0C0018 0%, #070010 40%, #020008 100%)" }}>
@@ -353,6 +441,8 @@ export default function Home() {
 
       {/* ══════════════════ WHO IS ════════════════════════════════ */}
       <section style={{ background: "radial-gradient(ellipse 60% 80% at 0% 50%, rgba(176,64,255,0.10) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", overflow: "hidden", position: "relative" }}>
+        {/* Interactive constellation */}
+        {mounted && <ConstellationCanvas color="#B040FF" nodeCount={60} connectDist={120} />}
         <SectionOrbs orbs={[
           { x: "-15%", y: "10%", w: "50vw", color: "rgba(176,64,255,0.10)", blur: 100, op: 1, dur: 12 },
           { x: "60%",  y: "50%", w: "35vw", color: "rgba(0,200,255,0.07)", blur: 80, op: 1, dur: 16, delay: 4 },
@@ -361,7 +451,11 @@ export default function Home() {
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div className="who-grid">
             <div ref={r1} style={{ opacity: 0, transform: "translateY(32px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)" }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 24 }}>// 001 — Signal</p>
+              <div ref={s1ref}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 24 }}>
+                  <ScrambleText text="// 001 — Signal" trigger={s1visible} delay={200} />
+                </p>
+              </div>
               <div style={{ marginBottom: 28 }}>
                 <Accent word="WHO" idx={1} size="clamp(3.5rem,13vw,11rem)" />
                 <br />
@@ -407,7 +501,11 @@ export default function Home() {
         <div style={{ padding: "clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem) clamp(1.5rem,4vw,3rem)", borderTop: "1px solid rgba(0,200,255,0.08)", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
             <div ref={r3} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)" }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>// 002 — Work</p>
+              <div ref={s2ref}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>
+                  <ScrambleText text="// 002 — Work" trigger={s2visible} delay={100} />
+                </p>
+              </div>
               <Accent word="BUILT." idx={3} size="clamp(3rem,12vw,9rem)" />
             </div>
             <MagneticButton as="a" href="/portfolio" className="btn btn-ghost" style={{ fontSize: 12 }}>All projects →</MagneticButton>
@@ -430,14 +528,27 @@ export default function Home() {
             <Link
               key={p.slug}
               href={`/portfolio/${p.slug}`}
+              className="card-3d card-shimmer-wrap"
               style={{
                 display: "block", textDecoration: "none", flexShrink: 0,
                 width: "min(85vw, 760px)", height: "clamp(300px,52vw,580px)",
                 scrollSnapAlign: "start", position: "relative", overflow: "hidden",
                 borderRight: "1px solid rgba(255,255,255,0.04)",
               }}
-              onMouseEnter={(e) => { const img = e.currentTarget.querySelector(".proj-img") as HTMLElement; if (img) img.style.transform = "scale(1.04)"; }}
-              onMouseLeave={(e) => { const img = e.currentTarget.querySelector(".proj-img") as HTMLElement; if (img) img.style.transform = "scale(1)"; }}
+              onMouseMove={(e) => {
+                const el = e.currentTarget;
+                const rect = el.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top)  / rect.height - 0.5;
+                el.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${-y * 7}deg) scale(1.015)`;
+                const img = el.querySelector(".proj-img") as HTMLElement;
+                if (img) img.style.transform = `scale(1.05) translate(${x * -8}px, ${y * -5}px)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)";
+                const img = e.currentTarget.querySelector(".proj-img") as HTMLElement;
+                if (img) img.style.transform = "scale(1)";
+              }}
             >
               {/* Background art */}
               <div className="proj-img" style={{ position: "absolute", inset: 0, transition: "transform 700ms cubic-bezier(0.25,1,0.5,1)" }}>
@@ -500,7 +611,11 @@ export default function Home() {
         <div style={{ position: "absolute", left: "-2%", top: "10%", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(6rem,18vw,14rem)", color: "transparent", WebkitTextStroke: "1px rgba(0,223,255,0.04)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>SIGNAL</div>
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div ref={r4} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(3rem,7vw,6rem)" }}>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>// 003 — Beliefs</p>
+            <div ref={s3ref}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>
+                <ScrambleText text="// 003 — Beliefs" trigger={s3visible} delay={150} />
+              </p>
+            </div>
             <Accent word="SIGNAL." idx={5} size="clamp(3rem,12vw,9rem)" color="var(--copper)" />
           </div>
           <div className="beliefs-grid">
@@ -525,7 +640,11 @@ export default function Home() {
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div ref={r5} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(2.5rem,7vw,6rem)", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16 }}>
             <div>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>// 004 — Writing</p>
+              <div ref={s4ref}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>
+                  <ScrambleText text="// 004 — Writing" trigger={s4visible} delay={100} />
+                </p>
+              </div>
               <Accent word="WORDS." idx={0} size="clamp(3rem,12vw,9rem)" color="#A855F7" />
             </div>
             <Link href="/blog" className="btn btn-ghost" style={{ fontSize: 12 }}>All writing →</Link>
@@ -563,26 +682,18 @@ export default function Home() {
           <Image src="/images/rawsignal-hero.png" alt="" fill style={{ objectFit: "cover" }} sizes="100vw" />
         </div>
         <div ref={r6} style={{ opacity: 0, transform: "translateY(32px)", transition: "all 0.9s cubic-bezier(0.25,1,0.5,1)", position: "relative", zIndex: 2, maxWidth: 1280, margin: "0 auto" }}>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 28 }}>// 005 — Manifesto</p>
+          <div ref={s5ref}>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 28 }}>
+              <ScrambleText text="// 005 — Manifesto" trigger={s5visible} delay={200} />
+            </p>
+          </div>
           <div style={{ marginBottom: 40 }}>
-            {[
-              { text: "BUILD.", accent: null, dim: false },
-              { text: "CONN",   accent: null, dim: false },
-              { text: "ECT.",   accent: { i: 0, c: "#00C8FF" }, dim: false },
-              { text: "GROW.",  accent: null, dim: true },
-              { text: "REPEAT.", accent: null, dim: false },
-            ].map((line, i) => (
-              <div key={i} style={{ lineHeight: 0.88, overflow: "hidden", marginBottom: 4 }}>
-                <span className="manifesto-xl">
-                  {line.accent
-                    ? line.text.split("").map((ch, ci) => (
-                        <span key={ci} style={{ color: ci === line.accent!.i ? line.accent!.c : "var(--chalk)" }}>{ch}</span>
-                      ))
-                    : <span style={{ color: line.dim ? "rgba(255,255,255,0.1)" : "var(--chalk)" }}>{line.text}</span>
-                  }
-                </span>
-              </div>
-            ))}
+            <ManifestoStagger lines={[
+              { text: "BUILD." },
+              { text: "CONNECT.", color: "#00C8FF" },
+              { text: "GROW.",    dim: true },
+              { text: "REPEAT." },
+            ]} />
           </div>
           <div style={{ display: "flex", gap: "clamp(1.5rem,4vw,2.5rem)", alignItems: "flex-start", flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 260 }}>
