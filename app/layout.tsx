@@ -18,13 +18,13 @@ export const metadata: Metadata = {
     template: "%s | Josiah — Raw Signal",
   },
   description:
-    "Josiah is a multi-disciplinary builder — electrician, full-stack developer, and designer. He wires circuits, ships code, and designs experiences that last.",
+    "Josiah Raw is an electrician, full-stack developer, and 3D web designer building field-ready digital systems with a live human signal.",
   keywords: ["electrician", "developer", "designer", "portfolio", "UI/UX", "Next.js"],
   openGraph: {
     type: "website", locale: "en_US",
     url: "https://josiah-rawsignal.vercel.app",
     siteName: "Josiah — Raw Signal",
-    images: [{ url: "/images/og-image.jpg", width: 1200, height: 630, alt: "Josiah — Raw Signal" }],
+    images: [{ url: "/images/rawsignal-hero.png", width: 1200, height: 630, alt: "Josiah — Raw Signal" }],
   },
   twitter: { card: "summary_large_image", creator: "@josiah" },
   robots: { index: true, follow: true },

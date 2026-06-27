@@ -52,12 +52,7 @@ function NebulaCloud({
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          array={positions}
-          count={count}
-          itemSize={3}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
         size={size}
@@ -187,8 +182,8 @@ function ConstellationGrid() {
   return (
     <lineSegments ref={ref}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" array={positions} count={positions.length / 3} itemSize={3} />
-        <bufferAttribute attach="index" array={indices} count={indices.length} itemSize={1} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="index" args={[indices, 1]} />
       </bufferGeometry>
       <lineBasicMaterial
         color="#E8832A"

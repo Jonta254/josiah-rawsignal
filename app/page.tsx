@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import MagneticButton from "./components/MagneticButton";
 import TypeWriter from "./components/TypeWriter";
 import Signature from "./components/Signature";
+import SignalCockpit from "./components/SignalCockpit";
 
 const HeroOrb   = dynamic(() => import("./components/SignalOrb"),  { ssr: false });
 const HeroScene = dynamic(() => import("./components/HeroScene"), { ssr: false });
@@ -155,7 +156,7 @@ export default function Home() {
 
         {/* ── Photo texture — very dim, grounds the scene ── */}
         <div ref={parallax1} style={{ position: "absolute", inset: "-15%", zIndex: 1, pointerEvents: "none", opacity: 0.1, mixBlendMode: "luminosity" }}>
-          <Image src="/images/hero.jpg" alt="" fill style={{ objectFit: "cover", objectPosition: "center" }} priority sizes="100vw" />
+          <Image src="/images/rawsignal-hero.png" alt="" fill style={{ objectFit: "cover", objectPosition: "center" }} priority sizes="100vw" />
         </div>
 
         {/* ── Bottom fade to page ── */}
@@ -202,22 +203,22 @@ export default function Home() {
 
           <div className="hero-bottom">
             <div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2.2vw,1.45rem)", color: "rgba(255,255,255,0.72)", lineHeight: 1.5, maxWidth: 460, marginBottom: 14 }}>
-                I wire things — circuits, code, and connections.
+              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2.2vw,1.45rem)", color: "rgba(255,255,255,0.72)", lineHeight: 1.5, width: "min(460px, calc(100vw - 2.5rem))", maxWidth: "100%", marginBottom: 14, overflowWrap: "break-word" }}>
+                Raw signal for circuits, code, and human attention.
               </p>
               {mounted && (
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.3vw,12px)", color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>→</span>
                   <TypeWriter
-                    words={["Electrician.", "Developer.", "Designer.", "Explorer.", "Human."]}
+                    words={["Electrician.", "Developer.", "3D web.", "Designer.", "Human."]}
                     style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.3vw,12px)", color: "var(--copper)", letterSpacing: "0.1em" }}
                   />
                 </div>
               )}
             </div>
             <div className="hero-ctas" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <MagneticButton as="a" href="/portfolio" className="btn btn-primary" style={{ fontSize: "clamp(11px,1.2vw,13px)" }}>View Work</MagneticButton>
-              <MagneticButton as="a" href="/about"     className="btn btn-ghost"   style={{ fontSize: "clamp(11px,1.2vw,13px)" }}>My Story</MagneticButton>
+              <MagneticButton as="a" href="/portfolio" className="btn btn-primary" style={{ fontSize: "clamp(11px,1.2vw,13px)" }}>Enter Work</MagneticButton>
+              <MagneticButton as="a" href="/about"     className="btn btn-ghost"   style={{ fontSize: "clamp(11px,1.2vw,13px)" }}>Read Signal</MagneticButton>
             </div>
           </div>
         </div>
@@ -228,7 +229,7 @@ export default function Home() {
       {/* ══════════════════ TICKER ════════════════════════════════ */}
       <div style={{ background: "#000", borderTop: "1px solid rgba(255,255,255,0.06)", overflow: "hidden", padding: "14px 0" }} aria-hidden="true">
         <div style={{ display: "flex", animation: "marquee 28s linear infinite", width: "max-content" }}>
-          {[...Array(3)].fill(["Electrician","Developer","Designer","Explorer","Human","Builder","Thinker","Raw Signal"]).flat().map((w, i) => (
+          {[...Array(3)].fill(["Electrician","Developer","3D Web","Designer","Explorer","Human","Builder","Raw Signal"]).flat().map((w, i) => (
             <span key={i} style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(0.85rem,2vw,1.1rem)", letterSpacing: "0.15em", paddingRight: "clamp(1.25rem,3vw,2.5rem)", color: i % 5 === 2 ? "var(--copper)" : "rgba(255,255,255,0.18)" }}>
               {w}
             </span>
@@ -236,6 +237,8 @@ export default function Home() {
         </div>
         <style>{`@keyframes marquee{to{transform:translateX(-33.333%)}}`}</style>
       </div>
+
+      <SignalCockpit />
 
       {/* ══════════════════ STATS ═════════════════════════════════ */}
       <section style={{ background: "#0A0A0B", padding: "clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)" }}>
@@ -443,7 +446,7 @@ export default function Home() {
       {/* ══════════════════ MANIFESTO ═════════════════════════════ */}
       <section style={{ background: "#000", position: "relative", overflow: "hidden", padding: "clamp(4rem,12vw,10rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <div ref={parallax2} style={{ position: "absolute", inset: "-15%", zIndex: 0, opacity: 0.07 }}>
-          <Image src="/images/about.jpg" alt="" fill style={{ objectFit: "cover" }} sizes="100vw" />
+          <Image src="/images/rawsignal-hero.png" alt="" fill style={{ objectFit: "cover" }} sizes="100vw" />
         </div>
         <div ref={r6} style={{ opacity: 0, transform: "translateY(32px)", transition: "all 0.9s cubic-bezier(0.25,1,0.5,1)", position: "relative", zIndex: 2, maxWidth: 1280, margin: "0 auto" }}>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 28 }}>// 005 — Manifesto</p>
@@ -470,7 +473,7 @@ export default function Home() {
           <div style={{ display: "flex", gap: "clamp(1.5rem,4vw,2.5rem)", alignItems: "flex-start", flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 260 }}>
               <p style={{ fontSize: "clamp(0.875rem,1.6vw,1.1rem)", color: "rgba(255,255,255,0.38)", maxWidth: 480, lineHeight: 1.75, marginBottom: "1.5rem" }}>
-                The best work happens where physical systems, digital tools, and human attention meet. I build at that intersection.
+                The best work happens where physical systems, digital tools, and human attention meet. I build at that intersection, where the signal is raw enough to be true and precise enough to ship.
               </p>
               <Signature color="#C87B2F" width={240} />
             </div>
