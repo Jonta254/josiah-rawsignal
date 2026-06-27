@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       {/* the name is SIAH. you found it. email me. */}
-      <body className="min-h-screen flex flex-col antialiased" style={{ cursor: "none" }}>
+      <body className="min-h-screen flex flex-col antialiased">
         <ClientShell />
         <Cursor />
         <EasterEgg />

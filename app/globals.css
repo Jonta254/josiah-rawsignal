@@ -280,13 +280,19 @@ a { color: inherit; text-decoration: none; }
 /* ── Focus visible ────────────────────────────────────────────── */
 :focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
 
-/* ── Cursor ───────────────────────────────────────────────────── */
+/* ── Cursor (only on precise pointer devices) ─────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+}
 .cursor-dot, .cursor-ring {
   position: fixed; pointer-events: none; z-index: 99999;
   border-radius: 50%; transition: opacity 200ms;
+  display: none;
 }
-.cursor-dot { width: 5px; height: 5px; background: var(--copper); transform: translate(-50%,-50%); }
-.cursor-ring { width: 32px; height: 32px; border: 1px solid rgba(200,123,47,0.5); transform: translate(-50%,-50%); transition: width 250ms, height 250ms, border-color 250ms; }
+@media (hover: hover) and (pointer: fine) {
+  .cursor-dot { display: block; width: 5px; height: 5px; background: var(--copper); transform: translate(-50%,-50%); }
+  .cursor-ring { display: block; width: 32px; height: 32px; border: 1px solid rgba(200,123,47,0.5); transform: translate(-50%,-50%); transition: width 250ms, height 250ms, border-color 250ms; }
+}
 
 /* ── Form fields ──────────────────────────────────────────────── */
 .field {
@@ -365,4 +371,98 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1 !important; transform: none !important; }
+}
+
+/* ── Touch / mobile overrides ─────────────────────────────────── */
+@media (hover: none), (pointer: coarse) {
+  body { cursor: auto !important; }
+  .cursor-dot, .cursor-ring { display: none !important; }
+  /* restore hover effects as default states on touch */
+  .glow-card { transform: none !important; }
+  .btn-primary:active { box-shadow: 0 4px 24px rgba(200,123,47,0.25); }
+  .btn-ghost:active  { background: rgba(255,255,255,0.06); }
+}
+
+/* ── Responsive hero layout ───────────────────────────────────── */
+.hero-content     { max-width: 65%; }
+.hero-orb-wrap    { display: block; }
+
+@media (max-width: 960px) {
+  .hero-content  { max-width: 100%; }
+  .hero-orb-wrap { display: none; }
+}
+
+/* ── Responsive section grids ─────────────────────────────────── */
+.who-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
+.beliefs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
+.stats-grid   { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.5rem, 4vw, 3rem); }
+
+@media (max-width: 900px) {
+  .stats-grid   { grid-template-columns: repeat(2, 1fr); }
+  .beliefs-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 680px) {
+  .who-grid     { grid-template-columns: 1fr; }
+  .beliefs-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 500px) {
+  .stats-grid   { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+}
+
+/* ── Responsive hero bottom bar ───────────────────────────────── */
+.hero-bottom {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: flex-end;
+}
+@media (max-width: 640px) {
+  .hero-bottom { grid-template-columns: 1fr; }
+  .hero-ctas   { flex-direction: row; }
+}
+
+/* ── Responsive work rows ─────────────────────────────────────── */
+.proj-row { height: clamp(260px, 45vw, 580px); }
+@media (max-width: 480px) { .proj-row { height: auto; min-height: 240px; } }
+
+/* ── Responsive manifesto text ────────────────────────────────── */
+.manifesto-xl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 16vw, 15rem);
+  letter-spacing: 0.01em;
+  line-height: 0.88;
+}
+
+/* ── Touch tap targets ─────────────────────────────────────────── */
+@media (pointer: coarse) {
+  .btn { min-height: 48px; min-width: 48px; }
+  .nav-link { padding: 0.5rem 0; }
+}
+
+/* ── Page-specific responsive grids ──────────────────────────── */
+.contact-grid  { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+.roles-grid    { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.5rem); }
+.values-grid   { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.5rem); }
+.portfolio-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: clamp(1rem, 2vw, 1.5rem); }
+
+@media (max-width: 900px) {
+  .roles-grid  { grid-template-columns: repeat(2, 1fr); }
+  .values-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .roles-grid  { grid-template-columns: 1fr; }
+  .values-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Horizontal scroll safety ──────────────────────────────────── */
+html, body { max-width: 100%; overflow-x: hidden; }
+main { overflow-x: hidden; }
+
+/* ── iOS safe area / notch support ────────────────────────────── */
+@supports (padding: max(0px)) {
+  .safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+  header { padding-top: env(safe-area-inset-top); }
 }

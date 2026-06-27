@@ -25,7 +25,7 @@ export default function ContactPage() {
       </section>
 
       <section style={{ background: "var(--earth)", padding: "clamp(4rem,8vw,8rem) clamp(1.25rem,4vw,2rem)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: "clamp(3rem,6vw,6rem)", alignItems: "start" }} className="contact-grid">
+        <div style={{ maxWidth: 1280, margin: "0 auto" }} className="contact-grid">
           {/* Left info */}
           <Reveal className="reveal-left">
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(1.5rem,3vw,2.25rem)", color: "var(--chalk)", marginBottom: 24, lineHeight: 1.4 }}>
@@ -99,9 +99,7 @@ export default function ContactPage() {
           </Reveal>
         </div>
       </section>
-      <style>{`
-        @media(max-width:768px){ .contact-grid{grid-template-columns:1fr !important} .form-row{grid-template-columns:1fr !important} }
-      `}</style>
+      <style>{`@media(max-width:500px){.form-row{grid-template-columns:1fr !important}}`}</style>
     </>
   );
 }
