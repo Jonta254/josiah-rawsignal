@@ -10,7 +10,7 @@ export default function ScrambleText({
   trigger?: boolean; delay?: number; speed?: number;
 }) {
   const [display, setDisplay] = useState(() => text.replace(/[^ .]/g, CHARS[0]));
-  const idRef = useRef<ReturnType<typeof setInterval>>();
+  const idRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   useEffect(() => {
     if (!trigger) return;
