@@ -4,17 +4,17 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Cursor from "./components/Cursor";
 import EasterEgg from "./components/EasterEgg";
-import TerminalBoot from "./components/TerminalBoot";
-import ParticleCanvas from "./components/ParticleCanvas";
+import ClientShell from "./components/ClientShell";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://josiah-rawsignal.vercel.app"),
   title: {
     default: "Josiah — Electrician · Developer · Designer",
-    template: "%s | Josiah",
+    template: "%s | Josiah — Raw Signal",
   },
   description:
     "Josiah is a multi-disciplinary builder — electrician, full-stack developer, and designer. He wires circuits, ships code, and designs experiences that last.",
+  keywords: ["electrician", "developer", "designer", "portfolio", "UI/UX", "Next.js"],
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -28,19 +28,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      {/* viewport configuration */}
-      {/* theme: raw-signal */}
-      {/* the name is SIAH. you found it. now email me. */}
-      {/* performance: prefers-reduced-motion respected */}
-      {/* analytics: privacy-first, plausible.io */}
+    <html lang="en" suppressHydrationWarning>
+      {/* the name is SIAH. you found it. email me. */}
       <body className="min-h-screen flex flex-col antialiased" style={{ cursor: "none" }}>
-        <TerminalBoot />
+        <ClientShell />
         <Cursor />
-        <ParticleCanvas />
         <EasterEgg />
         <Nav />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>
