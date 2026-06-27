@@ -76,6 +76,38 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   return <span ref={ref}>{n}{suffix}</span>;
 }
 
+/* ─── Brian animated name ────────────────────────────────────── */
+const BRIAN_LETTERS = [
+  { ch: "B", color: "#FFD060", shadow: "#FFD060", delay: "0.15s" },
+  { ch: "R", color: "#FFB020", shadow: "#FFB020", delay: "0.23s" },
+  { ch: "I", color: "#FF8820", shadow: "#FF7010", delay: "0.31s" },
+  { ch: "A", color: "#FFB020", shadow: "#FFB020", delay: "0.39s" },
+  { ch: "N", color: "#FFD060", shadow: "#FFD060", delay: "0.47s" },
+];
+function BrianName() {
+  return (
+    <div style={{ perspective: "1200px", display: "inline-block", lineHeight: 0.82, marginBottom: "clamp(0.5rem,1.5vw,1rem)" }}>
+      {BRIAN_LETTERS.map(({ ch, color, shadow, delay }, i) => (
+        <span
+          key={i}
+          className={i === 2 ? "hero-letter hero-letter-glow" : "hero-letter"}
+          style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: "clamp(5rem,21vw,21rem)",
+            letterSpacing: "-0.025em",
+            lineHeight: 0.82,
+            color,
+            textShadow: `0 0 60px ${shadow}90, 0 0 120px ${shadow}35, 0 0 200px ${shadow}12`,
+            animationDelay: delay,
+          }}
+        >
+          {ch}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 /* ─── Accent word ─────────────────────────────────────────────── */
 function Accent({ word, idx, color = "var(--copper)", size = "clamp(4rem,14vw,11rem)" }: {
   word: string; idx: number; color?: string; size?: string;
@@ -141,7 +173,7 @@ export default function Home() {
   return (
     <>
       {/* ══════════════════ HERO ══════════════════════════════════ */}
-      <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "#020208" }}>
+      <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #0C0018 0%, #070010 40%, #020008 100%)" }}>
 
         {/* ── 3D deep-space background scene ── */}
         {mounted && (
@@ -150,32 +182,40 @@ export default function Home() {
           </div>
         )}
 
-        {/* ── Subtle radial vignette over 3D scene ── */}
+        {/* ── CSS atmosphere layers — always visible regardless of WebGL ── */}
         <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(2,2,8,0.55) 100%)" }} />
+          background: "radial-gradient(ellipse 75% 90% at 15% 65%, rgba(255,100,10,0.15) 0%, transparent 65%)" }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
+          background: "radial-gradient(ellipse 55% 70% at 85% 50%, rgba(0,180,255,0.10) 0%, transparent 60%)" }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
+          background: "radial-gradient(ellipse 45% 55% at 50% 0%, rgba(140,40,255,0.09) 0%, transparent 55%)" }} />
+
+        {/* ── Subtle radial vignette over 3D scene ── */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
+          background: "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 25%, rgba(2,0,8,0.50) 100%)" }} />
 
         {/* ── Photo texture — very dim, grounds the scene ── */}
-        <div ref={parallax1} style={{ position: "absolute", inset: "-15%", zIndex: 1, pointerEvents: "none", opacity: 0.1, mixBlendMode: "luminosity" }}>
+        <div ref={parallax1} style={{ position: "absolute", inset: "-15%", zIndex: 2, pointerEvents: "none", opacity: 0.07, mixBlendMode: "luminosity" }}>
           <Image src="/images/rawsignal-hero.png" alt="" fill style={{ objectFit: "cover", objectPosition: "center" }} priority sizes="100vw" />
         </div>
 
         {/* ── Bottom fade to page ── */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
-          background: "linear-gradient(to bottom, transparent 0%, transparent 55%, rgba(2,2,8,0.85) 80%, #020208 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",
+          background: "linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(5,0,16,0.88) 80%, #060010 100%)" }} />
 
         {/* ── Left text fade ── */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
-          background: "linear-gradient(to right, rgba(2,2,8,0.6) 0%, rgba(2,2,8,0.2) 40%, transparent 65%)" }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",
+          background: "linear-gradient(to right, rgba(5,0,14,0.65) 0%, rgba(5,0,14,0.20) 40%, transparent 65%)" }} />
 
         {/* ── 3D orb — desktop right side ── */}
         {mounted && (
-          <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 3, pointerEvents: "none" }}>
+          <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 4, pointerEvents: "none" }}>
             <HeroOrb mouse={mouse} scrollY={scrollY} fov={44} distance={5} glowIntensity={2.2} />
           </div>
         )}
 
         {/* Available badge */}
-        <div style={{ position: "absolute", top: "clamp(5rem,10vw,7rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 5, display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ position: "absolute", top: "clamp(5rem,10vw,7rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 6, display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#34D399", boxShadow: "0 0 8px #34D399", animation: "sig-pulse 2s ease-in-out infinite" }} />
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(9px,1.2vw,11px)", letterSpacing: "0.18em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
             Available for work
@@ -183,23 +223,16 @@ export default function Home() {
         </div>
 
         {/* Hero content — responsive via .hero-content class */}
-        <div className="hero-content" style={{ position: "relative", zIndex: 5, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>
+        <div className="hero-content" style={{ position: "relative", zIndex: 6, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>
 
-          <h1 style={{ margin: 0, lineHeight: 0.82, marginBottom: "clamp(1rem,2.5vw,1.75rem)" }}>
-            <span
-              className="text-hero-name glow-copper"
-              style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: "clamp(4.5rem,20vw,20rem)",
-                letterSpacing: "-0.01em",
-                display: "block",
-              }}
-            >
-              JOSIAH
-            </span>
+          <h1 style={{ margin: 0 }}>
+            <BrianName />
           </h1>
 
-          <div style={{ width: "clamp(60px,8vw,120px)", height: 1, background: "rgba(255,255,255,0.2)", marginBottom: "clamp(1rem,2vw,1.5rem)" }} />
+          {/* Animated gradient rule under the name */}
+          <div style={{ position: "relative", width: "clamp(80px,12vw,200px)", height: 1, marginBottom: "clamp(1rem,2vw,1.5rem)", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, #FFD060, #FF8820, #00DFFF, #FF8820, #FFD060)", backgroundSize: "300% 100%", animation: "nameSweep 3s ease-in-out 1.5s infinite" }} />
+          </div>
 
           <div className="hero-bottom">
             <div>
@@ -227,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ TICKER ════════════════════════════════ */}
-      <div style={{ background: "#000", borderTop: "1px solid rgba(255,255,255,0.06)", overflow: "hidden", padding: "14px 0" }} aria-hidden="true">
+      <div style={{ background: "linear-gradient(to right, #06000E, #040009, #06000E)", borderTop: "1px solid rgba(255,184,0,0.08)", overflow: "hidden", padding: "14px 0" }} aria-hidden="true">
         <div style={{ display: "flex", animation: "marquee 28s linear infinite", width: "max-content" }}>
           {[...Array(3)].fill(["Electrician","Developer","3D Web","Designer","Explorer","Human","Builder","Raw Signal"]).flat().map((w, i) => (
             <span key={i} style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(0.85rem,2vw,1.1rem)", letterSpacing: "0.15em", paddingRight: "clamp(1.25rem,3vw,2.5rem)", color: i % 5 === 2 ? "var(--copper)" : "rgba(255,255,255,0.18)" }}>
@@ -241,7 +274,7 @@ export default function Home() {
       <SignalCockpit />
 
       {/* ══════════════════ STATS ═════════════════════════════════ */}
-      <section style={{ background: "#0A0A0B", padding: "clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)" }}>
+      <section style={{ background: "radial-gradient(ellipse 90% 60% at 80% 0%, rgba(255,136,32,0.07) 0%, transparent 60%), #080012", padding: "clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div className="stats-grid">
             {[
@@ -263,7 +296,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ WHO IS ════════════════════════════════ */}
-      <section style={{ background: "#000", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", overflow: "hidden" }}>
+      <section style={{ background: "radial-gradient(ellipse 60% 80% at 0% 50%, rgba(176,64,255,0.08) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", overflow: "hidden" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div className="who-grid">
             <div ref={r1} style={{ opacity: 0, transform: "translateY(32px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)" }}>
@@ -303,8 +336,8 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ WORK ══════════════════════════════════ */}
-      <section style={{ background: "#000" }}>
-        <div style={{ padding: "clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem) clamp(1.5rem,4vw,3rem)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <section style={{ background: "#050010" }}>
+        <div style={{ padding: "clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem) clamp(1.5rem,4vw,3rem)", borderTop: "1px solid rgba(255,184,0,0.07)" }}>
           <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
             <div ref={r3} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)" }}>
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>// 002 — Work</p>
@@ -348,7 +381,7 @@ export default function Home() {
                       <stop offset="100%" stopColor={p.color} stopOpacity="0" />
                     </radialGradient>
                   </defs>
-                  <rect width="760" height="580" fill="#060606" />
+                  <rect width="760" height="580" fill="#060010" />
                   <rect width="760" height="580" fill={`url(#pg-${i})`} />
                   {Array.from({ length: 8 }, (_, j) => <line key={`v${j}`} x1={j*110} y1="0" x2={j*110} y2="580" stroke={p.color} strokeWidth="0.3" opacity="0.06" />)}
                   {Array.from({ length: 6 }, (_, j) => <line key={`h${j}`} x1="0" y1={j*100} x2="760" y2={j*100} stroke={p.color} strokeWidth="0.3" opacity="0.06" />)}
@@ -356,7 +389,7 @@ export default function Home() {
                   <circle cx="380" cy="290" r="80"  fill="none" stroke={p.color} strokeWidth="0.4" opacity="0.08" />
                   <text x="380" y="340" textAnchor="middle" fontFamily="Bebas Neue" fontSize="160" fill={p.color} opacity="0.03" letterSpacing="8">{p.title.toUpperCase()}</text>
                 </svg>
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.18) 100%)" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(4,0,14,0.94) 0%, rgba(4,0,14,0.50) 60%, rgba(4,0,14,0.12) 100%)" }} />
               </div>
               {/* Content */}
               <div style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "clamp(1.25rem,3vw,2rem) clamp(1.5rem,4vw,2.5rem)" }}>
@@ -383,7 +416,7 @@ export default function Home() {
             </Link>
           ))}
           {/* End cap */}
-          <Link href="/portfolio" style={{ display: "flex", flexShrink: 0, width: "min(50vw, 320px)", height: "clamp(300px,52vw,580px)", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, background: "#060606", borderRight: "none", textDecoration: "none", scrollSnapAlign: "start" }}>
+          <Link href="/portfolio" style={{ display: "flex", flexShrink: 0, width: "min(50vw, 320px)", height: "clamp(300px,52vw,580px)", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, background: "#060010", borderRight: "none", textDecoration: "none", scrollSnapAlign: "start" }}>
             <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.5rem,4vw,2.5rem)", color: "rgba(255,255,255,0.15)", letterSpacing: "0.06em" }}>MORE WORK</span>
             <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "var(--copper)", letterSpacing: "0.1em" }}>View all →</span>
           </Link>
@@ -392,7 +425,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ BELIEFS ═══════════════════════════════ */}
-      <section style={{ background: "#000", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section style={{ background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0,223,255,0.06) 0%, transparent 60%), #060012", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div ref={r4} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(3rem,7vw,6rem)" }}>
             <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>// 003 — Beliefs</p>
@@ -412,7 +445,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ WRITING ═══════════════════════════════ */}
-      <section style={{ background: "#0A0A0B", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section style={{ background: "radial-gradient(ellipse 55% 75% at 100% 50%, rgba(168,85,247,0.08) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div ref={r5} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(2.5rem,7vw,6rem)", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16 }}>
             <div>
@@ -444,7 +477,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ MANIFESTO ═════════════════════════════ */}
-      <section style={{ background: "#000", position: "relative", overflow: "hidden", padding: "clamp(4rem,12vw,10rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section style={{ background: "radial-gradient(ellipse 80% 50% at 50% 50%, rgba(255,100,0,0.09) 0%, transparent 65%), #050010", position: "relative", overflow: "hidden", padding: "clamp(4rem,12vw,10rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,136,32,0.10)" }}>
         <div ref={parallax2} style={{ position: "absolute", inset: "-15%", zIndex: 0, opacity: 0.07 }}>
           <Image src="/images/rawsignal-hero.png" alt="" fill style={{ objectFit: "cover" }} sizes="100vw" />
         </div>
@@ -483,7 +516,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ NEWSLETTER ════════════════════════════ */}
-      <section className="safe-bottom" style={{ background: "#0A0A0B", padding: "clamp(3.5rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section className="safe-bottom" style={{ background: "#06000F", padding: "clamp(3.5rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
           <p style={{ fontFamily: "'Caveat', cursive", fontSize: "clamp(1.5rem,4vw,2.5rem)", color: "var(--copper)", marginBottom: 8 }}>Think alongside me.</p>
           <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.32)", marginBottom: 28, lineHeight: 1.7 }}>Occasional writing on building, designing, and living. No spam. Ever.</p>

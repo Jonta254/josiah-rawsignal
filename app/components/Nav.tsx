@@ -51,7 +51,7 @@ export default function Nav() {
               <line x1="20" y1="14" x2="26" y2="14" stroke="#C87B2F" strokeWidth="1" opacity="0.6"/>
             </svg>
             <div>
-              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 600, color: "#EAEDF2", letterSpacing: "0.06em", lineHeight: 1.2 }}>JOSIAH</div>
+              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 600, color: "#EAEDF2", letterSpacing: "0.06em", lineHeight: 1.2 }}>BRIAN</div>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "rgba(200,123,47,0.6)", letterSpacing: "0.15em", lineHeight: 1.2 }}>RAW SIGNAL</div>
             </div>
           </Link>
@@ -109,7 +109,7 @@ export default function Nav() {
             </Link>
           </nav>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(90,96,110,0.5)", letterSpacing: "0.12em", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 20 }}>
-            © 2026 JOSIAH · RAW SIGNAL
+            © 2026 BRIAN · RAW SIGNAL
           </p>
         </div>
       </div>

@@ -10,7 +10,7 @@ const BOOT_LINES = [
   { text: "  [████████████████] NATURE        100%", delay: 1100, color: "var(--color-moss)" },
   { text: "  [████████████████] HUMAN         100%", delay: 1300, color: "var(--color-stone)" },
   { text: "► ESTABLISHING CONNECTION...", delay: 1500, color: "var(--neon-cyan)" },
-  { text: "► SIGNAL DETECTED: JOSIAH", delay: 1900, color: "var(--color-wire)", bright: true },
+  { text: "► SIGNAL DETECTED: BRIAN", delay: 1900, color: "var(--color-wire)", bright: true },
   { text: "► ALL SYSTEMS NOMINAL. WELCOME.", delay: 2200, color: "var(--neon-lime)" },
 ];
 

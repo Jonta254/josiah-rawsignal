@@ -59,6 +59,37 @@ body {
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
 
+/* ── Hero name letter animation ───────────────────────────────── */
+@keyframes letterIn {
+  0%   { opacity: 0; transform: translateY(110%) rotateX(-70deg) skewX(6deg); filter: blur(16px); }
+  55%  { filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) rotateX(0) skewX(0); filter: blur(0); }
+}
+@keyframes letterGlow {
+  0%,100% { text-shadow: 0 0 40px currentColor, 0 0 80px currentColor; }
+  50%      { text-shadow: 0 0 80px currentColor, 0 0 160px currentColor, 0 0 240px currentColor; }
+}
+.hero-letter {
+  display: inline-block;
+  animation: letterIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
+  transform-origin: bottom center;
+  will-change: transform, opacity, filter;
+}
+.hero-letter-glow { animation: letterIn 0.8s cubic-bezier(0.16,1,0.3,1) both, letterGlow 3s ease-in-out 1.2s infinite; }
+
+/* ── Scan line sweep ────────────────────────────────────────────── */
+@keyframes scanLine {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+.scan-line {
+  position: absolute;
+  top: 0; bottom: 0; width: 25%;
+  background: linear-gradient(90deg, transparent, rgba(255,184,0,0.06), rgba(255,184,0,0.12), rgba(255,184,0,0.06), transparent);
+  animation: scanLine 4s ease-in-out 1.8s infinite;
+  pointer-events: none;
+}
+
 /* ── Grain ────────────────────────────────────────────────────── */
 body::before {
   content: '';
@@ -120,6 +151,7 @@ a { color: inherit; text-decoration: none; }
 @keyframes signalShift  { 0%,100%{background-position:0% 50%}  50%{background-position:100% 50%} }
 @keyframes connectShift { 0%,100%{background-position:0% 50%}  50%{background-position:100% 50%} }
 @keyframes heroShift    { 0%,100%{background-position:0% 50%}  50%{background-position:100% 50%} }
+@keyframes nameSweep    { 0%{background-position:-200% 50%} 100%{background-position:300% 50%} }
 
 /* ── Glow text ────────────────────────────────────────────────── */
 .glow-copper { text-shadow: 0 0 40px rgba(255,136,32,0.6), 0 0 80px rgba(255,136,32,0.25); }

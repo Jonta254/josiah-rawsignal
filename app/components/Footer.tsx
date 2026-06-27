@@ -41,7 +41,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 15, fontWeight: 700, color: "#EAEDF2", letterSpacing: "0.08em", marginBottom: 8 }}>
-              JOSIAH
+              BRIAN
             </div>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(200,123,47,0.5)", letterSpacing: "0.2em", marginBottom: 16 }}>
               RAW SIGNAL
