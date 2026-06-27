@@ -32,10 +32,11 @@ export default function Nav() {
         role="banner"
         style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 9000,
-          background: scrolled ? "rgba(9,9,11,0.94)" : "rgba(9,9,11,0.4)",
-          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-          transition: "background 300ms ease, border-color 300ms ease",
+          background: scrolled ? "rgba(0,0,0,0.88)" : "transparent",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.05)" : "1px solid transparent",
+          backdropFilter: scrolled ? "blur(20px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
+          transition: "background 400ms ease, border-color 400ms ease, backdrop-filter 400ms ease",
         }}
       >
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(1.25rem,4vw,2rem)", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
