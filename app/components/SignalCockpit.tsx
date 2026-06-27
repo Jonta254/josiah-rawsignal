@@ -21,7 +21,7 @@ export default function SignalCockpit() {
           <p className="signal-eyebrow">RAWSIGNAL.OS / LIVE PROFILE</p>
           <h2>Not a niche. A working frequency.</h2>
           <p>
-            Josiah Raw is the overlap between field craft and digital systems: wiring panels,
+            Brian is the overlap between field craft and digital systems: wiring panels,
             building interfaces, shaping tools, then taking the whole thing outside to see if it still breathes.
           </p>
         </div>

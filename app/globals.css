@@ -59,23 +59,49 @@ body {
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
 
-/* ── Hero name letter animation ───────────────────────────────── */
-@keyframes letterIn {
-  0%   { opacity: 0; transform: translateY(110%) rotateX(-70deg) skewX(6deg); filter: blur(16px); }
+/* ── Cinematic BRIAN letter entrances ─────────────────────────── */
+@keyframes letterFromLeft {
+  0%   { opacity: 0; transform: translateX(-110px) rotateY(-50deg) skewX(8deg); filter: blur(28px); }
+  45%  { filter: blur(0); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes letterRise {
+  0%   { opacity: 0; transform: translateY(130%) rotateX(-75deg) skewX(4deg); filter: blur(22px); }
+  50%  { filter: blur(0); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes letterFlash {
+  0%   { opacity: 0; transform: scale(3.5) translateY(-20px) rotate(-4deg); filter: blur(40px); }
+  18%  { opacity: 1; transform: scale(1.12) rotate(1deg); filter: blur(6px); }
   55%  { filter: blur(0); }
-  100% { opacity: 1; transform: translateY(0) rotateX(0) skewX(0); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1) rotate(0); filter: blur(0); }
+}
+@keyframes letterFall {
+  0%   { opacity: 0; transform: translateY(-120%) rotateX(75deg) skewX(-4deg); filter: blur(22px); }
+  50%  { filter: blur(0); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes letterFromRight {
+  0%   { opacity: 0; transform: translateX(110px) rotateY(50deg) skewX(-8deg); filter: blur(28px); }
+  45%  { filter: blur(0); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
 }
 @keyframes letterGlow {
   0%,100% { text-shadow: 0 0 40px currentColor, 0 0 80px currentColor; }
-  50%      { text-shadow: 0 0 80px currentColor, 0 0 160px currentColor, 0 0 240px currentColor; }
+  50%      { text-shadow: 0 0 100px currentColor, 0 0 200px currentColor, 0 0 320px currentColor; }
 }
-.hero-letter {
-  display: inline-block;
-  animation: letterIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
-  transform-origin: bottom center;
-  will-change: transform, opacity, filter;
+
+/* ── Floating orbs ────────────────────────────────────────────── */
+@keyframes floatOrb {
+  0%,100% { transform: translate(0, 0) scale(1); }
+  33%     { transform: translate(-4%, 6%) scale(1.06); }
+  66%     { transform: translate(5%, -4%) scale(0.95); }
 }
-.hero-letter-glow { animation: letterIn 0.8s cubic-bezier(0.16,1,0.3,1) both, letterGlow 3s ease-in-out 1.2s infinite; }
+@keyframes floatOrbB {
+  0%,100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33%     { transform: translate(6%, -8%) scale(1.08) rotate(8deg); }
+  66%     { transform: translate(-5%, 4%) scale(0.94) rotate(-5deg); }
+}
 
 /* ── Scan line sweep ────────────────────────────────────────────── */
 @keyframes scanLine {
@@ -85,9 +111,81 @@ body {
 .scan-line {
   position: absolute;
   top: 0; bottom: 0; width: 25%;
-  background: linear-gradient(90deg, transparent, rgba(255,184,0,0.06), rgba(255,184,0,0.12), rgba(255,184,0,0.06), transparent);
-  animation: scanLine 4s ease-in-out 1.8s infinite;
+  background: linear-gradient(90deg, transparent, rgba(255,184,0,0.06), rgba(255,184,0,0.14), rgba(255,184,0,0.06), transparent);
+  animation: scanLine 4.5s ease-in-out 1.8s infinite;
   pointer-events: none;
+}
+
+/* ── Scroll progress ──────────────────────────────────────────── */
+.scroll-progress-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 9998;
+  background: linear-gradient(90deg, #FFD060, #FF8820 40%, #00DFFF 75%, #B040FF);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.05s linear;
+}
+
+/* ── Section ghost number ─────────────────────────────────────── */
+.ghost-num {
+  position: absolute; right: clamp(1rem,4vw,3rem); top: "50%";
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(8rem,22vw,18rem);
+  line-height: 1; color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+  pointer-events: none; user-select: none; z-index: 0;
+  letter-spacing: -0.02em;
+}
+
+/* ── Dot grid overlay ─────────────────────────────────────────── */
+.dot-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* ── Cursor glow ──────────────────────────────────────────────── */
+.cursor-glow {
+  position: fixed; top: 0; left: 0; z-index: 9997;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,136,32,0.06) 0%, transparent 70%);
+  pointer-events: none; mix-blend-mode: screen;
+  transform: translate(-160px, -160px);
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+/* ── Aurora hero overlay ──────────────────────────────────────── */
+@keyframes auroraShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-aurora {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(135deg,
+    rgba(255,80,0,0.07) 0%,
+    rgba(255,136,32,0.10) 20%,
+    rgba(140,0,255,0.06) 40%,
+    rgba(0,200,255,0.08) 60%,
+    rgba(255,184,0,0.06) 80%,
+    rgba(255,80,0,0.05) 100%
+  );
+  background-size: 400% 400%;
+  animation: auroraShift 12s ease infinite;
+}
+
+/* ── Animated gradient borders ────────────────────────────────── */
+@keyframes borderShimmer {
+  0%,100% { opacity: 0.3; }
+  50%      { opacity: 1; }
+}
+.shimmer-border { animation: borderShimmer 2.5s ease-in-out infinite; }
+
+/* ── Section entrance (scale + fade) ─────────────────────────── */
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
 }
 
 /* ── Grain ────────────────────────────────────────────────────── */

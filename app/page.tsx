@@ -76,35 +76,59 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   return <span ref={ref}>{n}{suffix}</span>;
 }
 
-/* ─── Brian animated name ────────────────────────────────────── */
+/* ─── Brian cinematic letter entrance ───────────────────────── */
 const BRIAN_LETTERS = [
-  { ch: "B", color: "#FFD060", shadow: "#FFD060", delay: "0.15s" },
-  { ch: "R", color: "#FFB020", shadow: "#FFB020", delay: "0.23s" },
-  { ch: "I", color: "#FF8820", shadow: "#FF7010", delay: "0.31s" },
-  { ch: "A", color: "#FFB020", shadow: "#FFB020", delay: "0.39s" },
-  { ch: "N", color: "#FFD060", shadow: "#FFD060", delay: "0.47s" },
+  { ch: "B", color: "#FFD060", shadow: "#FFD060",
+    anim: "letterFromLeft 1.3s cubic-bezier(0.16,1,0.3,1) 0.20s both" },
+  { ch: "R", color: "#FFBA30", shadow: "#FFB020",
+    anim: "letterRise 1.1s cubic-bezier(0.16,1,0.3,1) 0.40s both" },
+  { ch: "I", color: "#FF8820", shadow: "#FF6000",
+    anim: "letterFlash 1.0s cubic-bezier(0.16,1,0.3,1) 0.60s both, letterGlow 3.5s ease-in-out 2.0s infinite" },
+  { ch: "A", color: "#FFBA30", shadow: "#FFB020",
+    anim: "letterFall 1.1s cubic-bezier(0.16,1,0.3,1) 0.80s both" },
+  { ch: "N", color: "#FFD060", shadow: "#FFD060",
+    anim: "letterFromRight 1.3s cubic-bezier(0.16,1,0.3,1) 1.00s both" },
 ];
 function BrianName() {
   return (
-    <div style={{ perspective: "1200px", display: "inline-block", lineHeight: 0.82, marginBottom: "clamp(0.5rem,1.5vw,1rem)" }}>
-      {BRIAN_LETTERS.map(({ ch, color, shadow, delay }, i) => (
+    <div style={{ perspective: "1800px", display: "inline-block", lineHeight: 0.82 }}>
+      {BRIAN_LETTERS.map(({ ch, color, shadow, anim }, i) => (
         <span
           key={i}
-          className={i === 2 ? "hero-letter hero-letter-glow" : "hero-letter"}
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: "clamp(5rem,21vw,21rem)",
             letterSpacing: "-0.025em",
             lineHeight: 0.82,
             color,
-            textShadow: `0 0 60px ${shadow}90, 0 0 120px ${shadow}35, 0 0 200px ${shadow}12`,
-            animationDelay: delay,
+            textShadow: `0 0 60px ${shadow}A0, 0 0 130px ${shadow}40, 0 0 240px ${shadow}18`,
+            display: "inline-block",
+            animation: anim,
+            transformOrigin: "center bottom",
+            willChange: "transform, opacity, filter",
           }}
         >
           {ch}
         </span>
       ))}
     </div>
+  );
+}
+
+/* ─── Section floating orbs ──────────────────────────────────── */
+function SectionOrbs({ orbs }: { orbs: { x: string; y: string; w: string; color: string; blur: number; op: number; dur?: number; delay?: number }[] }) {
+  return (
+    <>
+      {orbs.map((o, i) => (
+        <div key={i} aria-hidden="true" style={{
+          position: "absolute", left: o.x, top: o.y,
+          width: o.w, height: o.w, borderRadius: "50%",
+          background: o.color, filter: `blur(${o.blur}px)`,
+          opacity: o.op, pointerEvents: "none", zIndex: 0,
+          animation: `${i % 2 === 0 ? "floatOrb" : "floatOrbB"} ${o.dur ?? 9}s ease-in-out ${o.delay ?? 0}s infinite`,
+        }} />
+      ))}
+    </>
   );
 }
 
@@ -147,16 +171,27 @@ export default function Home() {
   const r3 = useReveal(0), r4 = useReveal(0), r5 = useReveal(0), r6 = useReveal(0);
   const [mounted, setMounted] = useState(false);
   const [ghRepos, setGhRepos] = useState<number | null>(null);
-  const mouse   = useRef({ x: 0, y: 0 });
-  const scrollY = useRef(0);
+  const mouse       = useRef({ x: 0, y: 0 });
+  const scrollY     = useRef(0);
+  const cursorRef   = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
     const onMouse = (e: MouseEvent) => {
       mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
       mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate(${e.clientX - 160}px, ${e.clientY - 160}px)`;
+      }
     };
-    const onScroll = () => { scrollY.current = window.scrollY; };
+    const onScroll = () => {
+      scrollY.current = window.scrollY;
+      if (progressRef.current) {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        progressRef.current.style.transform = `scaleX(${Math.min(window.scrollY / total, 1)})`;
+      }
+    };
     window.addEventListener("mousemove", onMouse);
     window.addEventListener("scroll", onScroll, { passive: true });
     // GitHub live repo count
@@ -172,6 +207,10 @@ export default function Home() {
 
   return (
     <>
+      {/* Scroll progress + cursor glow */}
+      <div ref={progressRef} className="scroll-progress-bar" />
+      <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
+
       {/* ══════════════════ HERO ══════════════════════════════════ */}
       <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #0C0018 0%, #070010 40%, #020008 100%)" }}>
 
@@ -182,13 +221,18 @@ export default function Home() {
           </div>
         )}
 
-        {/* ── CSS atmosphere layers — always visible regardless of WebGL ── */}
+        {/* ── Moving aurora mesh — always visible ── */}
+        <div className="hero-aurora" style={{ zIndex: 1 }} />
+
+        {/* ── CSS atmosphere layers ── */}
         <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "radial-gradient(ellipse 75% 90% at 15% 65%, rgba(255,100,10,0.15) 0%, transparent 65%)" }} />
+          background: "radial-gradient(ellipse 75% 90% at 15% 65%, rgba(255,100,10,0.18) 0%, transparent 65%)" }} />
         <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "radial-gradient(ellipse 55% 70% at 85% 50%, rgba(0,180,255,0.10) 0%, transparent 60%)" }} />
+          background: "radial-gradient(ellipse 55% 70% at 85% 50%, rgba(0,180,255,0.12) 0%, transparent 60%)" }} />
         <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "radial-gradient(ellipse 45% 55% at 50% 0%, rgba(140,40,255,0.09) 0%, transparent 55%)" }} />
+          background: "radial-gradient(ellipse 45% 55% at 50% 0%, rgba(140,40,255,0.10) 0%, transparent 55%)" }} />
+        {/* ── Dot grid ── */}
+        <div className="dot-grid" style={{ zIndex: 2, opacity: 0.5 }} />
 
         {/* ── Subtle radial vignette over 3D scene ── */}
         <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
@@ -225,13 +269,20 @@ export default function Home() {
         {/* Hero content — responsive via .hero-content class */}
         <div className="hero-content" style={{ position: "relative", zIndex: 6, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>
 
+          {/* Monospace coordinate label */}
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: "clamp(0.5rem,1vw,0.75rem)" }}>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1vw,10px)", letterSpacing: "0.22em", color: "rgba(255,184,0,0.45)", textTransform: "uppercase" }}>SIGNAL.ID</span>
+            <div style={{ flex: 1, maxWidth: 80, height: 1, background: "rgba(255,184,0,0.2)" }} />
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1vw,10px)", letterSpacing: "0.18em", color: "rgba(255,255,255,0.18)" }}>01°24′S 36°49′E</span>
+          </div>
+
           <h1 style={{ margin: 0 }}>
             <BrianName />
           </h1>
 
           {/* Animated gradient rule under the name */}
-          <div style={{ position: "relative", width: "clamp(80px,12vw,200px)", height: 1, marginBottom: "clamp(1rem,2vw,1.5rem)", overflow: "hidden" }}>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, #FFD060, #FF8820, #00DFFF, #FF8820, #FFD060)", backgroundSize: "300% 100%", animation: "nameSweep 3s ease-in-out 1.5s infinite" }} />
+          <div style={{ position: "relative", width: "clamp(80px,14vw,220px)", height: 1, marginBottom: "clamp(1rem,2vw,1.5rem)", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, #FFD060, #FF8820, #00DFFF, #B040FF, #FF8820, #FFD060)", backgroundSize: "400% 100%", animation: "nameSweep 3.5s ease-in-out 2.2s infinite" }} />
           </div>
 
           <div className="hero-bottom">
@@ -274,8 +325,13 @@ export default function Home() {
       <SignalCockpit />
 
       {/* ══════════════════ STATS ═════════════════════════════════ */}
-      <section style={{ background: "radial-gradient(ellipse 90% 60% at 80% 0%, rgba(255,136,32,0.07) 0%, transparent 60%), #080012", padding: "clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <section style={{ background: "radial-gradient(ellipse 90% 60% at 80% 0%, rgba(255,136,32,0.08) 0%, transparent 60%), #080012", padding: "clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)", position: "relative", overflow: "hidden" }}>
+        <SectionOrbs orbs={[
+          { x: "70%", y: "-20%", w: "40vw", color: "rgba(255,136,32,0.12)", blur: 90, op: 1, dur: 11 },
+          { x: "-10%", y: "30%", w: "30vw", color: "rgba(255,184,0,0.08)", blur: 70, op: 1, dur: 14, delay: 3 },
+        ]} />
+        <div style={{ position: "absolute", right: "2%", top: "50%", transform: "translateY(-50%)", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(6rem,18vw,14rem)", color: "transparent", WebkitTextStroke: "1px rgba(255,136,32,0.05)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>STAT</div>
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div className="stats-grid">
             {[
               { n: 8,   suf: "+",  label: "Years in the trade",    live: false },
@@ -283,7 +339,7 @@ export default function Home() {
               { n: 100, suf: "s",  label: "Trails walked",          live: false },
               { n: 5,   suf: "",   label: "Disciplines mastered",   live: false },
             ].map((s) => (
-              <div key={s.label} style={{ borderLeft: "1px solid rgba(255,255,255,0.07)", paddingLeft: "clamp(1rem,3vw,2rem)" }}>
+              <div key={s.label} style={{ borderLeft: "1px solid rgba(255,136,32,0.12)", paddingLeft: "clamp(1rem,3vw,2rem)" }}>
                 <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,4.5rem)", lineHeight: 1, color: "var(--chalk)", marginBottom: 6, display: "flex", alignItems: "baseline", gap: 8 }}>
                   <Counter end={s.n} suffix={s.suf} />
                   {s.live && <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "#34D399", letterSpacing: "0.12em", paddingBottom: 4 }}>LIVE</span>}
@@ -296,8 +352,13 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ WHO IS ════════════════════════════════ */}
-      <section style={{ background: "radial-gradient(ellipse 60% 80% at 0% 50%, rgba(176,64,255,0.08) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", overflow: "hidden" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <section style={{ background: "radial-gradient(ellipse 60% 80% at 0% 50%, rgba(176,64,255,0.10) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", overflow: "hidden", position: "relative" }}>
+        <SectionOrbs orbs={[
+          { x: "-15%", y: "10%", w: "50vw", color: "rgba(176,64,255,0.10)", blur: 100, op: 1, dur: 12 },
+          { x: "60%",  y: "50%", w: "35vw", color: "rgba(0,200,255,0.07)", blur: 80, op: 1, dur: 16, delay: 4 },
+        ]} />
+        <div style={{ position: "absolute", right: "-2%", bottom: "5%", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(8rem,24vw,20rem)", color: "transparent", WebkitTextStroke: "1px rgba(176,64,255,0.05)", pointerEvents: "none", userSelect: "none", lineHeight: 1, letterSpacing: "-0.05em" }}>WHO</div>
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div className="who-grid">
             <div ref={r1} style={{ opacity: 0, transform: "translateY(32px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)" }}>
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 24 }}>// 001 — Signal</p>
@@ -336,8 +397,14 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ WORK ══════════════════════════════════ */}
-      <section style={{ background: "#050010" }}>
-        <div style={{ padding: "clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem) clamp(1.5rem,4vw,3rem)", borderTop: "1px solid rgba(255,184,0,0.07)" }}>
+
+      <section style={{ background: "#050010", position: "relative", overflow: "hidden" }}>
+        <SectionOrbs orbs={[
+          { x: "50%",  y: "-10%", w: "45vw", color: "rgba(0,200,255,0.09)", blur: 100, op: 1, dur: 13 },
+          { x: "80%",  y: "40%",  w: "30vw", color: "rgba(0,255,136,0.06)", blur: 80, op: 1, dur: 17, delay: 5 },
+          { x: "-5%",  y: "60%",  w: "25vw", color: "rgba(255,136,32,0.07)", blur: 70, op: 1, dur: 11, delay: 2 },
+        ]} />
+        <div style={{ padding: "clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem) clamp(1.5rem,4vw,3rem)", borderTop: "1px solid rgba(0,200,255,0.08)", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
             <div ref={r3} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)" }}>
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>// 002 — Work</p>
@@ -425,19 +492,24 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ BELIEFS ═══════════════════════════════ */}
-      <section style={{ background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0,223,255,0.06) 0%, transparent 60%), #060012", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <section style={{ background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0,223,255,0.07) 0%, transparent 60%), #060012", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(0,223,255,0.07)", position: "relative", overflow: "hidden" }}>
+        <SectionOrbs orbs={[
+          { x: "60%",  y: "10%",  w: "40vw", color: "rgba(0,223,255,0.08)", blur: 90, op: 1, dur: 14 },
+          { x: "-10%", y: "50%",  w: "35vw", color: "rgba(0,136,255,0.07)", blur: 80, op: 1, dur: 18, delay: 6 },
+        ]} />
+        <div style={{ position: "absolute", left: "-2%", top: "10%", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(6rem,18vw,14rem)", color: "transparent", WebkitTextStroke: "1px rgba(0,223,255,0.04)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>SIGNAL</div>
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div ref={r4} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(3rem,7vw,6rem)" }}>
             <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>// 003 — Beliefs</p>
             <Accent word="SIGNAL." idx={5} size="clamp(3rem,12vw,9rem)" color="var(--copper)" />
           </div>
           <div className="beliefs-grid">
             {BELIEFS.map((b) => (
-              <div key={b.n} style={{ borderTop: `1px solid ${b.accent}28`, paddingTop: "clamp(1.25rem,3vw,2rem)" }}>
-                <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(2.5rem,5vw,4.5rem)", color: b.accent, opacity: 0.08, lineHeight: 1, marginBottom: 12, fontWeight: 700 }}>{b.n}</div>
-                <div style={{ width: 24, height: 1, background: b.accent, marginBottom: 18, opacity: 0.55 }} />
+              <div key={b.n} style={{ borderTop: `1px solid ${b.accent}30`, paddingTop: "clamp(1.25rem,3vw,2rem)" }}>
+                <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(2.5rem,5vw,4.5rem)", color: b.accent, opacity: 0.10, lineHeight: 1, marginBottom: 12, fontWeight: 700 }}>{b.n}</div>
+                <div style={{ width: 24, height: 1, background: b.accent, marginBottom: 18, opacity: 0.6 }} />
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2vw,1.2rem)", color: "var(--chalk)", lineHeight: 1.45, marginBottom: 12 }}>{b.t}</h3>
-                <p style={{ fontSize: "clamp(0.8rem,1.3vw,0.9rem)", color: "rgba(255,255,255,0.38)", lineHeight: 1.75 }}>{b.body}</p>
+                <p style={{ fontSize: "clamp(0.8rem,1.3vw,0.9rem)", color: "rgba(255,255,255,0.40)", lineHeight: 1.75 }}>{b.body}</p>
               </div>
             ))}
           </div>
@@ -445,7 +517,11 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ WRITING ═══════════════════════════════ */}
-      <section style={{ background: "radial-gradient(ellipse 55% 75% at 100% 50%, rgba(168,85,247,0.08) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <section style={{ background: "radial-gradient(ellipse 55% 75% at 100% 50%, rgba(168,85,247,0.10) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(168,85,247,0.08)", position: "relative", overflow: "hidden" }}>
+        <SectionOrbs orbs={[
+          { x: "80%", y: "5%",   w: "40vw", color: "rgba(168,85,247,0.10)", blur: 90, op: 1, dur: 13 },
+          { x: "20%", y: "55%",  w: "28vw", color: "rgba(80,20,180,0.08)", blur: 70, op: 1, dur: 17, delay: 4 },
+        ]} />
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div ref={r5} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(2.5rem,7vw,6rem)", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16 }}>
             <div>
@@ -477,7 +553,12 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ MANIFESTO ═════════════════════════════ */}
-      <section style={{ background: "radial-gradient(ellipse 80% 50% at 50% 50%, rgba(255,100,0,0.09) 0%, transparent 65%), #050010", position: "relative", overflow: "hidden", padding: "clamp(4rem,12vw,10rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,136,32,0.10)" }}>
+      <section style={{ background: "radial-gradient(ellipse 80% 50% at 50% 50%, rgba(255,100,0,0.10) 0%, transparent 65%), #050010", position: "relative", overflow: "hidden", padding: "clamp(4rem,12vw,10rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,136,32,0.12)" }}>
+        <SectionOrbs orbs={[
+          { x: "50%",  y: "-20%", w: "50vw", color: "rgba(255,80,0,0.10)", blur: 110, op: 1, dur: 10 },
+          { x: "-10%", y: "30%",  w: "40vw", color: "rgba(255,184,0,0.08)", blur: 90, op: 1, dur: 15, delay: 3 },
+          { x: "70%",  y: "60%",  w: "30vw", color: "rgba(255,40,0,0.07)", blur: 80, op: 1, dur: 13, delay: 6 },
+        ]} />
         <div ref={parallax2} style={{ position: "absolute", inset: "-15%", zIndex: 0, opacity: 0.07 }}>
           <Image src="/images/rawsignal-hero.png" alt="" fill style={{ objectFit: "cover" }} sizes="100vw" />
         </div>
@@ -516,8 +597,12 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ NEWSLETTER ════════════════════════════ */}
-      <section className="safe-bottom" style={{ background: "#06000F", padding: "clamp(3.5rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <section className="safe-bottom" style={{ background: "#06000F", padding: "clamp(3.5rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(0,255,136,0.07)", position: "relative", overflow: "hidden" }}>
+        <SectionOrbs orbs={[
+          { x: "70%", y: "0%",  w: "35vw", color: "rgba(0,255,136,0.08)", blur: 90, op: 1, dur: 12 },
+          { x: "10%", y: "50%", w: "25vw", color: "rgba(0,180,255,0.06)", blur: 70, op: 1, dur: 16, delay: 4 },
+        ]} />
+        <div style={{ maxWidth: 600, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <p style={{ fontFamily: "'Caveat', cursive", fontSize: "clamp(1.5rem,4vw,2.5rem)", color: "var(--copper)", marginBottom: 8 }}>Think alongside me.</p>
           <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.32)", marginBottom: 28, lineHeight: 1.7 }}>Occasional writing on building, designing, and living. No spam. Ever.</p>
           <form onSubmit={(e) => e.preventDefault()} style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
