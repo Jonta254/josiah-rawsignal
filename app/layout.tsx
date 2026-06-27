@@ -1,23 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Nav from "./components/Nav";
-import Footer from "./components/Footer";
-import Cursor from "./components/Cursor";
-import EasterEgg from "./components/EasterEgg";
-import ClientShell from "./components/ClientShell";
+import Nav             from "./components/Nav";
+import Footer          from "./components/Footer";
+import Cursor          from "./components/Cursor";
+import EasterEgg       from "./components/EasterEgg";
+import ClientShell     from "./components/ClientShell";
+import ReadingProgress from "./components/ReadingProgress";
+import CommandPalette  from "./components/CommandPalette";
+import AmbientSound    from "./components/AmbientSound";
+import PageBackground  from "./components/PageBackground";
+import SmoothScroll    from "./components/SmoothScroll";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://josiah-rawsignal.vercel.app"),
   title: {
-    default: "Josiah — Electrician · Developer · Designer",
+    default:  "Josiah — Electrician · Developer · Designer",
     template: "%s | Josiah — Raw Signal",
   },
   description:
     "Josiah is a multi-disciplinary builder — electrician, full-stack developer, and designer. He wires circuits, ships code, and designs experiences that last.",
   keywords: ["electrician", "developer", "designer", "portfolio", "UI/UX", "Next.js"],
   openGraph: {
-    type: "website",
-    locale: "en_US",
+    type: "website", locale: "en_US",
     url: "https://josiah-rawsignal.vercel.app",
     siteName: "Josiah — Raw Signal",
     images: [{ url: "/images/og-image.jpg", width: 1200, height: 630, alt: "Josiah — Raw Signal" }],
@@ -31,12 +35,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       {/* the name is SIAH. you found it. email me. */}
       <body className="min-h-screen flex flex-col antialiased">
-        <ClientShell />
-        <Cursor />
-        <EasterEgg />
-        <Nav />
-        <main id="main-content" className="flex-1">{children}</main>
-        <Footer />
+        <SmoothScroll>
+          {/* Fixed / overlay layers */}
+          <ClientShell />
+          <Cursor />
+          <EasterEgg />
+          <ReadingProgress />
+          <CommandPalette />
+          <AmbientSound />
+          <PageBackground />
+
+          {/* Page chrome */}
+          <Nav />
+          <main id="main-content" className="flex-1" style={{ position: "relative", zIndex: 1 }}>
+            {children}
+          </main>
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

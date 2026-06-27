@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import MagneticButton from "./components/MagneticButton";
 import TypeWriter from "./components/TypeWriter";
+import Signature from "./components/Signature";
 
 const HeroOrb = dynamic(() => import("./components/SignalOrb"), { ssr: false });
 
@@ -111,7 +112,9 @@ export default function Home() {
   const r1 = useReveal(0), r2 = useReveal(80);
   const r3 = useReveal(0), r4 = useReveal(0), r5 = useReveal(0), r6 = useReveal(0);
   const [mounted, setMounted] = useState(false);
-  const mouse = useRef({ x: 0, y: 0 });
+  const [ghRepos, setGhRepos] = useState<number | null>(null);
+  const mouse   = useRef({ x: 0, y: 0 });
+  const scrollY = useRef(0);
 
   useEffect(() => {
     setMounted(true);
@@ -119,8 +122,18 @@ export default function Home() {
       mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
       mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
     };
+    const onScroll = () => { scrollY.current = window.scrollY; };
     window.addEventListener("mousemove", onMouse);
-    return () => window.removeEventListener("mousemove", onMouse);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // GitHub live repo count
+    fetch("https://api.github.com/users/Jonta254")
+      .then((r) => r.json())
+      .then((d) => { if (d.public_repos) setGhRepos(d.public_repos); })
+      .catch(() => {});
+    return () => {
+      window.removeEventListener("mousemove", onMouse);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   return (
@@ -135,10 +148,10 @@ export default function Home() {
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.18) 55%, transparent 80%)" }} />
         </div>
 
-        {/* 3D orb — desktop right side (CSS class hides on mobile) */}
+        {/* 3D orb — desktop right side, scroll-driven */}
         {mounted && (
           <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 1, pointerEvents: "none" }}>
-            <HeroOrb mouse={mouse} fov={44} distance={5} glowIntensity={1.8} />
+            <HeroOrb mouse={mouse} scrollY={scrollY} fov={44} distance={5} glowIntensity={1.8} />
           </div>
         )}
 
@@ -205,14 +218,15 @@ export default function Home() {
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div className="stats-grid">
             {[
-              { n: 8,   suf: "+",  label: "Years in the trade" },
-              { n: 40,  suf: "+",  label: "Projects shipped" },
-              { n: 100, suf: "s",  label: "Trails walked" },
-              { n: 5,   suf: "",   label: "Disciplines mastered" },
+              { n: 8,   suf: "+",  label: "Years in the trade",    live: false },
+              { n: ghRepos ?? 40, suf: ghRepos ? "" : "+", label: ghRepos ? "GitHub repos" : "Projects shipped", live: !!ghRepos },
+              { n: 100, suf: "s",  label: "Trails walked",          live: false },
+              { n: 5,   suf: "",   label: "Disciplines mastered",   live: false },
             ].map((s) => (
               <div key={s.label} style={{ borderLeft: "1px solid rgba(255,255,255,0.07)", paddingLeft: "clamp(1rem,3vw,2rem)" }}>
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,4.5rem)", lineHeight: 1, color: "var(--chalk)", marginBottom: 6 }}>
+                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,4.5rem)", lineHeight: 1, color: "var(--chalk)", marginBottom: 6, display: "flex", alignItems: "baseline", gap: 8 }}>
                   <Counter end={s.n} suffix={s.suf} />
+                  {s.live && <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "#34D399", letterSpacing: "0.12em", paddingBottom: 4 }}>LIVE</span>}
                 </div>
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(9px,1.1vw,11px)", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", lineHeight: 1.4 }}>{s.label}</p>
               </div>
@@ -273,59 +287,81 @@ export default function Home() {
           </div>
         </div>
 
-        {WORK.map((p, i) => (
-          <Link key={p.slug} href={`/portfolio/${p.slug}`} style={{ display: "block", textDecoration: "none" }}>
-            <article
-              className="proj-row"
-              style={{ position: "relative", overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.04)", cursor: "pointer", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+        {/* ── Horizontal film-reel scroll ── */}
+        <div
+          style={{
+            overflowX: "auto", overflowY: "hidden",
+            display: "flex", gap: 0,
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            borderTop: "1px solid rgba(255,255,255,0.04)",
+          }}
+          className="hide-scrollbar"
+        >
+          {WORK.map((p, i) => (
+            <Link
+              key={p.slug}
+              href={`/portfolio/${p.slug}`}
+              style={{
+                display: "block", textDecoration: "none", flexShrink: 0,
+                width: "min(85vw, 760px)", height: "clamp(300px,52vw,580px)",
+                scrollSnapAlign: "start", position: "relative", overflow: "hidden",
+                borderRight: "1px solid rgba(255,255,255,0.04)",
+              }}
               onMouseEnter={(e) => { const img = e.currentTarget.querySelector(".proj-img") as HTMLElement; if (img) img.style.transform = "scale(1.04)"; }}
               onMouseLeave={(e) => { const img = e.currentTarget.querySelector(".proj-img") as HTMLElement; if (img) img.style.transform = "scale(1)"; }}
             >
               {/* Background art */}
               <div className="proj-img" style={{ position: "absolute", inset: 0, transition: "transform 700ms cubic-bezier(0.25,1,0.5,1)" }}>
-                <svg viewBox="0 0 1440 580" style={{ width: "100%", height: "100%", position: "absolute" }} preserveAspectRatio="xMidYMid slice">
+                <svg viewBox="0 0 760 580" style={{ width: "100%", height: "100%", position: "absolute" }} preserveAspectRatio="xMidYMid slice">
                   <defs>
-                    <radialGradient id={`pg-${i}`} cx="50%" cy="50%" r="55%">
-                      <stop offset="0%" stopColor={p.color} stopOpacity="0.18" />
+                    <radialGradient id={`pg-${i}`} cx="50%" cy="50%" r="60%">
+                      <stop offset="0%" stopColor={p.color} stopOpacity="0.2" />
                       <stop offset="100%" stopColor={p.color} stopOpacity="0" />
                     </radialGradient>
                   </defs>
-                  <rect width="1440" height="580" fill="#070707" />
-                  <rect width="1440" height="580" fill={`url(#pg-${i})`} />
-                  {Array.from({ length: 10 }, (_, j) => <line key={`v${j}`} x1={j*160} y1="0" x2={j*160} y2="580" stroke={p.color} strokeWidth="0.3" opacity="0.05" />)}
-                  {Array.from({ length: 6 }, (_, j) => <line key={`h${j}`} x1="0" y1={j*100} x2="1440" y2={j*100} stroke={p.color} strokeWidth="0.3" opacity="0.05" />)}
-                  <circle cx="720" cy="290" r="180" fill="none" stroke={p.color} strokeWidth="0.6" opacity="0.1" />
-                  <circle cx="720" cy="290" r="90"  fill="none" stroke={p.color} strokeWidth="0.4" opacity="0.07" />
-                  <text x="720" y="360" textAnchor="middle" fontFamily="Bebas Neue" fontSize="220" fill={p.color} opacity="0.025" letterSpacing="8">{p.title.toUpperCase()}</text>
+                  <rect width="760" height="580" fill="#060606" />
+                  <rect width="760" height="580" fill={`url(#pg-${i})`} />
+                  {Array.from({ length: 8 }, (_, j) => <line key={`v${j}`} x1={j*110} y1="0" x2={j*110} y2="580" stroke={p.color} strokeWidth="0.3" opacity="0.06" />)}
+                  {Array.from({ length: 6 }, (_, j) => <line key={`h${j}`} x1="0" y1={j*100} x2="760" y2={j*100} stroke={p.color} strokeWidth="0.3" opacity="0.06" />)}
+                  <circle cx="380" cy="290" r="160" fill="none" stroke={p.color} strokeWidth="0.6" opacity="0.12" />
+                  <circle cx="380" cy="290" r="80"  fill="none" stroke={p.color} strokeWidth="0.4" opacity="0.08" />
+                  <text x="380" y="340" textAnchor="middle" fontFamily="Bebas Neue" fontSize="160" fill={p.color} opacity="0.03" letterSpacing="8">{p.title.toUpperCase()}</text>
                 </svg>
-                <div style={{ position: "absolute", inset: 0, background: `linear-gradient(${i % 2 === 0 ? "to right" : "to left"}, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.48) 55%, rgba(0,0,0,0.15) 100%)` }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.18) 100%)" }} />
               </div>
-
-              {/* Content overlay */}
-              <div style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "clamp(1.25rem,3vw,2.5rem) clamp(1.25rem,4vw,2.5rem)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              {/* Content */}
+              <div style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "clamp(1.25rem,3vw,2rem) clamp(1.5rem,4vw,2.5rem)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.12em", color: "rgba(255,255,255,0.25)" }}>0{i + 1}</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.12em", color: p.color, textTransform: "uppercase" }}>{p.cat}</span>
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.25)" }}>0{i+1}</span>
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: p.color, textTransform: "uppercase", letterSpacing: "0.12em" }}>{p.cat}</span>
                   </div>
                   <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.18)" }}>{p.year}</span>
                 </div>
                 <div>
                   <div style={{ marginBottom: 12 }}>
-                    <Accent word={p.word} idx={p.idx} color={p.color} size="clamp(2.5rem,9vw,7.5rem)" />
+                    <Accent word={p.word} idx={p.idx} color={p.color} size="clamp(2.5rem,8vw,6.5rem)" />
                   </div>
-                  <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                     <div>
-                      <h2 style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(0.75rem,1.5vw,1rem)", color: "rgba(255,255,255,0.55)", fontWeight: 500, letterSpacing: "0.06em", marginBottom: 6 }}>{p.title}</h2>
-                      <p style={{ fontSize: "clamp(0.8rem,1.3vw,0.9rem)", color: "rgba(255,255,255,0.28)", maxWidth: 400 }}>{p.sub}</p>
+                      <h2 style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(0.7rem,1.5vw,0.9rem)", color: "rgba(255,255,255,0.5)", fontWeight: 500, letterSpacing: "0.06em", marginBottom: 6 }}>{p.title}</h2>
+                      <p style={{ fontSize: "clamp(0.75rem,1.3vw,0.875rem)", color: "rgba(255,255,255,0.25)", maxWidth: 360 }}>{p.sub}</p>
                     </div>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: p.color, letterSpacing: "0.1em", flexShrink: 0 }}>View case study →</span>
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: p.color, letterSpacing: "0.1em", flexShrink: 0 }}>View →</span>
                   </div>
                 </div>
               </div>
-            </article>
+            </Link>
+          ))}
+          {/* End cap */}
+          <Link href="/portfolio" style={{ display: "flex", flexShrink: 0, width: "min(50vw, 320px)", height: "clamp(300px,52vw,580px)", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, background: "#060606", borderRight: "none", textDecoration: "none", scrollSnapAlign: "start" }}>
+            <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.5rem,4vw,2.5rem)", color: "rgba(255,255,255,0.15)", letterSpacing: "0.06em" }}>MORE WORK</span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "var(--copper)", letterSpacing: "0.1em" }}>View all →</span>
           </Link>
-        ))}
+        </div>
+        <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}`}</style>
       </section>
 
       {/* ══════════════════ BELIEFS ═══════════════════════════════ */}
@@ -407,10 +443,13 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div style={{ display: "flex", gap: "clamp(1.5rem,4vw,2.5rem)", alignItems: "center", flexWrap: "wrap" }}>
-            <p style={{ fontSize: "clamp(0.875rem,1.6vw,1.1rem)", color: "rgba(255,255,255,0.38)", maxWidth: 480, lineHeight: 1.75 }}>
-              The best work happens where physical systems, digital tools, and human attention meet. I build at that intersection.
-            </p>
+          <div style={{ display: "flex", gap: "clamp(1.5rem,4vw,2.5rem)", alignItems: "flex-start", flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 260 }}>
+              <p style={{ fontSize: "clamp(0.875rem,1.6vw,1.1rem)", color: "rgba(255,255,255,0.38)", maxWidth: 480, lineHeight: 1.75, marginBottom: "1.5rem" }}>
+                The best work happens where physical systems, digital tools, and human attention meet. I build at that intersection.
+              </p>
+              <Signature color="#C87B2F" width={240} />
+            </div>
             <MagneticButton as="a" href="/contact" className="btn btn-primary">Start a conversation</MagneticButton>
           </div>
         </div>
