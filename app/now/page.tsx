@@ -116,17 +116,35 @@ export default function Now() {
         .now-item:hover { border-left-color: var(--item-color, #C87B2F); }
       `}</style>
 
-      <section style={{ minHeight: "100vh", background: "#060606", paddingTop: "clamp(6rem,12vw,9rem)", paddingBottom: "clamp(4rem,8vw,6rem)" }}>
-        <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 clamp(1.25rem,4vw,2.5rem)" }}>
+      <section style={{
+        minHeight: "100vh",
+        background: `
+          radial-gradient(ellipse 60% 50% at 80% 0%,   rgba(52,211,153,0.07) 0%, transparent 60%),
+          radial-gradient(ellipse 50% 40% at 5%  60%,  rgba(0,220,255,0.05)  0%, transparent 55%),
+          radial-gradient(ellipse 40% 30% at 50% 100%, rgba(176,64,255,0.04) 0%, transparent 50%),
+          linear-gradient(170deg, #030215 0%, #050118 50%, #020110 100%)
+        `,
+        paddingTop: "clamp(6rem,12vw,9rem)", paddingBottom: "clamp(4rem,8vw,6rem)",
+        position: "relative", overflow: "hidden",
+      }}>
+        {/* dot grid */}
+        <div aria-hidden="true" style={{
+          position: "absolute", inset: 0, pointerEvents: "none",
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px)",
+          backgroundSize: "36px 36px",
+          maskImage: "radial-gradient(ellipse 80% 80% at 30% 30%, black 10%, transparent 75%)",
+        }} />
+
+        <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 clamp(1.25rem,4vw,2.5rem)", position: "relative", zIndex: 1 }}>
 
           {/* Header */}
           <div style={{ marginBottom: "clamp(3rem,6vw,4.5rem)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
               <SignalPulse color="#34D399" />
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.14em", color: "#34D399", textTransform: "uppercase" }}>Live status · {time}</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.18em", color: "#34D399", textTransform: "uppercase" }}>Live status · {time}</span>
             </div>
-            <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4rem,14vw,9rem)", lineHeight: 0.88, color: "#F5F0E8", letterSpacing: "0.02em", marginBottom: "1.5rem" }}>NOW</h1>
-            <p style={{ fontSize: "clamp(0.9rem,1.6vw,1.05rem)", color: "rgba(255,255,255,0.32)", lineHeight: 1.8, maxWidth: 520 }}>
+            <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4rem,14vw,9rem)", lineHeight: 0.88, color: "#F2F4FC", letterSpacing: "0.02em", marginBottom: "1.5rem" }}>NOW</h1>
+            <p style={{ fontSize: "clamp(0.9375rem,1.6vw,1.0625rem)", color: "#7880A2", lineHeight: 1.85, maxWidth: 500 }}>
               A living snapshot of what I&apos;m actually doing — not a polished bio. Updated when something real changes.
             </p>
           </div>
@@ -153,8 +171,8 @@ export default function Now() {
                   className="now-item"
                   style={{ "--item-color": sec.color } as React.CSSProperties}
                 >
-                  <p style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(0.75rem,1.3vw,0.875rem)", fontWeight: 500, color: "rgba(255,255,255,0.75)", letterSpacing: "0.04em", marginBottom: 4 }}>{item.title}</p>
-                  <p style={{ fontSize: "clamp(0.8rem,1.2vw,0.875rem)", color: "rgba(255,255,255,0.28)", lineHeight: 1.65 }}>{item.note}</p>
+                  <p style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(0.75rem,1.3vw,0.875rem)", fontWeight: 500, color: "#C8CAD8", letterSpacing: "0.04em", marginBottom: 6 }}>{item.title}</p>
+                  <p style={{ fontSize: "clamp(0.8rem,1.2vw,0.875rem)", color: "#5A6282", lineHeight: 1.75 }}>{item.note}</p>
                 </div>
               ))}
             </div>
