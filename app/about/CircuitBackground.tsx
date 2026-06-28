@@ -52,6 +52,7 @@ export default function CircuitBackground() {
     }
 
     function resize() {
+      if (!canvas) return;
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
       build();
