@@ -125,26 +125,15 @@ export default function PortfolioPage() {
             {PROJECTS.map((p, i) => (
               <Reveal key={p.slug} className="reveal-scale" delay={i * 80}>
                 <Link href={`/portfolio/${p.slug}`} style={{ display: "block", height: "100%", textDecoration: "none" }}>
-                  <div style={{
+                  <div className="project-card" style={{
                     background: "rgba(8,10,20,0.9)",
                     border: "1px solid rgba(255,255,255,0.055)",
                     borderRadius: 20, overflow: "hidden",
                     height: "100%",
-                    transition: "border-color 0.28s, box-shadow 0.28s, transform 0.28s",
                     boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
-                  }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget;
-                      el.style.borderColor = `${p.color}35`;
-                      el.style.boxShadow = `0 12px 48px rgba(0,0,0,0.7), 0 0 0 1px ${p.color}18`;
-                      el.style.transform = "translateY(-4px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget;
-                      el.style.borderColor = "rgba(255,255,255,0.055)";
-                      el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.5)";
-                      el.style.transform = "none";
-                    }}
+                    "--hover-color": `${p.color}35`,
+                    "--hover-glow": `0 12px 48px rgba(0,0,0,0.7), 0 0 0 1px ${p.color}18`,
+                  } as React.CSSProperties}
                   >
                     {/* Visual panel */}
                     <div style={{ height: 210, background: "rgba(5,6,16,0.95)", position: "relative", overflow: "hidden" }}>
@@ -243,6 +232,10 @@ export default function PortfolioPage() {
           </Reveal>
         </div>
       </section>
+      <style>{`
+        .project-card { transition: border-color 0.28s, box-shadow 0.28s, transform 0.28s; }
+        .project-card:hover { border-color: var(--hover-color) !important; box-shadow: var(--hover-glow) !important; transform: translateY(-4px); }
+      `}</style>
     </>
   );
 }

@@ -116,7 +116,7 @@ export default function BlogPage() {
             {POSTS.map((post, i) => (
               <Reveal key={post.slug} className="reveal" delay={i * 80}>
                 <Link href={`/blog/${post.slug}`} style={{ display: "block", textDecoration: "none" }}>
-                  <article style={{
+                  <article className="post-card" style={{
                     background: "rgba(8,10,20,0.85)",
                     border: "1px solid rgba(255,255,255,0.055)",
                     borderLeft: `3px solid ${post.catColor}`,
@@ -126,21 +126,10 @@ export default function BlogPage() {
                     gap: 24, alignItems: "center",
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
-                    transition: "border-color 0.28s, box-shadow 0.28s, transform 0.28s",
                     boxShadow: "0 4px 20px rgba(0,0,0,0.45)",
-                  }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget;
-                      el.style.borderColor = `${post.catColor}50`;
-                      el.style.boxShadow = `0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px ${post.catColor}18`;
-                      el.style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget;
-                      el.style.borderColor = "rgba(255,255,255,0.055)";
-                      el.style.boxShadow = "0 4px 20px rgba(0,0,0,0.45)";
-                      el.style.transform = "none";
-                    }}
+                    "--hover-color": `${post.catColor}50`,
+                    "--hover-glow": `0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px ${post.catColor}18`,
+                  } as React.CSSProperties}
                   >
                     <div>
                       <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>
@@ -198,7 +187,11 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <style>{`@media(max-width:560px){article{grid-template-columns:1fr !important}}`}</style>
+      <style>{`
+        .post-card { transition: border-color 0.28s, box-shadow 0.28s, transform 0.28s; }
+        .post-card:hover { border-color: var(--hover-color) !important; box-shadow: var(--hover-glow) !important; transform: translateY(-2px); }
+        @media(max-width:560px){article{grid-template-columns:1fr !important}}
+      `}</style>
     </>
   );
 }
