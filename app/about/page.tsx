@@ -304,7 +304,7 @@ export default function AboutPage() {
                     backgroundClip: "text",
                     animation: `diamondGlint ${glintDur}s ease-in-out infinite ${floatDelay + 0.5}s`,
                     pointerEvents: "none",
-                  }} aria-hidden="true">{ch}</span>
+                  }}>{ch}</span>
                 </motion.span>
               </motion.span>
             ))}
