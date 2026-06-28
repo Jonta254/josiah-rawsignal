@@ -67,11 +67,11 @@ const VALUES = [
 
 /* ── Hero letters ────────────────────────────────────────────── */
 const HERO_LETTERS = [
-  { ch: "B", delay: 0.10, floatDur: 3.2, floatDelay: 1.2 },
-  { ch: "R", delay: 0.22, floatDur: 2.8, floatDelay: 1.4 },
-  { ch: "I", delay: 0.34, floatDur: 3.6, floatDelay: 1.6 },
-  { ch: "A", delay: 0.46, floatDur: 2.6, floatDelay: 1.3 },
-  { ch: "N", delay: 0.58, floatDur: 3.0, floatDelay: 1.5 },
+  { ch: "B", delay: 0.10, floatDur: 3.2, floatDelay: 1.2, shimmerDur: 3.8, glintDur: 5.0 },
+  { ch: "R", delay: 0.22, floatDur: 2.8, floatDelay: 1.4, shimmerDur: 4.2, glintDur: 6.5 },
+  { ch: "I", delay: 0.34, floatDur: 3.6, floatDelay: 1.6, shimmerDur: 3.5, glintDur: 4.8 },
+  { ch: "A", delay: 0.46, floatDur: 2.6, floatDelay: 1.3, shimmerDur: 4.8, glintDur: 7.0 },
+  { ch: "N", delay: 0.58, floatDur: 3.0, floatDelay: 1.5, shimmerDur: 4.0, glintDur: 5.5 },
 ];
 
 /* silver → bright white → silver → steel-blue silver gradient */
@@ -260,7 +260,7 @@ export default function AboutPage() {
 
           {/* BRIAN letters — silver / diamond */}
           <div style={{ perspective: "1200px", marginBottom: 16, lineHeight: 0.82 }}>
-            {HERO_LETTERS.map(({ ch, delay, floatDur, floatDelay }) => (
+            {HERO_LETTERS.map(({ ch, delay, floatDur, floatDelay, shimmerDur, glintDur }) => (
               /* outer: entrance animation */
               <motion.span
                 key={ch + delay}
@@ -288,7 +288,7 @@ export default function AboutPage() {
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
                     /* sweep shimmer */
-                    animation: `diamondShimmer ${3.5 + Math.random() * 1.5}s linear infinite ${floatDelay * 0.6}s`,
+                    animation: `diamondShimmer ${shimmerDur}s linear infinite ${floatDelay * 0.6}s`,
                     /* glow */
                     filter: "drop-shadow(0 0 18px rgba(180,200,255,0.45)) drop-shadow(0 0 4px rgba(255,255,255,0.6))",
                     textShadow: DIAMOND_GLOW,
@@ -302,7 +302,7 @@ export default function AboutPage() {
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
-                    animation: `diamondGlint ${4 + Math.random() * 3}s ease-in-out infinite ${floatDelay + 0.5}s`,
+                    animation: `diamondGlint ${glintDur}s ease-in-out infinite ${floatDelay + 0.5}s`,
                     pointerEvents: "none",
                   }} aria-hidden="true">{ch}</span>
                 </motion.span>
