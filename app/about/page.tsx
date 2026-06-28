@@ -6,14 +6,20 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 
 const CircuitBackground = dynamic(() => import("./CircuitBackground"), { ssr: false });
 
-/* ── data ──────────────────────────────────────────────────── */
+/* ── constants ──────────────────────────────────────────────────── */
+const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+
+const DIAMOND_GRADIENT =
+  "linear-gradient(105deg,#7A8BAA 0%,#B0BEDD 10%,#DDE5F8 20%,#FFFFFF 30%,#C8D4EE 40%,#96A6C4 50%,#C0CCE8 60%,#FFFFFF 70%,#D8E2F8 80%,#92A2C0 90%,#B4C0DC 100%)";
+
+/* ── data ───────────────────────────────────────────────────────── */
 const ROLES = [
   {
     id: "electrician", num: "01", icon: "⚡",
     title: "The Electrician",
     color: "#F0C030",
     body: "Before I wrote a line of code I was inside walls, tracing faults by feel. The trade taught me that physical systems don't lie — they either work or they don't. That honesty changed the way I think about everything.",
-    skills: ["Conduit & cable installation","Panel design & installation","Fault diagnosis","Schematic reading","Safety protocols"],
+    skills: ["Conduit & cable","Panel design","Fault diagnosis","Schematic reading","Safety protocols"],
   },
   {
     id: "developer", num: "02", icon: "◈",
@@ -46,26 +52,26 @@ const ROLES = [
 ];
 
 const TIMELINE = [
-  { year: "2016", label: "First electrical apprenticeship" },
-  { year: "2018", label: "Qualified electrician — commercial & residential" },
-  { year: "2020", label: "Started teaching myself to code" },
+  { year: "2016", label: "First electrical apprenticeship — learning to trace faults by hand" },
+  { year: "2018", label: "Qualified electrician, commercial & residential" },
+  { year: "2020", label: "Started teaching myself to code during a quiet season" },
   { year: "2021", label: "First web project shipped for a trade business" },
   { year: "2022", label: "Moved into design — Figma, systems, motion" },
   { year: "2023", label: "First open source design system released" },
-  { year: "2024", label: "Freelancing across electrical, dev, and design" },
+  { year: "2024", label: "Freelancing across electrical, dev, and design simultaneously" },
   { year: "2026", label: "Building Raw Signal — this is where I am now" },
 ];
 
 const VALUES = [
-  { title: "Precision over speed",  desc: "Do it right. Then do it fast. Never the other way around." },
-  { title: "Honest craft",          desc: "The detail no one sees is still worth getting right." },
-  { title: "Systems thinking",      desc: "Everything is connected. Understanding the whole changes any single part." },
-  { title: "Humility",              desc: "I don't know everything. I know how to figure things out. That's better." },
-  { title: "Nature as reset",       desc: "The best thinking happens away from a screen." },
-  { title: "Human-first design",    desc: "Tools should feel like they were made for the person, not the portfolio." },
+  { title: "Precision over speed",  desc: "Do it right. Then do it fast. Never the other way around.", color: "#F0C030" },
+  { title: "Honest craft",          desc: "The detail no one sees is still worth getting right.", color: "#00DFFF" },
+  { title: "Systems thinking",      desc: "Everything is connected. Understanding the whole changes any single part.", color: "#B040FF" },
+  { title: "Humility",              desc: "I don't know everything. I know how to figure things out. That's better.", color: "#00FF88" },
+  { title: "Nature as reset",       desc: "The best thinking happens away from a screen.", color: "#FF8820" },
+  { title: "Human-first design",    desc: "Tools should feel like they were made for the person, not the portfolio.", color: "#F2F4FC" },
 ];
 
-/* ── Hero letters ────────────────────────────────────────────── */
+/* ── Hero letters ────────────────────────────────────────────────── */
 const HERO_LETTERS = [
   { ch: "B", delay: 0.10, floatDur: 3.2, floatDelay: 1.2, shimmerDur: 3.8, glintDur: 5.0 },
   { ch: "R", delay: 0.22, floatDur: 2.8, floatDelay: 1.4, shimmerDur: 4.2, glintDur: 6.5 },
@@ -74,75 +80,89 @@ const HERO_LETTERS = [
   { ch: "N", delay: 0.58, floatDur: 3.0, floatDelay: 1.5, shimmerDur: 4.0, glintDur: 5.5 },
 ];
 
-/* silver → bright white → silver → steel-blue silver gradient */
-const DIAMOND_GRADIENT =
-  "linear-gradient(105deg, #8898BB 0%, #BCC8E8 12%, #E8EFFF 24%, #FFFFFF 32%, #D0DAEE 40%, #A0AECB 50%, #C8D4F0 58%, #FFFFFF 68%, #E0E8FF 76%, #9AAAC8 88%, #BCC8E8 100%)";
-
-const DIAMOND_GLOW = "0 0 40px rgba(180,200,255,0.35), 0 0 80px rgba(160,180,255,0.18), 0 2px 0 rgba(255,255,255,0.15)";
-
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
-
 const letterVariants = {
-  hidden: { opacity: 0, y: 80, rotateX: -70, filter: "blur(20px)" },
+  hidden: { opacity: 0, y: 80, rotateX: -60, filter: "blur(18px)" },
   visible: (d: number) => ({
     opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
-    transition: { delay: d, duration: 0.85, ease: EASE },
+    transition: { delay: d, duration: 0.9, ease: EASE },
   }),
 };
 
-/* ── Role card ───────────────────────────────────────────────── */
+/* ── RoleCard ────────────────────────────────────────────────────── */
 function RoleCard({ r, i, active, onSelect }: {
   r: typeof ROLES[0]; i: number; active: boolean; onSelect: () => void;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -40 }}
+      initial={{ opacity: 0, x: -32 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ delay: i * 0.07, duration: 0.6, ease: EASE }}
+      transition={{ delay: i * 0.06, duration: 0.55, ease: EASE }}
       onClick={onSelect}
       style={{
-        background: active ? `${r.color}08` : "rgba(9,11,22,0.7)",
-        border: `1px solid ${active ? r.color + "40" : "rgba(255,255,255,0.05)"}`,
-        borderLeft: `3px solid ${active ? r.color : "rgba(255,255,255,0.08)"}`,
-        borderRadius: 16,
-        padding: "clamp(1.25rem,2.5vw,1.75rem)",
+        background: active
+          ? `linear-gradient(135deg,${r.color}0A 0%,rgba(9,11,22,0.95) 100%)`
+          : "rgba(8,10,20,0.75)",
+        border: `1px solid ${active ? r.color + "35" : "rgba(255,255,255,0.055)"}`,
+        borderLeft: `3px solid ${active ? r.color : "rgba(255,255,255,0.07)"}`,
+        borderRadius: 18,
+        padding: "clamp(1.25rem,2.5vw,1.875rem) clamp(1.25rem,2.5vw,1.875rem)",
         cursor: "pointer",
         position: "relative",
         overflow: "hidden",
-        backdropFilter: "blur(12px)",
-        transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
-        boxShadow: active ? `0 0 32px ${r.color}18, 0 4px 24px rgba(0,0,0,0.5)` : "0 4px 24px rgba(0,0,0,0.4)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        transition: "border-color 0.28s, background 0.28s, box-shadow 0.28s",
+        boxShadow: active
+          ? `0 0 0 1px ${r.color}20, 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)`
+          : "0 4px 20px rgba(0,0,0,0.4)",
       }}
     >
-      {/* shimmer on active */}
       {active && (
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
-          background: `linear-gradient(120deg, transparent 30%, ${r.color}10 50%, transparent 70%)`,
-          animation: "shimmerSweep 2.5s ease-in-out infinite",
+          background: `linear-gradient(118deg,transparent 25%,${r.color}0D 50%,transparent 75%)`,
+          animation: "roleShimmer 3s ease-in-out infinite",
         }} />
       )}
 
-      {/* header row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: active ? 16 : 0 }}>
         <div style={{
-          width: 38, height: 38, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
-          background: `${r.color}18`, border: `1px solid ${r.color}30`,
-          fontSize: 18, color: r.color, fontFamily: "'JetBrains Mono', monospace",
-          flexShrink: 0,
+          width: 40, height: 40, borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center",
+          background: `linear-gradient(135deg,${r.color}1A 0%,${r.color}0A 100%)`,
+          border: `1px solid ${r.color}2A`,
+          fontSize: 17, color: r.color,
+          flexShrink: 0, transition: "box-shadow 0.28s",
+          boxShadow: active ? `0 0 14px ${r.color}30` : "none",
         }}>{r.icon}</div>
-        <div>
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: r.color, letterSpacing: "0.15em", marginBottom: 2 }}>
-            SIG.{r.num}
+
+        <div style={{ flex: 1 }}>
+          <div style={{
+            fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5,
+            color: active ? r.color : "rgba(255,255,255,0.3)",
+            letterSpacing: "0.18em", marginBottom: 3, transition: "color 0.28s",
+          }}>
+            SIGNAL.{r.num}
           </div>
-          <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.1rem,2.2vw,1.45rem)", color: "#F2F4FC", letterSpacing: "0.04em" }}>
+          <h3 style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: "clamp(1.1rem,2.4vw,1.5rem)",
+            color: active ? "#F2F4FC" : "rgba(242,244,252,0.72)",
+            letterSpacing: "0.04em", lineHeight: 1,
+            transition: "color 0.28s",
+          }}>
             {r.title}
           </h3>
         </div>
-        <div style={{ marginLeft: "auto", opacity: active ? 1 : 0.3, transition: "opacity 0.3s" }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: r.color, boxShadow: `0 0 8px ${r.color}` }} />
-        </div>
+
+        <div style={{
+          width: 8, height: 8, borderRadius: "50%",
+          background: r.color,
+          boxShadow: active ? `0 0 12px ${r.color}, 0 0 24px ${r.color}60` : "none",
+          opacity: active ? 1 : 0.2,
+          transition: "opacity 0.28s, box-shadow 0.28s",
+          flexShrink: 0,
+        }} />
       </div>
 
       <AnimatePresence initial={false}>
@@ -152,18 +172,24 @@ function RoleCard({ r, i, active, onSelect }: {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.38, ease: EASE }}
+            transition={{ duration: 0.36, ease: EASE }}
             style={{ overflow: "hidden" }}
           >
-            <p style={{ fontSize: "0.9rem", lineHeight: 1.8, color: "#8890B0", marginBottom: 16 }}>{r.body}</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            <p style={{
+              fontSize: "clamp(0.875rem,1.4vw,0.9375rem)",
+              lineHeight: 1.85, color: "#7880A2",
+              marginBottom: 18, maxWidth: 600,
+            }}>
+              {r.body}
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
               {r.skills.map((s) => (
                 <span key={s} style={{
                   fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 10, letterSpacing: "0.08em",
-                  padding: "3px 10px", borderRadius: 100,
-                  background: `${r.color}14`, color: r.color,
-                  border: `1px solid ${r.color}25`,
+                  fontSize: 10, letterSpacing: "0.07em",
+                  padding: "4px 12px", borderRadius: 100,
+                  background: `${r.color}10`, color: r.color,
+                  border: `1px solid ${r.color}22`,
                 }}>{s}</span>
               ))}
             </div>
@@ -172,96 +198,131 @@ function RoleCard({ r, i, active, onSelect }: {
       </AnimatePresence>
 
       {!active && (
-        <p style={{ fontSize: "0.8rem", color: "#50587A", lineHeight: 1.6 }}>
-          {r.body.slice(0, 70)}…
+        <p style={{
+          fontSize: "0.8rem", color: "#404868", lineHeight: 1.65,
+          marginTop: 8, paddingLeft: 54,
+        }}>
+          {r.body.slice(0, 72)}…
         </p>
       )}
     </motion.div>
   );
 }
 
-/* ── Timeline ────────────────────────────────────────────────── */
+/* ── Timeline ────────────────────────────────────────────────────── */
 function Timeline() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const COLORS = ["#FF8820","#00DFFF","#B040FF","#00FF88","#F0C030","#FF8820","#00DFFF","#B040FF"];
+
   return (
-    <div ref={ref} style={{ position: "relative", paddingLeft: 32 }}>
-      {/* animated vertical line */}
+    <div ref={ref} style={{ position: "relative", paddingLeft: 28 }}>
       <motion.div
         initial={{ scaleY: 0 }}
         animate={inView ? { scaleY: 1 } : {}}
-        transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
+        transition={{ duration: 1.6, ease: EASE, delay: 0.2 }}
         style={{
           position: "absolute", left: 0, top: 0, bottom: 0, width: 1,
-          background: "linear-gradient(to bottom, #FF8820, #00DFFF, #B040FF)",
+          background: "linear-gradient(to bottom,#FF8820,#00DFFF 40%,#B040FF 75%,#00FF88)",
           transformOrigin: "top",
         }}
       />
       {TIMELINE.map((t, i) => (
         <motion.div
           key={t.year}
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: -18 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ delay: 0.3 + i * 0.1, duration: 0.55, ease: EASE }}
-          style={{ display: "flex", gap: 28, paddingBottom: 32, position: "relative", alignItems: "flex-start" }}
+          transition={{ delay: 0.3 + i * 0.1, duration: 0.5, ease: EASE }}
+          style={{ display: "flex", gap: 24, paddingBottom: 36, position: "relative", alignItems: "flex-start" }}
         >
-          {/* dot */}
           <div style={{
-            position: "absolute", left: -36, top: 4,
-            width: 10, height: 10, borderRadius: "50%",
-            background: i % 2 === 0 ? "#FF8820" : "#00DFFF",
-            boxShadow: `0 0 10px ${i % 2 === 0 ? "#FF8820" : "#00DFFF"}`,
+            position: "absolute", left: -34, top: 6,
+            width: 12, height: 12, borderRadius: "50%",
+            background: COLORS[i],
+            boxShadow: `0 0 0 3px ${COLORS[i]}25, 0 0 12px ${COLORS[i]}60`,
           }} />
           <div style={{
             fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
-            color: i % 2 === 0 ? "#FF8820" : "#00DFFF",
-            minWidth: 36, paddingTop: 2, letterSpacing: "0.05em",
+            color: COLORS[i], minWidth: 36, paddingTop: 2,
+            letterSpacing: "0.06em", fontWeight: 500,
           }}>{t.year}</div>
-          <p style={{ fontSize: "0.9375rem", color: "#8890B0", lineHeight: 1.6 }}>{t.label}</p>
+          <p style={{
+            fontSize: "clamp(0.875rem,1.4vw,0.9375rem)",
+            color: "#7880A2", lineHeight: 1.7,
+          }}>{t.label}</p>
         </motion.div>
       ))}
     </div>
   );
 }
 
-/* ── Page ────────────────────────────────────────────────────── */
+/* ── Page ────────────────────────────────────────────────────────── */
 export default function AboutPage() {
   const [activeRole, setActiveRole] = useState(0);
 
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────── */}
+      {/* ── HERO ──────────────────────────────────────────────────── */}
       <section style={{
-        minHeight: "100vh", display: "flex", alignItems: "flex-end",
+        minHeight: "100vh",
+        display: "flex", alignItems: "flex-end",
         position: "relative", overflow: "hidden",
-        background: "linear-gradient(160deg, #02020F 0%, #050820 40%, #010108 100%)",
-        padding: "clamp(6rem,12vw,10rem) clamp(1.25rem,4vw,2rem) clamp(4rem,7vw,6rem)",
+        /* rich deep-space base */
+        background: `
+          radial-gradient(ellipse 80% 70% at 65% 0%,   rgba(20,10,60,0.95) 0%,  transparent 65%),
+          radial-gradient(ellipse 60% 50% at 10% 80%,  rgba(0,40,80,0.70) 0%,   transparent 60%),
+          radial-gradient(ellipse 45% 35% at 85% 65%,  rgba(60,10,120,0.50) 0%, transparent 55%),
+          linear-gradient(170deg,#030215 0%,#060320 35%,#020110 65%,#010108 100%)
+        `,
+        padding: "clamp(7rem,14vw,11rem) clamp(1.25rem,5vw,3rem) clamp(4rem,7vw,6rem)",
       }}>
         <CircuitBackground />
 
-        {/* colour atmosphere */}
+        {/* atmospheric layers */}
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
-          <div style={{ position: "absolute", top: "-10%", right: "-5%", width: "40vw", height: "40vw", borderRadius: "50%", background: "radial-gradient(circle, #FF882018 0%, transparent 70%)" }} />
-          <div style={{ position: "absolute", bottom: "0", left: "-10%", width: "35vw", height: "35vw", borderRadius: "50%", background: "radial-gradient(circle, #00DFFF10 0%, transparent 70%)" }} />
-          <div style={{ position: "absolute", top: "30%", right: "20%", width: "20vw", height: "20vw", borderRadius: "50%", background: "radial-gradient(circle, #B040FF0C 0%, transparent 70%)" }} />
+          {/* copper top-right bloom */}
+          <div style={{ position: "absolute", top: "-8%", right: "-4%", width: "42vw", height: "42vw", borderRadius: "50%", background: "radial-gradient(circle,rgba(255,136,32,0.14) 0%,transparent 65%)", filter: "blur(1px)" }} />
+          {/* cyan bottom-left */}
+          <div style={{ position: "absolute", bottom: "-5%", left: "-8%", width: "38vw", height: "38vw", borderRadius: "50%", background: "radial-gradient(circle,rgba(0,220,255,0.10) 0%,transparent 65%)", filter: "blur(1px)" }} />
+          {/* violet center-right */}
+          <div style={{ position: "absolute", top: "35%", right: "22%", width: "22vw", height: "22vw", borderRadius: "50%", background: "radial-gradient(circle,rgba(176,64,255,0.09) 0%,transparent 68%)" }} />
+          {/* subtle dot grid */}
+          <div style={{
+            position: "absolute", inset: 0,
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)",
+            backgroundSize: "36px 36px",
+            maskImage: "radial-gradient(ellipse 90% 90% at 50% 50%,black 20%,transparent 80%)",
+          }} />
+          {/* bottom fade */}
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "40%", background: "linear-gradient(to top, rgba(1,1,8,0.95) 0%, transparent 100%)" }} />
         </div>
 
         <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", position: "relative", zIndex: 2 }}>
-          {/* label */}
+          {/* eyebrow label */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#FF8820", marginBottom: 24, display: "flex", alignItems: "center", gap: 10 }}
+            transition={{ duration: 0.55, ease: EASE }}
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 11, letterSpacing: "0.22em", color: "#FF8820",
+              marginBottom: 28, display: "flex", alignItems: "center", gap: 12,
+            }}
           >
-            <span style={{ display: "inline-block", width: 28, height: 1, background: "#FF8820" }} />
+            <span style={{ display: "inline-block", width: 32, height: 1, background: "linear-gradient(to right,#FF8820,#FFB84080)" }} />
             SIGNAL.PROFILE / BRIAN
+            <span style={{ display: "inline-block", width: 16, height: 1, background: "rgba(255,136,32,0.3)" }} />
           </motion.div>
 
-          {/* BRIAN letters — silver / diamond */}
-          <div style={{ perspective: "1200px", marginBottom: 16, lineHeight: 0.82 }}>
+          {/* BRIAN letters */}
+          <div style={{
+            perspective: "1400px",
+            marginBottom: 28,
+            lineHeight: 0.82,
+            letterSpacing: "-0.02em",
+          }}>
             {HERO_LETTERS.map(({ ch, delay, floatDur, floatDelay, shimmerDur, glintDur }) => (
-              /* outer: entrance animation */
               <motion.span
                 key={ch + delay}
                 custom={delay}
@@ -270,7 +331,6 @@ export default function AboutPage() {
                 variants={letterVariants}
                 style={{ display: "inline-block", willChange: "transform, opacity, filter" }}
               >
-                {/* inner: continuous diamond float */}
                 <motion.span
                   animate={{ y: [0, -14, 0] }}
                   transition={{ duration: floatDur, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
@@ -281,24 +341,19 @@ export default function AboutPage() {
                     fontSize: "clamp(5.5rem,18vw,17rem)",
                     letterSpacing: "-0.02em",
                     lineHeight: 0.82,
-                    /* diamond gradient text */
                     background: DIAMOND_GRADIENT,
                     backgroundSize: "300% 100%",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
-                    /* sweep shimmer */
                     animation: `diamondShimmer ${shimmerDur}s linear infinite ${floatDelay * 0.6}s`,
-                    /* glow */
-                    filter: "drop-shadow(0 0 18px rgba(180,200,255,0.45)) drop-shadow(0 0 4px rgba(255,255,255,0.6))",
-                    textShadow: DIAMOND_GLOW,
+                    filter: "drop-shadow(0 0 20px rgba(160,180,255,0.5)) drop-shadow(0 0 5px rgba(255,255,255,0.65))",
                   }}
                 >
                   {ch}
-                  {/* glint streak */}
                   <span aria-hidden="true" style={{
                     position: "absolute", inset: 0,
-                    background: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.9) 50%, transparent 70%)",
+                    background: "linear-gradient(105deg,transparent 28%,rgba(255,255,255,0.92) 50%,transparent 72%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -310,59 +365,110 @@ export default function AboutPage() {
             ))}
           </div>
 
-          {/* tagline */}
+          {/* subheadline + body copy + CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.7, ease: EASE }}
+            transition={{ delay: 0.85, duration: 0.7, ease: EASE }}
           >
-            <h1 style={{
+            <p style={{
               fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: "clamp(1.6rem,4.5vw,3.5rem)",
-              letterSpacing: "0.06em",
-              color: "rgba(242,244,252,0.65)",
-              lineHeight: 1.05,
-              marginBottom: 24,
+              fontSize: "clamp(1.5rem,4vw,3.2rem)",
+              letterSpacing: "0.07em",
+              color: "rgba(242,244,252,0.6)",
+              lineHeight: 1.08,
+              marginBottom: 20,
             }}>
-              MANY SIGNALS.&nbsp;&nbsp;<span style={{ color: "#FF8820" }}>ONE PERSON.</span>
-            </h1>
-            <p style={{ fontSize: "clamp(0.95rem,1.6vw,1.1rem)", lineHeight: 1.8, color: "#8890B0", maxWidth: 540, marginBottom: 36 }}>
+              MANY SIGNALS.&nbsp;&nbsp;
+              <span style={{
+                background: "linear-gradient(90deg,#FF8820,#FFD060)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>
+                ONE PERSON.
+              </span>
+            </p>
+
+            <p style={{
+              fontSize: "clamp(0.9375rem,1.5vw,1.0625rem)",
+              lineHeight: 1.85,
+              color: "#7880A2",
+              maxWidth: 520,
+              marginBottom: 36,
+              fontWeight: 400,
+              letterSpacing: "0.005em",
+            }}>
               An electrician who codes. A developer who designs. An explorer who builds.
               Not a portfolio of skills — a single way of thinking applied across different domains.
             </p>
+
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               <Link href="/contact" className="btn btn-primary" style={{ fontSize: 13 }}>Get in Touch</Link>
               <Link href="/portfolio" className="btn btn-ghost" style={{ fontSize: 13 }}>See the Work</Link>
             </div>
           </motion.div>
         </div>
+
+        {/* CSS keyframe for role card shimmer */}
+        <style>{`
+          @keyframes roleShimmer {
+            0%,100% { opacity: 0.4; transform: translateX(-20px); }
+            50%      { opacity: 1;   transform: translateX(20px);  }
+          }
+        `}</style>
       </section>
 
-      {/* ── FIVE SIGNALS ─────────────────────────────────────── */}
-      <section style={{ background: "#05060E", padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,2rem)", position: "relative", overflow: "hidden" }}>
-        {/* subtle grid overlay */}
+      {/* ── FIVE FREQUENCIES ─────────────────────────────────────── */}
+      <section style={{
+        background: `
+          radial-gradient(ellipse 70% 50% at 90% 0%,   rgba(0,220,255,0.06) 0%,transparent 60%),
+          radial-gradient(ellipse 50% 40% at 10% 100%, rgba(176,64,255,0.06) 0%,transparent 60%),
+          #04050E
+        `,
+        padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,5vw,3rem)",
+        position: "relative", overflow: "hidden",
+      }}>
+        {/* subtle grid */}
         <div aria-hidden="true" style={{
           position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
-          backgroundImage: "linear-gradient(rgba(80,100,180,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(80,100,180,0.03) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
+          backgroundImage: "linear-gradient(rgba(100,130,220,0.028) 1px,transparent 1px),linear-gradient(90deg,rgba(100,130,220,0.028) 1px,transparent 1px)",
+          backgroundSize: "52px 52px",
         }} />
 
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          {/* section header */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: EASE }}
+            transition={{ duration: 0.55, ease: EASE }}
             style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}
           >
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#00DFFF", marginBottom: 12, display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ display: "inline-block", width: 28, height: 1, background: "#00DFFF" }} />
+            <div style={{
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+              letterSpacing: "0.22em", color: "#00DFFF",
+              marginBottom: 14, display: "flex", alignItems: "center", gap: 12,
+            }}>
+              <span style={{ display: "inline-block", width: 28, height: 1, background: "linear-gradient(to right,#00DFFF,transparent)" }} />
               01 — IDENTITY
             </div>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "#F2F4FC", letterSpacing: "0.04em" }}>
+            <h2 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: "clamp(2.8rem,7vw,5.5rem)",
+              lineHeight: 0.88, color: "#F2F4FC",
+              letterSpacing: "0.03em",
+              marginBottom: 12,
+            }}>
               THE FIVE<br />FREQUENCIES
             </h2>
-            <p style={{ fontSize: "0.875rem", color: "#50587A", marginTop: 12 }}>Click any signal to expand</p>
+            <p style={{
+              fontSize: "0.875rem", color: "#404868",
+              letterSpacing: "0.04em",
+              fontFamily: "'JetBrains Mono', monospace",
+            }}>
+              Click any signal to expand
+            </p>
           </motion.div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -379,106 +485,195 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── VALUES ───────────────────────────────────────────── */}
+      {/* ── VALUES ───────────────────────────────────────────────── */}
       <section style={{
-        background: "#010108",
-        padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,2rem)",
+        background: `
+          radial-gradient(ellipse 55% 60% at 50% 50%, rgba(176,64,255,0.065) 0%,transparent 65%),
+          radial-gradient(ellipse 40% 30% at 90% 90%, rgba(0,220,255,0.04)  0%,transparent 55%),
+          #010108
+        `,
+        padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,5vw,3rem)",
         position: "relative", overflow: "hidden",
       }}>
+        {/* decorative wide line */}
         <div aria-hidden="true" style={{
-          position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)",
-          width: "60vw", height: "60vw", borderRadius: "50%", pointerEvents: "none",
-          background: "radial-gradient(circle, #B040FF07 0%, transparent 65%)",
+          position: "absolute", top: 0, left: 0, right: 0, height: 1,
+          background: "linear-gradient(to right,transparent,rgba(176,64,255,0.2) 30%,rgba(176,64,255,0.4) 50%,rgba(176,64,255,0.2) 70%,transparent)",
         }} />
 
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.55 }}
             style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}
           >
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#B040FF", marginBottom: 12, display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ display: "inline-block", width: 28, height: 1, background: "#B040FF" }} />
+            <div style={{
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+              letterSpacing: "0.22em", color: "#B040FF",
+              marginBottom: 14, display: "flex", alignItems: "center", gap: 12,
+            }}>
+              <span style={{ display: "inline-block", width: 28, height: 1, background: "linear-gradient(to right,#B040FF,transparent)" }} />
               02 — CORE VALUES
             </div>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "#F2F4FC", letterSpacing: "0.04em" }}>
+            <h2 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: "clamp(2.8rem,7vw,5.5rem)",
+              lineHeight: 0.88, color: "#F2F4FC",
+              letterSpacing: "0.03em",
+            }}>
               WHAT I<br />STAND ON
             </h2>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: 14 }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,280px),1fr))",
+            gap: 14,
+          }}>
             {VALUES.map((v, i) => (
               <motion.div
                 key={v.title}
-                initial={{ opacity: 0, scale: 0.94 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: i * 0.07, duration: 0.5, ease: EASE }}
-                whileHover={{ y: -4, boxShadow: "0 12px 40px rgba(176,64,255,0.14), 0 0 0 1px rgba(176,64,255,0.18)" }}
+                whileHover={{ y: -5, transition: { duration: 0.25 } }}
                 style={{
-                  background: "rgba(9,11,22,0.8)",
-                  borderRadius: 14, padding: "clamp(1.25rem,2.5vw,1.75rem)",
-                  border: "1px solid rgba(255,255,255,0.05)",
-                  backdropFilter: "blur(8px)",
+                  background: "rgba(8,10,20,0.85)",
+                  borderRadius: 16, padding: "clamp(1.375rem,2.5vw,1.875rem)",
+                  border: "1px solid rgba(255,255,255,0.052)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
                   cursor: "default",
+                  position: "relative", overflow: "hidden",
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
+                  transition: "box-shadow 0.28s",
                 }}
               >
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#B040FF", marginBottom: 14, boxShadow: "0 0 8px #B040FF" }} />
-                <h3 style={{ fontSize: "0.9375rem", fontWeight: 600, color: "#F2F4FC", marginBottom: 8, letterSpacing: "0.01em" }}>{v.title}</h3>
-                <p style={{ fontSize: "0.875rem", lineHeight: 1.75, color: "#8890B0" }}>{v.desc}</p>
+                {/* color accent corner */}
+                <div style={{
+                  position: "absolute", top: 0, right: 0,
+                  width: 60, height: 60,
+                  background: `radial-gradient(circle at top right,${v.color}18 0%,transparent 70%)`,
+                  borderRadius: "0 16px 0 0",
+                }} />
+                <div style={{
+                  width: 7, height: 7, borderRadius: "50%",
+                  background: v.color,
+                  marginBottom: 16,
+                  boxShadow: `0 0 10px ${v.color}80`,
+                }} />
+                <h3 style={{
+                  fontSize: "clamp(0.875rem,1.3vw,0.9375rem)",
+                  fontWeight: 600, color: "#E8EAF4",
+                  marginBottom: 10, letterSpacing: "0.01em", lineHeight: 1.3,
+                }}>
+                  {v.title}
+                </h3>
+                <p style={{
+                  fontSize: "clamp(0.8125rem,1.2vw,0.875rem)",
+                  lineHeight: 1.8, color: "#5A6282",
+                }}>
+                  {v.desc}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── TIMELINE ─────────────────────────────────────────── */}
-      <section style={{ background: "#05060E", padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,2rem)" }}>
-        <div style={{ maxWidth: 760, margin: "0 auto" }}>
+      {/* ── TIMELINE ─────────────────────────────────────────────── */}
+      <section style={{
+        background: `
+          radial-gradient(ellipse 60% 50% at 20% 50%, rgba(0,220,255,0.05) 0%,transparent 60%),
+          radial-gradient(ellipse 40% 40% at 80% 30%, rgba(0,255,136,0.04) 0%,transparent 55%),
+          #04050E
+        `,
+        padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,5vw,3rem)",
+      }}>
+        {/* top divider */}
+        <div aria-hidden="true" style={{
+          maxWidth: 1280, margin: "0 auto",
+          borderTop: "1px solid rgba(0,220,255,0.08)",
+          marginBottom: "clamp(3rem,6vw,5rem)",
+        }} />
+
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.55 }}
             style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}
           >
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#00FF88", marginBottom: 12, display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ display: "inline-block", width: 28, height: 1, background: "#00FF88" }} />
-              03 — TIMELINE
+            <div style={{
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+              letterSpacing: "0.22em", color: "#00FF88",
+              marginBottom: 14, display: "flex", alignItems: "center", gap: 12,
+            }}>
+              <span style={{ display: "inline-block", width: 28, height: 1, background: "linear-gradient(to right,#00FF88,transparent)" }} />
+              03 — THE PATH
             </div>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "#F2F4FC", letterSpacing: "0.04em" }}>
-              THE PATH
+            <h2 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: "clamp(2.8rem,7vw,5.5rem)",
+              lineHeight: 0.88, color: "#F2F4FC",
+              letterSpacing: "0.03em",
+              marginBottom: 12,
+            }}>
+              TIMELINE
             </h2>
+            <p style={{
+              fontSize: "clamp(0.875rem,1.4vw,0.9375rem)",
+              color: "#404868", lineHeight: 1.7, maxWidth: 400,
+            }}>
+              From inside walls to building the web — ten years of signals.
+            </p>
           </motion.div>
+
           <Timeline />
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────── */}
+      {/* ── CTA ──────────────────────────────────────────────────── */}
       <section style={{
-        background: "#010108",
-        padding: "clamp(5rem,9vw,7rem) clamp(1.25rem,4vw,2rem)",
+        background: `
+          radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,136,32,0.12) 0%,transparent 65%),
+          radial-gradient(ellipse 50% 50% at 20% 0%,   rgba(176,64,255,0.06) 0%,transparent 60%),
+          #010108
+        `,
+        padding: "clamp(5rem,10vw,8rem) clamp(1.25rem,5vw,3rem)",
         textAlign: "center",
         position: "relative", overflow: "hidden",
       }}>
+        {/* copper glow rule */}
         <div aria-hidden="true" style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          background: "radial-gradient(ellipse 70% 60% at 50% 100%, #FF882010 0%, transparent 70%)",
+          position: "absolute", top: 0, left: "10%", right: "10%", height: 1,
+          background: "linear-gradient(to right,transparent,rgba(255,136,32,0.3) 40%,rgba(255,136,32,0.5) 50%,rgba(255,136,32,0.3) 60%,transparent)",
         }} />
+
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          style={{ position: "relative", zIndex: 1 }}
+          transition={{ duration: 0.65 }}
+          style={{ position: "relative", zIndex: 1, maxWidth: 560, margin: "0 auto" }}
         >
-          <p style={{ fontFamily: "'Caveat', cursive", fontSize: "clamp(1.5rem,3vw,2.5rem)", color: "#FF8820", marginBottom: 12 }}>
+          <p style={{
+            fontFamily: "'Caveat', cursive",
+            fontSize: "clamp(1.6rem,3.2vw,2.6rem)",
+            color: "#FF8820", marginBottom: 14, lineHeight: 1.3,
+          }}>
             Want to build something together?
           </p>
-          <p style={{ fontSize: "0.9375rem", color: "#8890B0", marginBottom: 36, maxWidth: 400, margin: "0 auto 36px" }}>
-            I&rsquo;m available for freelance and full-time opportunities. Let&rsquo;s talk.
+          <p style={{
+            fontSize: "clamp(0.9rem,1.4vw,1rem)",
+            color: "#7880A2", marginBottom: 40,
+            lineHeight: 1.8, letterSpacing: "0.005em",
+          }}>
+            I&rsquo;m available for freelance and full-time opportunities. Electrical, dev, or design — let&rsquo;s talk.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
             <Link href="/contact" className="btn btn-primary">Get in Touch</Link>
