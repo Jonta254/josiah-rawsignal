@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import ErrorBoundary from "./ErrorBoundary";
 
 const SignalOrb = dynamic(() => import("./SignalOrb"), { ssr: false });
 
@@ -132,17 +133,19 @@ export default function SignalIntro({ onComplete }: { onComplete: () => void }) 
 
       {/* 3D Orb */}
       {showOrb && (
-        <div style={{
-          position: "absolute",
-          width: "min(60vw, 420px)", height: "min(60vw, 420px)",
-          top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          opacity: orbOpacity,
-          transition: "opacity 900ms cubic-bezier(0.25,1,0.5,1)",
-          pointerEvents: "none",
-        }}>
-          <SignalOrb fov={42} distance={5} glowIntensity={2} />
-        </div>
+        <ErrorBoundary>
+          <div style={{
+            position: "absolute",
+            width: "min(60vw, 420px)", height: "min(60vw, 420px)",
+            top: "50%", left: "50%",
+            transform: "translate(-50%, -50%)",
+            opacity: orbOpacity,
+            transition: "opacity 900ms cubic-bezier(0.25,1,0.5,1)",
+            pointerEvents: "none",
+          }}>
+            <SignalOrb fov={42} distance={5} glowIntensity={2} />
+          </div>
+        </ErrorBoundary>
       )}
 
       {/* UI panel */}

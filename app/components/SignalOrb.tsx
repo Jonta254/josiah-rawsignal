@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Environment, Sparkles } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
@@ -211,9 +211,6 @@ function OrbMesh({
       {/* Backlight rim */}
       <pointLight color="#FF6000" intensity={4}   position={[-2,  0, -4]} distance={8} />
       <ambientLight intensity={0.04} />
-
-      {/* ── Environment for metallic reflections ── */}
-      <Environment preset="night" />
 
       {/* ── Bloom — very strong on the orb ── */}
       <EffectComposer>

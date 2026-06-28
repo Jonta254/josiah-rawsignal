@@ -8,10 +8,16 @@ import TypeWriter from "./components/TypeWriter";
 import Signature from "./components/Signature";
 import SignalCockpit from "./components/SignalCockpit";
 import ScrambleText from "./components/ScrambleText";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const HeroOrb              = dynamic(() => import("./components/SignalOrb"),          { ssr: false });
 const HeroScene            = dynamic(() => import("./components/HeroScene"),          { ssr: false });
 const ConstellationCanvas  = dynamic(() => import("./components/ConstellationCanvas"),{ ssr: false });
+
+function isMobile() {
+  if (typeof navigator === "undefined") return false;
+  return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+}
 
 /* ─── In-view boolean ─────────────────────────────────────────── */
 function useInView(threshold = 0.12) {
@@ -303,10 +309,12 @@ export default function Home() {
       <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #0C0018 0%, #070010 40%, #020008 100%)" }}>
 
         {/* ── 3D deep-space background scene ── */}
-        {mounted && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
-            <HeroScene scrollY={scrollY} mouse={mouse} />
-          </div>
+        {mounted && !isMobile() && (
+          <ErrorBoundary>
+            <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+              <HeroScene scrollY={scrollY} mouse={mouse} />
+            </div>
+          </ErrorBoundary>
         )}
 
         {/* ── Moving aurora mesh — always visible ── */}
@@ -340,10 +348,12 @@ export default function Home() {
           background: "linear-gradient(to right, rgba(5,0,14,0.65) 0%, rgba(5,0,14,0.20) 40%, transparent 65%)" }} />
 
         {/* ── 3D orb — desktop right side ── */}
-        {mounted && (
-          <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 4, pointerEvents: "none" }}>
-            <HeroOrb mouse={mouse} scrollY={scrollY} fov={44} distance={5} glowIntensity={2.2} />
-          </div>
+        {mounted && !isMobile() && (
+          <ErrorBoundary>
+            <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 4, pointerEvents: "none" }}>
+              <HeroOrb mouse={mouse} scrollY={scrollY} fov={44} distance={5} glowIntensity={2.2} />
+            </div>
+          </ErrorBoundary>
         )}
 
         {/* Available badge */}
