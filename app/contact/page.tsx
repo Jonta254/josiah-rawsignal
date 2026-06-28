@@ -4,7 +4,29 @@ import Reveal from "../components/RevealWrapper";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      setSent(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to send. Try again.");
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <>
@@ -166,7 +188,7 @@ export default function ContactPage() {
               </div>
             ) : (
               <form
-                onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+                onSubmit={handleSubmit}
                 style={{
                   background: "rgba(8,10,20,0.9)",
                   borderRadius: 20, padding: "clamp(1.5rem,3vw,2.5rem)",
@@ -190,11 +212,18 @@ export default function ContactPage() {
                   <label style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.18em", color: "#404868", textTransform: "uppercase", display: "block", marginBottom: 8 }}>Message</label>
                   <textarea required rows={5} placeholder="What are you building?" className="field" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                 </div>
-                <button type="submit" className="btn btn-primary" style={{ alignSelf: "flex-start" }}>
-                  Send Message
-                  <svg viewBox="0 0 16 16" fill="currentColor" style={{ width: 13, height: 13 }}>
-                    <path d="M1.5 1.5l13 6.5-13 6.5V9.5l9-3-9-3V1.5z"/>
-                  </svg>
+                {error && (
+                  <p style={{ color: "#FF6060", fontSize: 13, fontFamily: "'JetBrains Mono', monospace", margin: "0 0 8px" }}>
+                    ⚠ {error}
+                  </p>
+                )}
+                <button type="submit" disabled={sending} className="btn btn-primary" style={{ alignSelf: "flex-start", opacity: sending ? 0.6 : 1 }}>
+                  {sending ? "Sending…" : "Send Message"}
+                  {!sending && (
+                    <svg viewBox="0 0 16 16" fill="currentColor" style={{ width: 13, height: 13 }}>
+                      <path d="M1.5 1.5l13 6.5-13 6.5V9.5l9-3-9-3V1.5z"/>
+                    </svg>
+                  )}
                 </button>
               </form>
             )}
