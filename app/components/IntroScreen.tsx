@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const LETTERS = ["J", "O", "S", "I", "A", "H"];
 const ROLES = ["Electrician", "Developer", "Designer", "Explorer", "Human"];
@@ -15,6 +15,7 @@ export default function IntroScreen() {
   useEffect(() => {
     // Skip if already visited
     if (sessionStorage.getItem("intro-done")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDone(true);
       return;
     }

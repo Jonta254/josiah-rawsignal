@@ -98,23 +98,21 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   return <span ref={ref}>{n}{suffix}</span>;
 }
 
-/* ─── Brian cinematic letter entrance ───────────────────────── */
+/* ─── Brian diamond letter data ──────────────────────────────── */
 const BRIAN_LETTERS = [
-  { ch: "B", color: "#FFD060", shadow: "#FFD060",
-    anim: "letterFromLeft 1.3s cubic-bezier(0.16,1,0.3,1) 0.20s both" },
-  { ch: "R", color: "#FFBA30", shadow: "#FFB020",
-    anim: "letterRise 1.1s cubic-bezier(0.16,1,0.3,1) 0.40s both" },
-  { ch: "I", color: "#FF8820", shadow: "#FF6000",
-    anim: "letterFlash 1.0s cubic-bezier(0.16,1,0.3,1) 0.60s both, letterGlow 3.5s ease-in-out 2.0s infinite" },
-  { ch: "A", color: "#FFBA30", shadow: "#FFB020",
-    anim: "letterFall 1.1s cubic-bezier(0.16,1,0.3,1) 0.80s both" },
-  { ch: "N", color: "#FFD060", shadow: "#FFD060",
-    anim: "letterFromRight 1.3s cubic-bezier(0.16,1,0.3,1) 1.00s both" },
+  { ch: "B", enterAnim: "letterFromLeft 1.3s cubic-bezier(0.16,1,0.3,1) 0.20s both", floatDur: 3.2, floatDelay: 0.0, shimmerDelay: "0s",   glintDelay: "5.0s" },
+  { ch: "R", enterAnim: "letterRise 1.1s cubic-bezier(0.16,1,0.3,1) 0.40s both",     floatDur: 2.8, floatDelay: 0.4, shimmerDelay: "0.6s",  glintDelay: "6.5s" },
+  { ch: "I", enterAnim: "letterFlash 1.0s cubic-bezier(0.16,1,0.3,1) 0.60s both",    floatDur: 3.6, floatDelay: 0.2, shimmerDelay: "1.2s",  glintDelay: "4.8s" },
+  { ch: "A", enterAnim: "letterFall 1.1s cubic-bezier(0.16,1,0.3,1) 0.80s both",     floatDur: 2.6, floatDelay: 0.6, shimmerDelay: "0.3s",  glintDelay: "7.0s" },
+  { ch: "N", enterAnim: "letterFromRight 1.3s cubic-bezier(0.16,1,0.3,1) 1.00s both",floatDur: 3.0, floatDelay: 0.8, shimmerDelay: "0.9s",  glintDelay: "5.5s" },
 ];
+
+const DIAMOND_GRAD = "linear-gradient(105deg,#7A8BAA 0%,#B0BEDD 10%,#DDE5F8 20%,#FFFFFF 30%,#C8D4EE 40%,#96A6C4 50%,#C0CCE8 60%,#FFFFFF 70%,#D8E2F8 80%,#92A2C0 90%,#B4C0DC 100%)";
+
 function BrianName() {
   return (
     <div style={{ perspective: "1800px", display: "inline-block", lineHeight: 0.82 }}>
-      {BRIAN_LETTERS.map(({ ch, color, shadow, anim }, i) => (
+      {BRIAN_LETTERS.map(({ ch, enterAnim, floatDur, floatDelay, shimmerDelay, glintDelay }, i) => (
         <span
           key={i}
           style={{
@@ -122,15 +120,33 @@ function BrianName() {
             fontSize: "clamp(5rem,21vw,21rem)",
             letterSpacing: "-0.025em",
             lineHeight: 0.82,
-            color,
-            textShadow: `0 0 60px ${shadow}A0, 0 0 130px ${shadow}40, 0 0 240px ${shadow}18`,
             display: "inline-block",
-            animation: anim,
+            position: "relative",
+            animation: `${enterAnim}, heroFloat ${floatDur}s ease-in-out ${floatDelay}s infinite`,
             transformOrigin: "center bottom",
-            willChange: "transform, opacity, filter",
+            willChange: "transform, opacity",
           }}
         >
-          {ch}
+          {/* Diamond gradient letter */}
+          <span style={{
+            background: DIAMOND_GRAD,
+            backgroundSize: "300% 100%",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            filter: "drop-shadow(0 0 32px rgba(180,210,255,0.45)) drop-shadow(0 0 80px rgba(140,180,255,0.20))",
+            animation: `heroDiamondShimmer 4s ease-in-out ${shimmerDelay} infinite`,
+          }}>{ch}</span>
+          {/* Glint flash overlay */}
+          <span aria-hidden="true" style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.85) 50%, transparent 80%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            animation: `heroGlint 7s ease-in-out ${glintDelay} infinite`,
+            pointerEvents: "none",
+          }}>{ch}</span>
         </span>
       ))}
     </div>
@@ -241,6 +257,7 @@ export default function Home() {
   const targetRef   = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const onMouse = (e: MouseEvent) => {
       mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -306,7 +323,7 @@ export default function Home() {
       <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
 
       {/* ══════════════════ HERO ══════════════════════════════════ */}
-      <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #0C0018 0%, #070010 40%, #020008 100%)" }}>
+      <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #08001A 0%, #050012 35%, #020008 70%, #010006 100%)" }}>
 
         {/* ── 3D deep-space background scene ── */}
         {mounted && !isMobile() && (
@@ -405,7 +422,12 @@ export default function Home() {
           </div>
         </div>
 
-        <style>{`@keyframes sig-pulse{0%,100%{box-shadow:0 0 8px #34D399}50%{box-shadow:0 0 18px #34D399,0 0 32px rgba(52,211,153,0.4)}}`}</style>
+        <style>{`
+          @keyframes sig-pulse{0%,100%{box-shadow:0 0 8px #34D399}50%{box-shadow:0 0 18px #34D399,0 0 32px rgba(52,211,153,0.4)}}
+          @keyframes heroFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
+          @keyframes heroDiamondShimmer{0%{background-position:200% 0}50%{background-position:0% 0}100%{background-position:-200% 0}}
+          @keyframes heroGlint{0%,78%,100%{opacity:0;transform:scaleX(0.2) translateX(-80%)}84%{opacity:1;transform:scaleX(1) translateX(0)}90%{opacity:0;transform:scaleX(0.2) translateX(80%)}}
+        `}</style>
       </section>
 
       {/* ══════════════════ TICKER ════════════════════════════════ */}

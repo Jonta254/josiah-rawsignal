@@ -54,6 +54,7 @@ export default function CommandPalette() {
   }, [open, close, cursor, filtered, go]);
 
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 50); }, [open]);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setCursor(0); }, [query]);
 
   if (!open) return null;
@@ -106,7 +107,7 @@ export default function CommandPalette() {
         <div style={{ maxHeight: 380, overflowY: "auto", padding: "8px 0" }}>
           {filtered.length === 0 && (
             <div style={{ textAlign: "center", padding: "32px 0", fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.25)" }}>
-              No results for "{query}"
+              No results for &quot;{query}&quot;
             </div>
           )}
           {groups.map((group) => (

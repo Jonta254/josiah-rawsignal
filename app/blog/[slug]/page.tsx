@@ -112,7 +112,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
           {/* Author note */}
           <div className="mt-16 pt-8 border-t" style={{ borderColor: "rgba(184,115,51,0.2)" }}>
-            <p className="font-mono text-xs mb-2" style={{ color: "var(--color-copper)" }}>// What I was thinking about when I wrote this</p>
+            <p className="font-mono text-xs mb-2" style={{ color: "var(--color-copper)" }}>{"// What I was thinking about when I wrote this"}</p>
             <p className="font-caveat text-xl" style={{ color: "var(--color-stone)" }}>&ldquo;{post.authorNote}&rdquo;</p>
             <p className="font-mono text-xs mt-2" style={{ color: "var(--color-stone)" }}>— {post.author}</p>
           </div>
@@ -122,7 +122,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       {/* Related + Newsletter */}
       <section className="py-16" style={{ background: "var(--color-void)" }}>
         <div className="max-w-3xl mx-auto px-6">
-          <p className="font-mono text-xs mb-6" style={{ color: "var(--color-copper)" }}>// Read next</p>
+          <p className="font-mono text-xs mb-6" style={{ color: "var(--color-copper)" }}>{"// Read next"}</p>
           <div className="grid md:grid-cols-2 gap-4 mb-16">
             {post.related.map((r) => (
               <Link key={r.slug} href={`/blog/${r.slug}`}

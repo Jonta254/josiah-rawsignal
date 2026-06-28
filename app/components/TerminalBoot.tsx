@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const BOOT_LINES = [
   { text: "RAWSIGNAL OS v2.0.26 — INITIALIZING...", delay: 0,    color: "var(--color-stone)" },
@@ -20,6 +20,7 @@ export default function TerminalBoot() {
   const [cursorBlink, setCursorBlink] = useState(true);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (sessionStorage.getItem("boot-done")) { setDone(true); return; }
 
     BOOT_LINES.forEach((line, i) => {

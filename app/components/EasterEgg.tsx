@@ -39,7 +39,7 @@ export default function EasterEgg() {
         </svg>
 
         <div className="relative z-10 font-mono text-sm" style={{ color: "var(--color-stone)" }}>
-          <p style={{ color: "var(--color-wire)" }}>// SIGNAL DETECTED</p>
+          <p style={{ color: "var(--color-wire)" }}>{"// SIGNAL DETECTED"}</p>
           <br />
           <p style={{ color: "var(--color-chalk)" }}>You found something most people miss.</p>
           <p>The kind of attention that found this</p>

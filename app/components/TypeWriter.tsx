@@ -39,7 +39,9 @@ export default function TypeWriter({
       if (display.length > 0) {
         timeout = setTimeout(() => setDisplay(display.slice(0, -1)), deleteSpeed);
       } else {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setWordIdx((i) => i + 1);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsTyping(true);
       }
     }

@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars, Float, Sparkles } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { Vector2 } from "three";
 import * as THREE from "three";
 
 /* ── Point-cloud nebula ────────────────────────────────────────── */
