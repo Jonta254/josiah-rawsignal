@@ -74,11 +74,13 @@ const HERO_LETTERS = [
   { ch: "N", color: "#FFD060", delay: 0.58 },
 ];
 
+const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+
 const letterVariants = {
   hidden: { opacity: 0, y: 80, rotateX: -70, filter: "blur(20px)" },
   visible: (d: number) => ({
     opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
-    transition: { delay: d, duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+    transition: { delay: d, duration: 0.85, ease: EASE },
   }),
 };
 
@@ -91,7 +93,7 @@ function RoleCard({ r, i, active, onSelect }: {
       initial={{ opacity: 0, x: -40 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ delay: i * 0.07, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ delay: i * 0.07, duration: 0.6, ease: EASE }}
       onClick={onSelect}
       style={{
         background: active ? `${r.color}08` : "rgba(9,11,22,0.7)",
@@ -144,7 +146,7 @@ function RoleCard({ r, i, active, onSelect }: {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.38, ease: EASE }}
             style={{ overflow: "hidden" }}
           >
             <p style={{ fontSize: "0.9rem", lineHeight: 1.8, color: "#8890B0", marginBottom: 16 }}>{r.body}</p>
@@ -182,7 +184,7 @@ function Timeline() {
       <motion.div
         initial={{ scaleY: 0 }}
         animate={inView ? { scaleY: 1 } : {}}
-        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
         style={{
           position: "absolute", left: 0, top: 0, bottom: 0, width: 1,
           background: "linear-gradient(to bottom, #FF8820, #00DFFF, #B040FF)",
@@ -194,7 +196,7 @@ function Timeline() {
           key={t.year}
           initial={{ opacity: 0, x: -20 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ delay: 0.3 + i * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.3 + i * 0.1, duration: 0.55, ease: EASE }}
           style={{ display: "flex", gap: 28, paddingBottom: 32, position: "relative", alignItems: "flex-start" }}
         >
           {/* dot */}
@@ -243,7 +245,7 @@ export default function AboutPage() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: EASE }}
             style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#FF8820", marginBottom: 24, display: "flex", alignItems: "center", gap: 10 }}
           >
             <span style={{ display: "inline-block", width: 28, height: 1, background: "#FF8820" }} />
@@ -277,7 +279,7 @@ export default function AboutPage() {
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: 0.9, duration: 0.7, ease: EASE }}
           >
             <h1 style={{
               fontFamily: "'Bebas Neue', sans-serif",
@@ -315,7 +317,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: EASE }}
             style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}
           >
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#00DFFF", marginBottom: 12, display: "flex", alignItems: "center", gap: 10 }}>
@@ -378,7 +380,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, scale: 0.94 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: i * 0.07, duration: 0.5, ease: EASE }}
                 whileHover={{ y: -4, boxShadow: "0 12px 40px rgba(176,64,255,0.14), 0 0 0 1px rgba(176,64,255,0.18)" }}
                 style={{
                   background: "rgba(9,11,22,0.8)",
