@@ -67,12 +67,18 @@ const VALUES = [
 
 /* ── Hero letters ────────────────────────────────────────────── */
 const HERO_LETTERS = [
-  { ch: "B", color: "#FFD060", delay: 0.10 },
-  { ch: "R", color: "#FFBA30", delay: 0.22 },
-  { ch: "I", color: "#FF8820", delay: 0.34 },
-  { ch: "A", color: "#FFBA30", delay: 0.46 },
-  { ch: "N", color: "#FFD060", delay: 0.58 },
+  { ch: "B", delay: 0.10, floatDur: 3.2, floatDelay: 1.2 },
+  { ch: "R", delay: 0.22, floatDur: 2.8, floatDelay: 1.4 },
+  { ch: "I", delay: 0.34, floatDur: 3.6, floatDelay: 1.6 },
+  { ch: "A", delay: 0.46, floatDur: 2.6, floatDelay: 1.3 },
+  { ch: "N", delay: 0.58, floatDur: 3.0, floatDelay: 1.5 },
 ];
+
+/* silver → bright white → silver → steel-blue silver gradient */
+const DIAMOND_GRADIENT =
+  "linear-gradient(105deg, #8898BB 0%, #BCC8E8 12%, #E8EFFF 24%, #FFFFFF 32%, #D0DAEE 40%, #A0AECB 50%, #C8D4F0 58%, #FFFFFF 68%, #E0E8FF 76%, #9AAAC8 88%, #BCC8E8 100%)";
+
+const DIAMOND_GLOW = "0 0 40px rgba(180,200,255,0.35), 0 0 80px rgba(160,180,255,0.18), 0 2px 0 rgba(255,255,255,0.15)";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -252,26 +258,55 @@ export default function AboutPage() {
             SIGNAL.PROFILE / BRIAN
           </motion.div>
 
-          {/* BRIAN letters */}
+          {/* BRIAN letters — silver / diamond */}
           <div style={{ perspective: "1200px", marginBottom: 16, lineHeight: 0.82 }}>
-            {HERO_LETTERS.map(({ ch, color, delay }) => (
+            {HERO_LETTERS.map(({ ch, delay, floatDur, floatDelay }) => (
+              /* outer: entrance animation */
               <motion.span
                 key={ch + delay}
                 custom={delay}
                 initial="hidden"
                 animate="visible"
                 variants={letterVariants}
-                style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "clamp(5.5rem,18vw,17rem)",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 0.82,
-                  display: "inline-block",
-                  color,
-                  textShadow: `0 0 60px ${color}90, 0 0 120px ${color}40`,
-                  willChange: "transform, opacity, filter",
-                }}
-              >{ch}</motion.span>
+                style={{ display: "inline-block", willChange: "transform, opacity, filter" }}
+              >
+                {/* inner: continuous diamond float */}
+                <motion.span
+                  animate={{ y: [0, -14, 0] }}
+                  transition={{ duration: floatDur, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
+                  style={{
+                    display: "inline-block",
+                    position: "relative",
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    fontSize: "clamp(5.5rem,18vw,17rem)",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 0.82,
+                    /* diamond gradient text */
+                    background: DIAMOND_GRADIENT,
+                    backgroundSize: "300% 100%",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    /* sweep shimmer */
+                    animation: `diamondShimmer ${3.5 + Math.random() * 1.5}s linear infinite ${floatDelay * 0.6}s`,
+                    /* glow */
+                    filter: "drop-shadow(0 0 18px rgba(180,200,255,0.45)) drop-shadow(0 0 4px rgba(255,255,255,0.6))",
+                    textShadow: DIAMOND_GLOW,
+                  }}
+                >
+                  {ch}
+                  {/* glint streak */}
+                  <span aria-hidden="true" style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.9) 50%, transparent 70%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    animation: `diamondGlint ${4 + Math.random() * 3}s ease-in-out infinite ${floatDelay + 0.5}s`,
+                    pointerEvents: "none",
+                  }} aria-hidden="true">{ch}</span>
+                </motion.span>
+              </motion.span>
             ))}
           </div>
 
