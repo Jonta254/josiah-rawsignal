@@ -1,24 +1,53 @@
-import type { Metadata } from "next";
-import Reveal from "../components/RevealWrapper";
+"use client";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import SignalDot from "../components/SignalDot";
+import { useState, useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: "Josiah is a multi-disciplinary builder — electrician, developer, designer, explorer, and human.",
-};
+const CircuitBackground = dynamic(() => import("./CircuitBackground"), { ssr: false });
 
+/* ── data ──────────────────────────────────────────────────── */
 const ROLES = [
-  { id: "electrician", num: "01", title: "The Electrician", color: "var(--signal-electrical)", body: "Before I wrote a line of code I was inside walls, tracing faults by feel. Years on commercial and residential sites. The trade taught me that physical systems don't lie — they either work or they don't. That honesty changed the way I think about everything.", skills: ["Conduit & cable installation", "Panel design & installation", "Fault diagnosis", "Schematic reading", "Safety protocols"] },
-  { id: "developer",   num: "02", title: "The Developer",   color: "var(--signal-dev)",         body: "Full-stack by necessity, frontend by love. I build tools for people who work with their hands and interfaces for people who think with their heads. React, Next.js, TypeScript — but always in service of a real problem, not a résumé.", skills: ["Frontend development", "React / Next.js", "TypeScript", "Backend & APIs", "Responsive UI"] },
-  { id: "designer",    num: "03", title: "The Designer",    color: "var(--signal-design)",       body: "Figma-native. Motion-aware. Obsessed with the space between things — the margins, the rhythm, the moment an interface becomes honest. Design is not how it looks. It's how it works, how it feels, and whether it respects the person using it.", skills: ["UI/UX design", "Figma", "Design systems", "Typography", "Motion design"] },
-  { id: "explorer",    num: "04", title: "The Explorer",    color: "var(--signal-nature)",       body: "The outdoors is not a hobby. It's infrastructure. Hiking taught me patience. Navigation taught me systems thinking. Being disconnected taught me what actually matters when I reconnect.", skills: ["Orientation & navigation", "Trail journaling", "Photography", "Environmental reading", "Systems thinking"] },
-  { id: "human",       num: "05", title: "The Human",       color: "var(--signal-human)",        body: "Curious without arrogance. Honest without cruelty. Present. I try to be the kind of person whose work you can trust before you've read a single line of it — because trust is earned by how you show up, not what you say about yourself.", skills: ["Clear communication", "Patience", "Precision", "Problem solving", "Honest collaboration"] },
+  {
+    id: "electrician", num: "01", icon: "⚡",
+    title: "The Electrician",
+    color: "#F0C030",
+    body: "Before I wrote a line of code I was inside walls, tracing faults by feel. The trade taught me that physical systems don't lie — they either work or they don't. That honesty changed the way I think about everything.",
+    skills: ["Conduit & cable installation","Panel design & installation","Fault diagnosis","Schematic reading","Safety protocols"],
+  },
+  {
+    id: "developer", num: "02", icon: "◈",
+    title: "The Developer",
+    color: "#00DFFF",
+    body: "Full-stack by necessity, frontend by love. I build tools for people who work with their hands and interfaces for people who think with their heads. Always in service of a real problem, never a résumé.",
+    skills: ["Frontend development","React / Next.js","TypeScript","Backend & APIs","Responsive UI"],
+  },
+  {
+    id: "designer", num: "03", icon: "◉",
+    title: "The Designer",
+    color: "#B040FF",
+    body: "Figma-native. Motion-aware. Obsessed with the space between things — the margins, the rhythm, the moment an interface becomes honest. Design is not how it looks. It's how it works and whether it respects the person using it.",
+    skills: ["UI/UX design","Figma","Design systems","Typography","Motion design"],
+  },
+  {
+    id: "explorer", num: "04", icon: "◎",
+    title: "The Explorer",
+    color: "#00FF88",
+    body: "The outdoors is not a hobby. It's infrastructure. Hiking taught me patience. Navigation taught me systems thinking. Being disconnected taught me what actually matters when I reconnect.",
+    skills: ["Orientation & navigation","Trail journaling","Photography","Environmental reading","Systems thinking"],
+  },
+  {
+    id: "human", num: "05", icon: "○",
+    title: "The Human",
+    color: "#F2F4FC",
+    body: "Curious without arrogance. Honest without cruelty. Present. I try to be the kind of person whose work you can trust before you've read a single line of it — because trust is earned by how you show up.",
+    skills: ["Clear communication","Patience","Precision","Problem solving","Honest collaboration"],
+  },
 ];
 
 const TIMELINE = [
   { year: "2016", label: "First electrical apprenticeship" },
-  { year: "2018", label: "Qualified electrician, commercial & residential" },
+  { year: "2018", label: "Qualified electrician — commercial & residential" },
   { year: "2020", label: "Started teaching myself to code" },
   { year: "2021", label: "First web project shipped for a trade business" },
   { year: "2022", label: "Moved into design — Figma, systems, motion" },
@@ -28,115 +57,390 @@ const TIMELINE = [
 ];
 
 const VALUES = [
-  { title: "Precision over speed", desc: "Do it right. Then do it fast. Never the other way around." },
-  { title: "Honest craft", desc: "The detail no one sees is still worth getting right." },
-  { title: "Systems thinking", desc: "Everything is connected. Understanding the whole changes how you work on any single part." },
-  { title: "Humility", desc: "I don't know everything. I know how to figure things out. That's better." },
-  { title: "Nature as reset", desc: "The best thinking happens away from a screen." },
-  { title: "Human-first design", desc: "Tools should feel like they were made for the person, not for the portfolio." },
+  { title: "Precision over speed",  desc: "Do it right. Then do it fast. Never the other way around." },
+  { title: "Honest craft",          desc: "The detail no one sees is still worth getting right." },
+  { title: "Systems thinking",      desc: "Everything is connected. Understanding the whole changes any single part." },
+  { title: "Humility",              desc: "I don't know everything. I know how to figure things out. That's better." },
+  { title: "Nature as reset",       desc: "The best thinking happens away from a screen." },
+  { title: "Human-first design",    desc: "Tools should feel like they were made for the person, not the portfolio." },
 ];
 
+/* ── Hero letters ────────────────────────────────────────────── */
+const HERO_LETTERS = [
+  { ch: "B", color: "#FFD060", delay: 0.10 },
+  { ch: "R", color: "#FFBA30", delay: 0.22 },
+  { ch: "I", color: "#FF8820", delay: 0.34 },
+  { ch: "A", color: "#FFBA30", delay: 0.46 },
+  { ch: "N", color: "#FFD060", delay: 0.58 },
+];
+
+const letterVariants = {
+  hidden: { opacity: 0, y: 80, rotateX: -70, filter: "blur(20px)" },
+  visible: (d: number) => ({
+    opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
+    transition: { delay: d, duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+/* ── Role card ───────────────────────────────────────────────── */
+function RoleCard({ r, i, active, onSelect }: {
+  r: typeof ROLES[0]; i: number; active: boolean; onSelect: () => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ delay: i * 0.07, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      onClick={onSelect}
+      style={{
+        background: active ? `${r.color}08` : "rgba(9,11,22,0.7)",
+        border: `1px solid ${active ? r.color + "40" : "rgba(255,255,255,0.05)"}`,
+        borderLeft: `3px solid ${active ? r.color : "rgba(255,255,255,0.08)"}`,
+        borderRadius: 16,
+        padding: "clamp(1.25rem,2.5vw,1.75rem)",
+        cursor: "pointer",
+        position: "relative",
+        overflow: "hidden",
+        backdropFilter: "blur(12px)",
+        transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
+        boxShadow: active ? `0 0 32px ${r.color}18, 0 4px 24px rgba(0,0,0,0.5)` : "0 4px 24px rgba(0,0,0,0.4)",
+      }}
+    >
+      {/* shimmer on active */}
+      {active && (
+        <div style={{
+          position: "absolute", inset: 0, pointerEvents: "none",
+          background: `linear-gradient(120deg, transparent 30%, ${r.color}10 50%, transparent 70%)`,
+          animation: "shimmerSweep 2.5s ease-in-out infinite",
+        }} />
+      )}
+
+      {/* header row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
+        <div style={{
+          width: 38, height: 38, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
+          background: `${r.color}18`, border: `1px solid ${r.color}30`,
+          fontSize: 18, color: r.color, fontFamily: "'JetBrains Mono', monospace",
+          flexShrink: 0,
+        }}>{r.icon}</div>
+        <div>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: r.color, letterSpacing: "0.15em", marginBottom: 2 }}>
+            SIG.{r.num}
+          </div>
+          <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.1rem,2.2vw,1.45rem)", color: "#F2F4FC", letterSpacing: "0.04em" }}>
+            {r.title}
+          </h3>
+        </div>
+        <div style={{ marginLeft: "auto", opacity: active ? 1 : 0.3, transition: "opacity 0.3s" }}>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: r.color, boxShadow: `0 0 8px ${r.color}` }} />
+        </div>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {active && (
+          <motion.div
+            key="body"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: "hidden" }}
+          >
+            <p style={{ fontSize: "0.9rem", lineHeight: 1.8, color: "#8890B0", marginBottom: 16 }}>{r.body}</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {r.skills.map((s) => (
+                <span key={s} style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 10, letterSpacing: "0.08em",
+                  padding: "3px 10px", borderRadius: 100,
+                  background: `${r.color}14`, color: r.color,
+                  border: `1px solid ${r.color}25`,
+                }}>{s}</span>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!active && (
+        <p style={{ fontSize: "0.8rem", color: "#50587A", lineHeight: 1.6 }}>
+          {r.body.slice(0, 70)}…
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
+/* ── Timeline ────────────────────────────────────────────────── */
+function Timeline() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <div ref={ref} style={{ position: "relative", paddingLeft: 32 }}>
+      {/* animated vertical line */}
+      <motion.div
+        initial={{ scaleY: 0 }}
+        animate={inView ? { scaleY: 1 } : {}}
+        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        style={{
+          position: "absolute", left: 0, top: 0, bottom: 0, width: 1,
+          background: "linear-gradient(to bottom, #FF8820, #00DFFF, #B040FF)",
+          transformOrigin: "top",
+        }}
+      />
+      {TIMELINE.map((t, i) => (
+        <motion.div
+          key={t.year}
+          initial={{ opacity: 0, x: -20 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ delay: 0.3 + i * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          style={{ display: "flex", gap: 28, paddingBottom: 32, position: "relative", alignItems: "flex-start" }}
+        >
+          {/* dot */}
+          <div style={{
+            position: "absolute", left: -36, top: 4,
+            width: 10, height: 10, borderRadius: "50%",
+            background: i % 2 === 0 ? "#FF8820" : "#00DFFF",
+            boxShadow: `0 0 10px ${i % 2 === 0 ? "#FF8820" : "#00DFFF"}`,
+          }} />
+          <div style={{
+            fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+            color: i % 2 === 0 ? "#FF8820" : "#00DFFF",
+            minWidth: 36, paddingTop: 2, letterSpacing: "0.05em",
+          }}>{t.year}</div>
+          <p style={{ fontSize: "0.9375rem", color: "#8890B0", lineHeight: 1.6 }}>{t.label}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Page ────────────────────────────────────────────────────── */
 export default function AboutPage() {
+  const [activeRole, setActiveRole] = useState(0);
+
   return (
     <>
-      {/* Hero */}
-      <section style={{ minHeight: "60vh", display: "flex", alignItems: "flex-end", position: "relative", background: "var(--void)", padding: "clamp(6rem,12vw,9rem) clamp(1.25rem,4vw,2rem) clamp(3rem,6vw,5rem)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%" }}>
-          <Reveal className="reveal">
-            <div className="section-tag">About Josiah</div>
-            <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.5rem,10vw,9rem)", lineHeight: 0.9, color: "var(--chalk)", marginBottom: 24 }}>
-              MANY<br />SIGNALS,<br /><span className="text-copper">ONE PERSON.</span>
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section style={{
+        minHeight: "100vh", display: "flex", alignItems: "flex-end",
+        position: "relative", overflow: "hidden",
+        background: "linear-gradient(160deg, #02020F 0%, #050820 40%, #010108 100%)",
+        padding: "clamp(6rem,12vw,10rem) clamp(1.25rem,4vw,2rem) clamp(4rem,7vw,6rem)",
+      }}>
+        <CircuitBackground />
+
+        {/* colour atmosphere */}
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
+          <div style={{ position: "absolute", top: "-10%", right: "-5%", width: "40vw", height: "40vw", borderRadius: "50%", background: "radial-gradient(circle, #FF882018 0%, transparent 70%)" }} />
+          <div style={{ position: "absolute", bottom: "0", left: "-10%", width: "35vw", height: "35vw", borderRadius: "50%", background: "radial-gradient(circle, #00DFFF10 0%, transparent 70%)" }} />
+          <div style={{ position: "absolute", top: "30%", right: "20%", width: "20vw", height: "20vw", borderRadius: "50%", background: "radial-gradient(circle, #B040FF0C 0%, transparent 70%)" }} />
+        </div>
+
+        <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", position: "relative", zIndex: 2 }}>
+          {/* label */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#FF8820", marginBottom: 24, display: "flex", alignItems: "center", gap: 10 }}
+          >
+            <span style={{ display: "inline-block", width: 28, height: 1, background: "#FF8820" }} />
+            SIGNAL.PROFILE / BRIAN
+          </motion.div>
+
+          {/* BRIAN letters */}
+          <div style={{ perspective: "1200px", marginBottom: 16, lineHeight: 0.82 }}>
+            {HERO_LETTERS.map(({ ch, color, delay }) => (
+              <motion.span
+                key={ch + delay}
+                custom={delay}
+                initial="hidden"
+                animate="visible"
+                variants={letterVariants}
+                style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: "clamp(5.5rem,18vw,17rem)",
+                  letterSpacing: "-0.02em",
+                  lineHeight: 0.82,
+                  display: "inline-block",
+                  color,
+                  textShadow: `0 0 60px ${color}90, 0 0 120px ${color}40`,
+                  willChange: "transform, opacity, filter",
+                }}
+              >{ch}</motion.span>
+            ))}
+          </div>
+
+          {/* tagline */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h1 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: "clamp(1.6rem,4.5vw,3.5rem)",
+              letterSpacing: "0.06em",
+              color: "rgba(242,244,252,0.65)",
+              lineHeight: 1.05,
+              marginBottom: 24,
+            }}>
+              MANY SIGNALS.&nbsp;&nbsp;<span style={{ color: "#FF8820" }}>ONE PERSON.</span>
             </h1>
-          </Reveal>
-          <Reveal className="reveal" delay={100}>
-            <p style={{ fontSize: "clamp(1rem,1.8vw,1.15rem)", lineHeight: 1.75, color: "var(--stone)", maxWidth: 600, marginBottom: 32 }}>
-              An electrician who codes. A developer who designs. An explorer who builds. Not a portfolio of skills — a single way of thinking applied across different domains.
+            <p style={{ fontSize: "clamp(0.95rem,1.6vw,1.1rem)", lineHeight: 1.8, color: "#8890B0", maxWidth: 540, marginBottom: 36 }}>
+              An electrician who codes. A developer who designs. An explorer who builds.
+              Not a portfolio of skills — a single way of thinking applied across different domains.
             </p>
-            <SignalDot />
-          </Reveal>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Link href="/contact" className="btn btn-primary" style={{ fontSize: 13 }}>Get in Touch</Link>
+              <Link href="/portfolio" className="btn btn-ghost" style={{ fontSize: 13 }}>See the Work</Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Five Roles */}
-      <section style={{ background: "var(--earth)", padding: "clamp(4rem,8vw,8rem) clamp(1.25rem,4vw,2rem)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <Reveal className="reveal" style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}>
-            <div className="section-tag">01 — Identity</div>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "var(--chalk)" }}>THE FIVE FACES</h2>
-          </Reveal>
-          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(1rem,2vw,1.5rem)" }}>
+      {/* ── FIVE SIGNALS ─────────────────────────────────────── */}
+      <section style={{ background: "#05060E", padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,2rem)", position: "relative", overflow: "hidden" }}>
+        {/* subtle grid overlay */}
+        <div aria-hidden="true" style={{
+          position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
+          backgroundImage: "linear-gradient(rgba(80,100,180,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(80,100,180,0.03) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+        }} />
+
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}
+          >
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#00DFFF", marginBottom: 12, display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ display: "inline-block", width: 28, height: 1, background: "#00DFFF" }} />
+              01 — IDENTITY
+            </div>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "#F2F4FC", letterSpacing: "0.04em" }}>
+              THE FIVE<br />FREQUENCIES
+            </h2>
+            <p style={{ fontSize: "0.875rem", color: "#50587A", marginTop: 12 }}>Click any signal to expand</p>
+          </motion.div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {ROLES.map((r, i) => (
-              <Reveal key={r.id} id={r.id} className="reveal" delay={i * 50}>
-                <div style={{ background: "var(--carbon)", borderRadius: 20, padding: "clamp(1.5rem,3vw,2.5rem)", border: "1px solid rgba(255,255,255,0.04)", borderTop: `1px solid ${r.color}20`, display: "grid", gridTemplateColumns: "200px 1fr auto", gap: "clamp(1.5rem,3vw,2.5rem)", alignItems: "start" }}
-                  className="about-role-grid"
-                >
-                  <div>
-                    <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(2.5rem,5vw,4rem)", lineHeight: 1, color: r.color, opacity: 0.15, fontWeight: 700, marginBottom: 4 }}>{r.num}</div>
-                    <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.4rem,3vw,2rem)", color: "var(--chalk)" }}>{r.title}</h3>
-                  </div>
-                  <p style={{ fontSize: "0.9375rem", lineHeight: 1.8, color: "var(--stone)" }}>{r.body}</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 180 }}>
-                    {r.skills.map((s) => (
-                      <span key={s} className="tag" style={{ fontSize: 11 }}>{s}</span>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
+              <RoleCard
+                key={r.id}
+                r={r}
+                i={i}
+                active={activeRole === i}
+                onSelect={() => setActiveRole(activeRole === i ? -1 : i)}
+              />
             ))}
           </div>
         </div>
-        <style>{`@media(max-width:900px){.about-role-grid{grid-template-columns:1fr !important}}`}</style>
       </section>
 
-      {/* Values */}
-      <section style={{ background: "var(--void)", padding: "clamp(4rem,8vw,8rem) clamp(1.25rem,4vw,2rem)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <Reveal className="reveal" style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}>
-            <div className="section-tag">02 — Values</div>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "var(--chalk)" }}>WHAT I STAND ON</h2>
-          </Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%,280px),1fr))", gap: "clamp(1rem,2vw,1.25rem)" }}>
+      {/* ── VALUES ───────────────────────────────────────────── */}
+      <section style={{
+        background: "#010108",
+        padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,2rem)",
+        position: "relative", overflow: "hidden",
+      }}>
+        <div aria-hidden="true" style={{
+          position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)",
+          width: "60vw", height: "60vw", borderRadius: "50%", pointerEvents: "none",
+          background: "radial-gradient(circle, #B040FF07 0%, transparent 65%)",
+        }} />
+
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}
+          >
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#B040FF", marginBottom: 12, display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ display: "inline-block", width: 28, height: 1, background: "#B040FF" }} />
+              02 — CORE VALUES
+            </div>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "#F2F4FC", letterSpacing: "0.04em" }}>
+              WHAT I<br />STAND ON
+            </h2>
+          </motion.div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: 14 }}>
             {VALUES.map((v, i) => (
-              <Reveal key={v.title} className="reveal-scale" delay={i * 60}>
-                <div style={{ background: "var(--carbon)", borderRadius: 16, padding: "clamp(1.25rem,2.5vw,1.75rem)", border: "1px solid rgba(255,255,255,0.04)", height: "100%" }}>
-                  <h3 style={{ fontSize: "0.9375rem", fontWeight: 600, color: "var(--chalk)", marginBottom: 8 }}>{v.title}</h3>
-                  <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--stone)" }}>{v.desc}</p>
-                </div>
-              </Reveal>
+              <motion.div
+                key={v.title}
+                initial={{ opacity: 0, scale: 0.94 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ delay: i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -4, boxShadow: "0 12px 40px rgba(176,64,255,0.14), 0 0 0 1px rgba(176,64,255,0.18)" }}
+                style={{
+                  background: "rgba(9,11,22,0.8)",
+                  borderRadius: 14, padding: "clamp(1.25rem,2.5vw,1.75rem)",
+                  border: "1px solid rgba(255,255,255,0.05)",
+                  backdropFilter: "blur(8px)",
+                  cursor: "default",
+                }}
+              >
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#B040FF", marginBottom: 14, boxShadow: "0 0 8px #B040FF" }} />
+                <h3 style={{ fontSize: "0.9375rem", fontWeight: 600, color: "#F2F4FC", marginBottom: 8, letterSpacing: "0.01em" }}>{v.title}</h3>
+                <p style={{ fontSize: "0.875rem", lineHeight: 1.75, color: "#8890B0" }}>{v.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Timeline */}
-      <section style={{ background: "var(--earth)", padding: "clamp(4rem,8vw,8rem) clamp(1.25rem,4vw,2rem)" }}>
+      {/* ── TIMELINE ─────────────────────────────────────────── */}
+      <section style={{ background: "#05060E", padding: "clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,2rem)" }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
-          <Reveal className="reveal" style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}>
-            <div className="section-tag">03 — Timeline</div>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "var(--chalk)" }}>THE PATH</h2>
-          </Reveal>
-          <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 1, background: "rgba(255,255,255,0.06)" }} />
-            {TIMELINE.map((t, i) => (
-              <Reveal key={t.year} className="reveal-left" delay={i * 60}>
-                <div style={{ display: "flex", gap: 32, paddingLeft: 32, paddingBottom: 32, position: "relative" }}>
-                  <div style={{ position: "absolute", left: -4, top: 6, width: 9, height: 9, borderRadius: "50%", background: "var(--copper)", boxShadow: "0 0 8px var(--copper)" }} />
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: "var(--copper)", minWidth: 40, paddingTop: 2 }}>{t.year}</div>
-                  <p style={{ fontSize: "0.9375rem", color: "var(--stone)", lineHeight: 1.6 }}>{t.label}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            style={{ marginBottom: "clamp(2.5rem,5vw,4rem)" }}
+          >
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "#00FF88", marginBottom: 12, display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ display: "inline-block", width: 28, height: 1, background: "#00FF88" }} />
+              03 — TIMELINE
+            </div>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,6vw,5rem)", lineHeight: 0.9, color: "#F2F4FC", letterSpacing: "0.04em" }}>
+              THE PATH
+            </h2>
+          </motion.div>
+          <Timeline />
         </div>
       </section>
 
-      {/* CTA */}
-      <section style={{ background: "var(--void)", padding: "clamp(4rem,8vw,6rem) clamp(1.25rem,4vw,2rem)", textAlign: "center" }}>
-        <Reveal className="reveal">
-          <p style={{ fontFamily: "'Caveat', cursive", fontSize: "clamp(1.5rem,3vw,2.25rem)", color: "var(--copper)", marginBottom: 16 }}>
+      {/* ── CTA ──────────────────────────────────────────────── */}
+      <section style={{
+        background: "#010108",
+        padding: "clamp(5rem,9vw,7rem) clamp(1.25rem,4vw,2rem)",
+        textAlign: "center",
+        position: "relative", overflow: "hidden",
+      }}>
+        <div aria-hidden="true" style={{
+          position: "absolute", inset: 0, pointerEvents: "none",
+          background: "radial-gradient(ellipse 70% 60% at 50% 100%, #FF882010 0%, transparent 70%)",
+        }} />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          style={{ position: "relative", zIndex: 1 }}
+        >
+          <p style={{ fontFamily: "'Caveat', cursive", fontSize: "clamp(1.5rem,3vw,2.5rem)", color: "#FF8820", marginBottom: 12 }}>
             Want to build something together?
           </p>
-          <p style={{ fontSize: "0.9375rem", color: "var(--stone)", marginBottom: 32, maxWidth: 400, margin: "0 auto 32px" }}>
+          <p style={{ fontSize: "0.9375rem", color: "#8890B0", marginBottom: 36, maxWidth: 400, margin: "0 auto 36px" }}>
             I&rsquo;m available for freelance and full-time opportunities. Let&rsquo;s talk.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
@@ -144,7 +448,7 @@ export default function AboutPage() {
             <Link href="/portfolio" className="btn btn-ghost">View My Work</Link>
             <a href="/images/josiah-cv.pdf" className="btn btn-signal">Download CV</a>
           </div>
-        </Reveal>
+        </motion.div>
       </section>
     </>
   );
