@@ -59,6 +59,7 @@ export default function CircuitBackground() {
     }
 
     function frame() {
+      if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
 
       /* ── traces ── */
