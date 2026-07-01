@@ -249,12 +249,7 @@ export default function Home() {
   const [ghRepos, setGhRepos] = useState<number | null>(null);
   const mouse       = useRef({ x: 0, y: 0 });
   const scrollY     = useRef(0);
-  const cursorRef   = useRef<HTMLDivElement>(null);
-  const dotRef      = useRef<HTMLDivElement>(null);
-  const ringRef     = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
-  const ringPosRef  = useRef({ x: 0, y: 0 });
-  const targetRef   = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -262,36 +257,7 @@ export default function Home() {
     const onMouse = (e: MouseEvent) => {
       mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
       mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
-      targetRef.current = { x: e.clientX, y: e.clientY };
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${e.clientX - 160}px, ${e.clientY - 160}px)`;
-      }
-      if (dotRef.current) {
-        dotRef.current.style.left = `${e.clientX}px`;
-        dotRef.current.style.top  = `${e.clientY}px`;
-      }
     };
-
-    // Cursor ring: lerp toward target
-    let raf: number;
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const animateRing = () => {
-      ringPosRef.current.x = lerp(ringPosRef.current.x, targetRef.current.x, 0.12);
-      ringPosRef.current.y = lerp(ringPosRef.current.y, targetRef.current.y, 0.12);
-      if (ringRef.current) {
-        ringRef.current.style.left = `${ringPosRef.current.x}px`;
-        ringRef.current.style.top  = `${ringPosRef.current.y}px`;
-      }
-      raf = requestAnimationFrame(animateRing);
-    };
-    animateRing();
-
-    // Expand ring on interactive elements
-    const onEnter = () => { if (ringRef.current) { ringRef.current.style.width = "56px"; ringRef.current.style.height = "56px"; ringRef.current.style.borderColor = "rgba(200,123,47,0.9)"; } };
-    const onLeave = () => { if (ringRef.current) { ringRef.current.style.width = "32px"; ringRef.current.style.height = "32px"; ringRef.current.style.borderColor = "rgba(200,123,47,0.5)"; } };
-    const links = document.querySelectorAll("a, button");
-    links.forEach((l) => { l.addEventListener("mouseenter", onEnter); l.addEventListener("mouseleave", onLeave); });
-
     const onScroll = () => {
       scrollY.current = window.scrollY;
       if (progressRef.current) {
@@ -301,7 +267,6 @@ export default function Home() {
     };
     window.addEventListener("mousemove", onMouse);
     window.addEventListener("scroll", onScroll, { passive: true });
-    // GitHub live repo count
     fetch("https://api.github.com/users/Jonta254")
       .then((r) => r.json())
       .then((d) => { if (d.public_repos) setGhRepos(d.public_repos); })
@@ -309,18 +274,13 @@ export default function Home() {
     return () => {
       window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-      links.forEach((l) => { l.removeEventListener("mouseenter", onEnter); l.removeEventListener("mouseleave", onLeave); });
     };
   }, []);
 
   return (
     <>
-      {/* Scroll progress + cursor elements */}
+      {/* Scroll progress */}
       <div ref={progressRef} className="scroll-progress-bar" />
-      <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
-      <div ref={dotRef}  className="cursor-dot"  aria-hidden="true" />
-      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
 
       {/* ══════════════════ HERO ══════════════════════════════════ */}
       <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #08001A 0%, #050012 35%, #020008 70%, #010006 100%)" }}>

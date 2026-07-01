@@ -1,61 +1,66 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import CopperWire from "../../components/CopperWire";
-import GeoShapes from "../../components/GeoShapes";
 
 const PROJECTS: Record<string, {
-  title: string; role: string; timeline: string; tools: string[]; status: string;
-  accent: string; challenge: string; approach: string[]; outcome: string;
-  prev?: string; next?: string;
+  title: string; tagline: string; role: string; timeline: string;
+  tools: string[]; status: string; accent: string; accentRgb: string;
+  challenge: string; approach: { step: string; detail: string }[];
+  outcome: string; prev?: string; next?: string;
 }> = {
   electrimap: {
     title: "ElectriMap",
+    tagline: "Circuit diagramming, reinvented for the field.",
     role: "Product Designer + Developer",
-    timeline: "3 months · 2023",
-    tools: ["React Native", "Figma", "Node.js", "SQLite"],
-    status: "Shipped · App Store",
-    accent: "var(--geo-teal)",
-    challenge: "Electricians on job sites need to document circuit layouts quickly, but existing tools are either paper-based or desktop software that doesn't work offline. A solution needed to be fast, offline-first, and intuitive enough to use in a hard hat.",
+    timeline: "3 months · 2025",
+    tools: ["React Native", "TypeScript", "SQLite", "Figma"],
+    status: "Concept",
+    accent: "#F0C030",
+    accentRgb: "240,192,48",
+    challenge: "Electricians on job sites need to document circuit layouts quickly, but existing tools are either paper-based or desktop software that doesn't work offline. A solution needed to be fast, offline-first, and intuitive enough to use with one hand in a hard hat.",
     approach: [
-      "Spent two weeks shadowing electricians on job sites to understand the real workflow — what information they needed to capture, when, and in what conditions (often one hand occupied, wearing gloves, in low light).",
-      "Designed a gesture-first interface where common actions — adding a circuit, marking a fault, snapping a photo — required minimal taps. The app feels like it was built by someone who's actually held a wire nut.",
-      "Built with React Native for cross-platform reach, SQLite for offline storage, and a sync layer that uploads documentation when a connection becomes available. No connection required at the point of capture.",
+      { step: "Fieldwork first", detail: "Spent two weeks shadowing electricians on job sites to understand the real workflow — what information they needed to capture, when, and in what conditions. Often one hand occupied, wearing gloves, in low light." },
+      { step: "Gesture-first design", detail: "Designed an interface where common actions — adding a circuit, marking a fault, snapping a photo — required minimal taps. The app had to feel like it was built by someone who has actually held a wire nut." },
+      { step: "Offline architecture", detail: "Built with React Native for cross-platform reach, SQLite for offline storage, and a sync layer that uploads documentation when a connection becomes available. No connection required at the point of capture." },
     ],
-    outcome: "Used by 200+ electricians within three months of launch. Average session length: 4 minutes — fast enough to use between tasks. App Store rating: 4.7/5.",
+    outcome: "Proof of concept validated with 12 electricians on active job sites. Average workflow time reduced by 60% versus paper documentation. Design pattern now feeding into RawPanel UI system.",
     prev: "rawpanel",
     next: "terrain-journal",
   },
   "terrain-journal": {
     title: "Terrain Journal",
+    tagline: "Your trail, documented exactly as it happened.",
     role: "Designer + Developer",
-    timeline: "6 weeks · 2023",
-    tools: ["Next.js", "Tailwind CSS", "Mapbox GL", "Vercel"],
-    status: "Shipped · Web",
-    accent: "var(--color-moss)",
+    timeline: "6 weeks · 2025",
+    tools: ["Next.js", "Mapbox GL", "Supabase", "Vercel"],
+    status: "Concept",
+    accent: "#34D399",
+    accentRgb: "52,211,153",
     challenge: "Most outdoor journaling apps are either too lightweight (Instagram) or too data-heavy (Strava/Garmin). There was space for something that captured the texture of an experience — not just the metrics.",
     approach: [
-      "Started with a content-first approach: what does a trail journal entry actually contain? Route, conditions, mood, notes, photos, moment of reflection. Designed the UI around those content types, not the other way around.",
-      "Used Mapbox GL for interactive route visualisation — users can trace their actual path rather than just logging a distance. Photos attach to GPS coordinates and appear on the map.",
-      "Kept the writing experience minimal and distraction-free. The editor is a single long-form text area. No formatting toolbar. Just you and the blank page.",
+      { step: "Content before interface", detail: "Started with a content-first approach: what does a trail journal entry actually contain? Route, conditions, mood, notes, photos, a moment of reflection. The UI was designed around those content types, not the other way around." },
+      { step: "Route as content", detail: "Used Mapbox GL for interactive route visualisation — users trace their actual path rather than logging a distance. Photos attach to GPS coordinates and appear on the map." },
+      { step: "Writing-first editor", detail: "Kept the writing experience minimal. The editor is a single long-form text area. No formatting toolbar. No distraction. Just the blank page." },
     ],
-    outcome: "750 registered users, 90-day retention at 42%. Featured in two outdoor publication newsletters.",
+    outcome: "Design prototype tested with 20 trail runners and hikers. 90% preferred it over their current logging method. Core interaction patterns validated for a future MVP build.",
     prev: "electrimap",
     next: "rawpanel",
   },
   rawpanel: {
     title: "RawPanel UI",
+    tagline: "A design system that respects the builder.",
     role: "Design System Author",
-    timeline: "Ongoing · 2024",
-    tools: ["Figma", "Storybook", "React", "TypeScript", "CSS Custom Properties"],
-    status: "In Progress · Open Source",
-    accent: "var(--color-copper)",
-    challenge: "Every project I started required rebuilding the same set of components: buttons, cards, inputs, navbars. Most available design systems are either too opinionated (Material, Ant Design) or too bare (Headless UI). I wanted something warm and craftsperson-like.",
+    timeline: "Ongoing · 2026",
+    tools: ["Figma", "Storybook", "React", "TypeScript", "Design Tokens"],
+    status: "In Progress",
+    accent: "#B040FF",
+    accentRgb: "176,64,255",
+    challenge: "Every project I started required rebuilding the same set of components. Most available design systems are too opinionated or too bare. I wanted something warm and craftsperson-like — honest rather than polished, built from real project pain rather than theoretical best practices.",
     approach: [
-      "Started in Figma with a design language rather than components — establishing the visual principles first. Warm tones, honest borders, no shadows that don't serve a purpose.",
-      "Built components in Storybook to document every variant and state before touching production code. The documentation is part of the design.",
-      "Published as an open-source npm package. The API is designed to be obvious without reading the docs — if you have to look something up to do the obvious thing, the API is wrong.",
+      { step: "Principles before components", detail: "Started in Figma with a design language rather than a component library — establishing the visual principles first. Warm tones, honest borders, no shadows that don't serve a purpose." },
+      { step: "Documentation as design", detail: "Built components in Storybook to document every variant and state before touching production code. The documentation is part of the design, not an afterthought added when the sprint is almost over." },
+      { step: "API clarity as craft", detail: "Designed the component API to be obvious without reading the docs. If you have to look something up to do the obvious thing, the API is wrong. That is a design failure, not a documentation problem." },
     ],
-    outcome: "Used in 8 personal projects. 120 GitHub stars in the first month. First external contributor in week three.",
+    outcome: "Used in 8 personal projects. First external contributor in week three. Design token system has been adopted independently by two other developers.",
     prev: "terrain-journal",
     next: "electrimap",
   },
@@ -69,7 +74,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const p = PROJECTS[slug];
   if (!p) return { title: "Project not found" };
-  return { title: p.title, description: p.challenge.slice(0, 155) };
+  return { title: p.title, description: p.tagline };
 }
 
 export default async function CaseStudy({ params }: { params: Promise<{ slug: string }> }) {
@@ -78,50 +83,114 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
 
   if (!p) {
     return (
-      <section className="pt-32 pb-24 min-h-screen max-w-4xl mx-auto px-6" style={{ background: "var(--color-void)" }}>
-        <h1 className="font-bebas text-5xl mb-4" style={{ color: "var(--color-chalk)" }}>Project not found</h1>
-        <Link href="/portfolio" style={{ color: "var(--color-copper)" }}>← Back to Work</Link>
+      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "var(--void)", gap: 20 }}>
+        <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "5rem", color: "var(--chalk)" }}>Not Found</h1>
+        <Link href="/portfolio" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, color: "var(--copper)", letterSpacing: "0.1em" }}>← Back to Work</Link>
       </section>
     );
   }
 
   return (
     <>
-      {/* Hero */}
-      <section className="pt-32 pb-20 relative overflow-hidden" style={{ background: "var(--color-void)" }}>
-        <GeoShapes variant="cyan" />
-        <div className="absolute inset-0 pointer-events-none">
-          <CopperWire viewBox="0 0 1440 500" d="M0,250 Q360,80 720,250 Q1080,420 1440,250" className="h-full opacity-30" />
-        </div>
-        <div className="max-w-5xl mx-auto px-6 relative z-10">
-          <Link href="/portfolio" className="font-mono text-xs mb-8 block" style={{ color: "var(--color-stone)" }}>← Back to Work</Link>
-          <h1
-            className="font-bebas leading-none mb-6"
-            style={{ fontSize: "clamp(4rem,10vw,8rem)", color: "var(--color-chalk)" }}
-          >
+      <style>{`
+        .cs-approach-item { transition: padding-left 0.3s ease; }
+        .cs-approach-item:hover { padding-left: 8px; }
+        .cs-back-link { transition: color 180ms, gap 180ms; }
+        .cs-back-link:hover { color: var(--chalk) !important; }
+        .cs-nav-link { transition: opacity 180ms, transform 180ms; }
+        .cs-nav-link:hover { opacity: 1 !important; transform: translateX(4px); }
+        .cs-nav-link-prev:hover { transform: translateX(-4px) !important; }
+        .tool-tag { transition: background 180ms, border-color 180ms; }
+        .tool-tag:hover { background: rgba(${p.accentRgb},0.12) !important; border-color: rgba(${p.accentRgb},0.4) !important; }
+      `}</style>
+
+      {/* ── Hero ─────────────────────────────────────────────────── */}
+      <section style={{
+        minHeight: "72vh", display: "flex", alignItems: "flex-end",
+        position: "relative", overflow: "hidden",
+        background: `
+          radial-gradient(ellipse 60% 55% at 80% 0%,   rgba(${p.accentRgb},0.12) 0%, transparent 60%),
+          radial-gradient(ellipse 50% 45% at 5%  75%,  rgba(${p.accentRgb},0.07) 0%, transparent 55%),
+          radial-gradient(ellipse 40% 30% at 50% 100%, rgba(0,0,0,0.3) 0%, transparent 50%),
+          linear-gradient(165deg, #030215 0%, #04010F 50%, #020108 100%)
+        `,
+        padding: "clamp(7rem,13vw,10rem) clamp(1.25rem,5vw,3rem) clamp(4rem,7vw,6rem)",
+      }}>
+        {/* Dot grid */}
+        <div aria-hidden="true" style={{ position:"absolute",inset:0,pointerEvents:"none",
+          backgroundImage:"radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px)",
+          backgroundSize:"36px 36px",
+          maskImage:"radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%)" }} />
+        {/* Bottom fade */}
+        <div aria-hidden="true" style={{ position:"absolute",bottom:0,left:0,right:0,height:"40%",
+          background:"linear-gradient(to top,rgba(3,2,21,0.96) 0%,transparent 100%)", pointerEvents:"none" }} />
+
+        {/* Accent line */}
+        <div aria-hidden="true" style={{ position:"absolute",top:0,left:"5%",right:"5%",height:1,
+          background:`linear-gradient(to right,transparent,rgba(${p.accentRgb},0.3) 40%,rgba(${p.accentRgb},0.55) 50%,rgba(${p.accentRgb},0.3) 60%,transparent)` }} />
+
+        <div style={{ maxWidth:1280, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
+          {/* Back */}
+          <Link href="/portfolio" className="cs-back-link" style={{
+            display:"inline-flex", alignItems:"center", gap:8, marginBottom:32,
+            fontFamily:"'JetBrains Mono',monospace", fontSize:11, letterSpacing:"0.14em",
+            color:"rgba(255,255,255,0.35)", textDecoration:"none",
+          }}>
+            ← BACK TO WORK
+          </Link>
+
+          {/* Eyebrow */}
+          <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, letterSpacing:"0.22em",
+            color:p.accent, marginBottom:20, display:"flex", alignItems:"center", gap:12 }}>
+            <span style={{ display:"inline-block", width:28, height:1,
+              background:`linear-gradient(to right,${p.accent},transparent)` }} />
+            CASE STUDY · {p.status.toUpperCase()}
+          </div>
+
+          {/* Title */}
+          <h1 style={{ fontFamily:"'Bebas Neue',sans-serif",
+            fontSize:"clamp(3.5rem,12vw,10rem)", lineHeight:0.86,
+            letterSpacing:"0.01em", color:"#F2F4FC", marginBottom:16 }}>
             {p.title}
           </h1>
 
-          {/* Metadata bar */}
-          <div className="flex flex-wrap gap-6 p-6 rounded glass-card" style={{ borderLeft: `3px solid ${p.accent}` }}>
+          {/* Tagline */}
+          <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",
+            fontSize:"clamp(1rem,2.2vw,1.35rem)", color:"rgba(255,255,255,0.55)",
+            maxWidth:540, lineHeight:1.55, marginBottom:40 }}>
+            {p.tagline}
+          </p>
+
+          {/* Meta bar */}
+          <div style={{ display:"flex", flexWrap:"wrap", gap:"clamp(1.5rem,3vw,3rem)",
+            padding:"clamp(1.25rem,2.5vw,1.75rem) clamp(1.5rem,3vw,2rem)",
+            background:"rgba(255,255,255,0.025)", border:"1px solid rgba(255,255,255,0.07)",
+            borderRadius:16, backdropFilter:"blur(16px)" }}>
             {[
               { label: "Role",     value: p.role     },
               { label: "Timeline", value: p.timeline },
               { label: "Status",   value: p.status   },
             ].map((m) => (
               <div key={m.label}>
-                <p className="font-mono text-xs mb-1" style={{ color: "var(--color-stone)" }}>{m.label}</p>
-                <p className="font-rajdhani text-sm font-medium" style={{ color: "var(--color-chalk)" }}>{m.value}</p>
+                <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
+                  letterSpacing:"0.18em", color:"rgba(255,255,255,0.25)",
+                  textTransform:"uppercase", marginBottom:6 }}>{m.label}</p>
+                <p style={{ fontFamily:"'Orbitron',sans-serif", fontSize:"clamp(0.7rem,1.2vw,0.8125rem)",
+                  color:"rgba(255,255,255,0.7)", fontWeight:500, letterSpacing:"0.04em" }}>{m.value}</p>
               </div>
             ))}
             <div>
-              <p className="font-mono text-xs mb-1" style={{ color: "var(--color-stone)" }}>Tools</p>
-              <div className="flex flex-wrap gap-2">
+              <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
+                letterSpacing:"0.18em", color:"rgba(255,255,255,0.25)",
+                textTransform:"uppercase", marginBottom:8 }}>Tools</p>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
                 {p.tools.map((t) => (
-                  <span key={t} className="font-mono text-xs px-2 py-0.5 rounded"
-                    style={{ background: `${p.accent}20`, color: p.accent }}>
-                    {t}
-                  </span>
+                  <span key={t} className="tool-tag" style={{
+                    fontFamily:"'JetBrains Mono',monospace", fontSize:9,
+                    letterSpacing:"0.07em", padding:"3px 10px", borderRadius:100,
+                    background:`rgba(${p.accentRgb},0.07)`, color:p.accent,
+                    border:`1px solid rgba(${p.accentRgb},0.22)`,
+                  }}>{t}</span>
                 ))}
               </div>
             </div>
@@ -129,80 +198,175 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
-      {/* Case study content */}
-      <article style={{ background: "var(--color-earth)" }} className="py-20">
-        <div className="max-w-4xl mx-auto px-6">
+      {/* ── Body ─────────────────────────────────────────────────── */}
+      <article style={{
+        background:`
+          radial-gradient(ellipse 55% 45% at 90% 0%, rgba(${p.accentRgb},0.05) 0%,transparent 55%),
+          radial-gradient(ellipse 40% 35% at 5% 60%, rgba(${p.accentRgb},0.03) 0%,transparent 50%),
+          #04050E
+        `,
+        padding:"clamp(4rem,8vw,8rem) clamp(1.25rem,5vw,3rem)",
+        position:"relative",
+      }}>
+        <div style={{ maxWidth:860, margin:"0 auto" }}>
+
           {/* Challenge */}
-          <section className="mb-16">
-            <p className="font-orbitron text-xs uppercase tracking-widest mb-4" style={{ color: p.accent }}>The Challenge</p>
-            <p className="text-lg leading-relaxed drop-cap" style={{ color: "var(--color-stone)", maxWidth: "70ch" }}>{p.challenge}</p>
+          <section style={{ marginBottom:"clamp(3rem,7vw,6rem)" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:24 }}>
+              <span style={{ display:"inline-block", width:1.5, height:28, background:p.accent, borderRadius:1 }} />
+              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10,
+                letterSpacing:"0.22em", color:p.accent, textTransform:"uppercase" }}>
+                The Challenge
+              </span>
+            </div>
+            <p style={{ fontFamily:"'Playfair Display',serif",
+              fontSize:"clamp(1.05rem,2vw,1.25rem)", lineHeight:1.85,
+              color:"rgba(255,255,255,0.65)", maxWidth:"70ch" }}>
+              {p.challenge}
+            </p>
+          </section>
+
+          {/* Divider */}
+          <div style={{ height:1, marginBottom:"clamp(3rem,7vw,6rem)",
+            background:`linear-gradient(to right,transparent,rgba(${p.accentRgb},0.18) 40%,rgba(${p.accentRgb},0.32) 50%,rgba(${p.accentRgb},0.18) 60%,transparent)` }} />
+
+          {/* Visual placeholder */}
+          <section style={{ marginBottom:"clamp(3rem,7vw,6rem)" }}>
+            <div style={{ position:"relative", height:"clamp(200px,35vw,320px)",
+              borderRadius:20, overflow:"hidden",
+              border:`1px solid rgba(${p.accentRgb},0.18)`,
+              background:`rgba(${p.accentRgb},0.03)` }}>
+              <svg viewBox="0 0 860 320" style={{ position:"absolute", width:"100%", height:"100%" }}
+                preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <radialGradient id="cs-grad" cx="50%" cy="50%" r="55%">
+                    <stop offset="0%" stopColor={p.accent} stopOpacity="0.18"/>
+                    <stop offset="100%" stopColor={p.accent} stopOpacity="0"/>
+                  </radialGradient>
+                </defs>
+                <rect width="860" height="320" fill={`url(#cs-grad)`}/>
+                {Array.from({length:9},(_,i)=>(
+                  <line key={`v${i}`} x1={i*108} y1="0" x2={i*108} y2="320"
+                    stroke={p.accent} strokeWidth="0.5" opacity="0.07"/>
+                ))}
+                {Array.from({length:7},(_,i)=>(
+                  <line key={`h${i}`} x1="0" y1={i*54} x2="860" y2={i*54}
+                    stroke={p.accent} strokeWidth="0.5" opacity="0.07"/>
+                ))}
+                <circle cx="430" cy="160" r="110" fill="none" stroke={p.accent} strokeWidth="0.7" opacity="0.14"/>
+                <circle cx="430" cy="160" r="55"  fill="none" stroke={p.accent} strokeWidth="0.4" opacity="0.09"/>
+                <text x="430" y="185" textAnchor="middle"
+                  fontFamily="Bebas Neue" fontSize="140" fill={p.accent} opacity="0.04"
+                  letterSpacing="6">{p.title.charAt(0)}</text>
+              </svg>
+              <div style={{ position:"absolute", inset:0, display:"flex",
+                alignItems:"center", justifyContent:"center" }}>
+                <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11,
+                  color:"rgba(255,255,255,0.18)", letterSpacing:"0.14em" }}>
+                  [ {p.title} — Visual ]
+                </span>
+              </div>
+            </div>
           </section>
 
           {/* Approach */}
-          <section className="mb-16">
-            <p className="font-orbitron text-xs uppercase tracking-widest mb-8" style={{ color: p.accent }}>My Approach</p>
-            <div className="space-y-8">
-              {p.approach.map((step, i) => (
-                <div key={i} className="flex gap-6">
-                  <div className="shrink-0">
-                    <div className="w-8 h-8 flex items-center justify-center rounded-full font-orbitron text-xs"
-                      style={{ background: `${p.accent}20`, color: p.accent, border: `1px solid ${p.accent}40` }}>
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
+          <section style={{ marginBottom:"clamp(3rem,7vw,6rem)" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:32 }}>
+              <span style={{ display:"inline-block", width:1.5, height:28, background:p.accent, borderRadius:1 }} />
+              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10,
+                letterSpacing:"0.22em", color:p.accent, textTransform:"uppercase" }}>
+                My Approach
+              </span>
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+              {p.approach.map((a, i) => (
+                <div key={a.step} className="cs-approach-item" style={{
+                  display:"grid", gridTemplateColumns:"28px 1fr",
+                  gap:"0 clamp(1.25rem,3vw,2rem)",
+                  padding:"clamp(1.25rem,2.5vw,1.75rem) 0",
+                  borderBottom:"1px solid rgba(255,255,255,0.05)",
+                }}>
+                  <div style={{ paddingTop:4 }}>
+                    <span style={{ fontFamily:"'Bebas Neue',sans-serif",
+                      fontSize:"clamp(1.5rem,2.5vw,2rem)", lineHeight:1,
+                      color:`rgba(${p.accentRgb},0.25)` }}>
+                      0{i+1}
+                    </span>
                   </div>
-                  <p className="text-base leading-relaxed pt-1" style={{ color: "var(--color-stone)" }}>{step}</p>
+                  <div>
+                    <h3 style={{ fontFamily:"'Orbitron',sans-serif",
+                      fontSize:"clamp(0.7rem,1.2vw,0.8125rem)", fontWeight:500,
+                      letterSpacing:"0.08em", color:"rgba(255,255,255,0.6)",
+                      marginBottom:10 }}>{a.step}</h3>
+                    <p style={{ fontSize:"clamp(0.875rem,1.4vw,0.9375rem)", lineHeight:1.85,
+                      color:"rgba(255,255,255,0.4)" }}>{a.detail}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Visual placeholder */}
-          <section className="mb-16">
-            <div className="relative h-72 rounded-lg overflow-hidden glass-card flex items-center justify-center"
-              style={{ border: `1px solid ${p.accent}30` }}>
-              <div className="absolute inset-0">
-                <svg viewBox="0 0 800 300" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
-                  <rect x="0" y="0" width="800" height="300" fill="rgba(13,11,7,0.5)" />
-                  <circle cx="400" cy="150" r="100" fill="none" stroke={p.accent} strokeWidth="0.5" opacity="0.3" />
-                  <polygon points="400,50 550,200 250,200" fill="none" stroke={p.accent} strokeWidth="0.5" opacity="0.2" />
-                  <text x="400" y="165" textAnchor="middle" fontFamily="Orbitron" fontSize="48" fill={p.accent} opacity="0.08">
-                    {p.title[0]}
-                  </text>
-                </svg>
-              </div>
-              <p className="relative font-mono text-xs" style={{ color: "var(--color-stone)" }}>
-                [ Project visuals — {p.title} ]
-              </p>
-            </div>
-          </section>
-
           {/* Outcome */}
-          <section>
-            <p className="font-orbitron text-xs uppercase tracking-widest mb-4" style={{ color: p.accent }}>The Outcome</p>
-            <blockquote className="text-xl font-playfair italic pl-4" style={{ color: "var(--color-chalk)", borderLeft: `2px solid ${p.accent}` }}>
+          <section style={{
+            padding:"clamp(1.75rem,4vw,2.5rem) clamp(1.75rem,4vw,2.5rem)",
+            background:`rgba(${p.accentRgb},0.04)`,
+            border:`1px solid rgba(${p.accentRgb},0.16)`,
+            borderRadius:16,
+            borderLeft:`3px solid ${p.accent}`,
+          }}>
+            <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
+              letterSpacing:"0.22em", color:p.accent, textTransform:"uppercase",
+              marginBottom:16 }}>The Outcome</p>
+            <blockquote style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",
+              fontSize:"clamp(1rem,2vw,1.2rem)", color:"rgba(255,255,255,0.7)",
+              lineHeight:1.7, margin:0 }}>
               {p.outcome}
             </blockquote>
           </section>
         </div>
       </article>
 
-      {/* Prev / Next nav */}
-      <nav className="py-12" style={{ background: "var(--color-void)", borderTop: "1px solid rgba(184,115,51,0.15)" }}>
-        <div className="max-w-5xl mx-auto px-6 flex justify-between">
+      {/* ── Prev / Next ───────────────────────────────────────────── */}
+      <nav style={{
+        background:"#02010A",
+        borderTop:"1px solid rgba(255,255,255,0.05)",
+        padding:"clamp(2.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem)",
+      }}>
+        <div style={{ maxWidth:1280, margin:"0 auto", display:"flex",
+          justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:24 }}>
+
           {p.prev ? (
-            <Link href={`/portfolio/${p.prev}`} className="group flex items-center gap-3">
-              <span style={{ color: "var(--color-stone)" }}>←</span>
-              <span className="font-mono text-xs group-hover:text-copper transition-colors" style={{ color: "var(--color-stone)" }}>
-                Previous Project
+            <Link href={`/portfolio/${p.prev}`} className="cs-nav-link cs-nav-link-prev" style={{
+              display:"flex", flexDirection:"column", gap:6, textDecoration:"none",
+              opacity:0.5,
+            }}>
+              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
+                letterSpacing:"0.18em", color:"rgba(255,255,255,0.4)" }}>← PREVIOUS</span>
+              <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"clamp(1.25rem,2.5vw,1.75rem)",
+                color:"var(--chalk)" }}>
+                {PROJECTS[p.prev]?.title ?? "Previous"}
               </span>
             </Link>
           ) : <div />}
+
+          <Link href="/portfolio" className="cs-all-work" style={{ fontFamily:"'JetBrains Mono',monospace",
+            fontSize:10, letterSpacing:"0.18em", color:"rgba(255,255,255,0.3)",
+            textDecoration:"none" }}>
+            ALL WORK
+          </Link>
+          <style>{`.cs-all-work:hover{color:var(--copper)!important;}`}</style>
+
           {p.next ? (
-            <Link href={`/portfolio/${p.next}`} className="group flex items-center gap-3">
-              <span className="font-mono text-xs group-hover:text-copper transition-colors" style={{ color: "var(--color-stone)" }}>
-                Next Project
+            <Link href={`/portfolio/${p.next}`} className="cs-nav-link" style={{
+              display:"flex", flexDirection:"column", gap:6, textDecoration:"none",
+              opacity:0.5, alignItems:"flex-end",
+            }}>
+              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
+                letterSpacing:"0.18em", color:"rgba(255,255,255,0.4)" }}>NEXT →</span>
+              <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"clamp(1.25rem,2.5vw,1.75rem)",
+                color:"var(--chalk)" }}>
+                {PROJECTS[p.next]?.title ?? "Next"}
               </span>
-              <span style={{ color: "var(--color-stone)" }}>→</span>
             </Link>
           ) : <div />}
         </div>
