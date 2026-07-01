@@ -46,8 +46,8 @@ export default function Footer() {
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(200,123,47,0.5)", letterSpacing: "0.2em", marginBottom: 16 }}>
               RAW SIGNAL
             </div>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "0.9rem", color: "var(--mist)", lineHeight: 1.6, maxWidth: 260 }}>
-              &ldquo;I wire things — circuits, code, and connections.&rdquo;
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "0.9rem", color: "var(--mist)", lineHeight: 1.68, maxWidth: 270 }}>
+              &ldquo;I wire things — circuits, code, and the connections that matter most.&rdquo;
             </p>
           </div>
 
@@ -98,8 +98,8 @@ export default function Footer() {
                 Available
               </span>
             </div>
-            <p style={{ fontSize: "0.8125rem", color: "var(--mist)", lineHeight: 1.6 }}>
-              Open to the right opportunity. Freelance and full-time.
+            <p style={{ fontSize: "0.8125rem", color: "var(--mist)", lineHeight: 1.68 }}>
+              Open to the right opportunity — freelance, full-time, or something entirely its own.
             </p>
             <a href="mailto:josiah@rawsignal.dev" className="btn btn-primary" style={{ marginTop: 20, padding: "0.6rem 1.2rem", fontSize: "0.8rem" }}>
               Get in Touch

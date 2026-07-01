@@ -224,9 +224,9 @@ const WORK = [
 ];
 
 const BELIEFS = [
-  { n: "01", t: "Every system is connected",            body: "Whether it's a circuit, a codebase, or a conversation — nothing works in isolation.", accent: "var(--copper)" },
-  { n: "02", t: "Craft is the respect you pay to work", body: "Speed without care is noise. The detail no one sees is still worth getting right.",    accent: "#00C8FF" },
-  { n: "03", t: "The outdoors is the reset button",     body: "Some problems can only be solved by stepping away from them.",                          accent: "#34D399" },
+  { n: "01", t: "Every system is connected",             body: "Whether it is a circuit, a codebase, or a conversation — nothing works in isolation. Understanding one teaches you something true about all the rest.", accent: "var(--copper)" },
+  { n: "02", t: "Craft is the respect you pay to work",  body: "Speed without care is noise. The detail no one notices is still worth getting exactly right. That discipline is what separates good work from great work.", accent: "#00C8FF" },
+  { n: "03", t: "The outdoors is the only real reset",   body: "Some problems cannot be solved at a desk. The clearest thinking happens when you have stepped fully away — and that clarity carries back into everything.", accent: "#34D399" },
 ];
 
 const POSTS = [
@@ -337,6 +337,13 @@ export default function Home() {
         {/* ── Moving aurora mesh — always visible ── */}
         <div className="hero-aurora" style={{ zIndex: 1 }} />
 
+        {/* ── Secondary breathing glow layer ── */}
+        <div aria-hidden="true" style={{
+          position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
+          background: "radial-gradient(ellipse 60% 40% at 20% 90%, rgba(255,80,0,0.10) 0%, transparent 55%), radial-gradient(ellipse 40% 35% at 90% 20%, rgba(0,200,255,0.08) 0%, transparent 50%)",
+          animation: "heroBreathe 8s ease-in-out infinite",
+        }} />
+
         {/* ── CSS atmosphere layers ── */}
         <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
           background: "radial-gradient(ellipse 75% 90% at 15% 65%, rgba(255,100,10,0.18) 0%, transparent 65%)" }} />
@@ -402,8 +409,8 @@ export default function Home() {
 
           <div className="hero-bottom">
             <div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2.2vw,1.45rem)", color: "rgba(255,255,255,0.72)", lineHeight: 1.5, width: "min(460px, calc(100vw - 2.5rem))", maxWidth: "100%", marginBottom: 14, overflowWrap: "break-word" }}>
-                Raw signal for circuits, code, and human attention.
+              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2.2vw,1.45rem)", color: "rgba(255,255,255,0.72)", lineHeight: 1.58, width: "min(480px, calc(100vw - 2.5rem))", maxWidth: "100%", marginBottom: 14, overflowWrap: "break-word" }}>
+                Precision-crafted at the intersection of circuits, code, and craft.
               </p>
               {mounted && (
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -423,10 +430,14 @@ export default function Home() {
         </div>
 
         <style>{`
-          @keyframes sig-pulse{0%,100%{box-shadow:0 0 8px #34D399}50%{box-shadow:0 0 18px #34D399,0 0 32px rgba(52,211,153,0.4)}}
+          @keyframes sig-pulse{
+            0%,100%{box-shadow:0 0 7px #34D399; transform:scale(1);}
+            50%{box-shadow:0 0 20px #34D399,0 0 36px rgba(52,211,153,0.35); transform:scale(1.25);}
+          }
           @keyframes heroFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
           @keyframes heroDiamondShimmer{0%{background-position:200% 0}50%{background-position:0% 0}100%{background-position:-200% 0}}
           @keyframes heroGlint{0%,78%,100%{opacity:0;transform:scaleX(0.2) translateX(-80%)}84%{opacity:1;transform:scaleX(1) translateX(0)}90%{opacity:0;transform:scaleX(0.2) translateX(80%)}}
+          @keyframes heroBreathe{0%,100%{opacity:0.7;transform:scale(1)}50%{opacity:1;transform:scale(1.02)}}
         `}</style>
       </section>
 
@@ -493,8 +504,8 @@ export default function Home() {
                 <br />
                 <Accent word="IS"  idx={0} size="clamp(3.5rem,13vw,11rem)" color="var(--copper)" />
               </div>
-              <p style={{ fontSize: "clamp(0.9rem,1.6vw,1.1rem)", lineHeight: 1.8, color: "rgba(255,255,255,0.45)", maxWidth: 440, marginBottom: 32 }}>
-                An electrician who codes. A developer who designs. An explorer who builds. Not a portfolio of skills — a single way of thinking applied across different domains.
+              <p style={{ fontSize: "clamp(0.9rem,1.6vw,1.1rem)", lineHeight: 1.85, color: "rgba(255,255,255,0.45)", maxWidth: 460, marginBottom: 32 }}>
+                An electrician who writes code. A developer who thinks in systems. An explorer who builds things that last. Not a portfolio of skills — a single discipline of thought applied across every domain.
               </p>
               <Link href="/about" className="btn btn-ghost" style={{ fontSize: 12 }}>Read the full story →</Link>
             </div>
@@ -729,8 +740,8 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", gap: "clamp(1.5rem,4vw,2.5rem)", alignItems: "flex-start", flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 260 }}>
-              <p style={{ fontSize: "clamp(0.875rem,1.6vw,1.1rem)", color: "rgba(255,255,255,0.38)", maxWidth: 480, lineHeight: 1.75, marginBottom: "1.5rem" }}>
-                The best work happens where physical systems, digital tools, and human attention meet. I build at that intersection, where the signal is raw enough to be true and precise enough to ship.
+              <p style={{ fontSize: "clamp(0.875rem,1.6vw,1.1rem)", color: "rgba(255,255,255,0.38)", maxWidth: 500, lineHeight: 1.82, marginBottom: "1.5rem" }}>
+                The finest work emerges where physical systems, digital precision, and human intention converge. I build at that exact intersection — where the signal is honest enough to be trusted and refined enough to ship with confidence.
               </p>
               <Signature color="#C87B2F" width={240} />
             </div>
@@ -746,8 +757,8 @@ export default function Home() {
           { x: "10%", y: "50%", w: "25vw", color: "rgba(0,180,255,0.06)", blur: 70, op: 1, dur: 16, delay: 4 },
         ]} />
         <div style={{ maxWidth: 600, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <p style={{ fontFamily: "'Caveat', cursive", fontSize: "clamp(1.5rem,4vw,2.5rem)", color: "var(--copper)", marginBottom: 8 }}>Think alongside me.</p>
-          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.32)", marginBottom: 28, lineHeight: 1.7 }}>Occasional writing on building, designing, and living. No spam. Ever.</p>
+          <p style={{ fontFamily: "'Caveat', cursive", fontSize: "clamp(1.5rem,4vw,2.5rem)", color: "var(--copper)", marginBottom: 10 }}>Think alongside me.</p>
+          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.32)", marginBottom: 28, lineHeight: 1.78 }}>Occasional writing on building, designing, and living with intention. Infrequent. Honest. Never noise.</p>
           <form onSubmit={(e) => e.preventDefault()} style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <input type="email" placeholder="your@email.com" required
               style={{ flex: 1, minWidth: 200, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, color: "#EAEDF2", fontFamily: "'Inter',sans-serif", fontSize: "0.9375rem", padding: "0.875rem 1.125rem", outline: "none" }}

@@ -2,22 +2,18 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-const ROUTE_CONFIG: Record<string, { colors: string[]; style: "circuit" | "organic" | "geo" | "noise" }> = {
-  "/":         { colors: ["#C87B2F", "#D4A843"], style: "circuit" },
-  "/about":    { colors: ["#34D399", "#00C8FF"], style: "organic" },
-  "/portfolio":{ colors: ["#A855F7", "#00C8FF"], style: "geo" },
-  "/blog":     { colors: ["#A855F7", "#F5F0E8"], style: "noise" },
-  "/contact":  { colors: ["#00C8FF", "#34D399"], style: "circuit" },
-  "/now":      { colors: ["#D4A843", "#34D399"], style: "organic" },
+const PALETTES: Record<string, [string, string, string]> = {
+  "/":          ["#FF8820", "#00DFFF", "#B040FF"],
+  "/about":     ["#34D399", "#00C8FF", "#B040FF"],
+  "/portfolio": ["#A855F7", "#00C8FF", "#34D399"],
+  "/blog":      ["#A855F7", "#F5F0E8", "#FF8820"],
+  "/contact":   ["#00C8FF", "#34D399", "#FF8820"],
+  "/now":       ["#D4A843", "#34D399", "#00C8FF"],
 };
-
-function seededRand(seed: number) {
-  let s = seed;
-  return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
-}
 
 export default function PageBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animRef   = useRef<number>(0);
   const pathname  = usePathname();
 
   useEffect(() => {
@@ -26,98 +22,66 @@ export default function PageBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    resize();
+    const setSize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    setSize();
+    window.addEventListener("resize", setSize);
 
-    const cfg = ROUTE_CONFIG[pathname] ?? ROUTE_CONFIG["/"];
-    const rand = seededRand(pathname.split("").reduce((a, c) => a + c.charCodeAt(0), 42));
-    const W = canvas.width, H = canvas.height;
+    const [c1, c2, c3] = PALETTES[pathname] ?? PALETTES["/"];
+    const COLS = 16, ROWS = 11;
 
-    ctx.clearRect(0, 0, W, H);
+    const draw = (now: number) => {
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
 
-    if (cfg.style === "circuit") {
-      // Circuit grid traces
-      ctx.strokeStyle = cfg.colors[0];
-      ctx.lineWidth = 0.4;
-      ctx.globalAlpha = 0.04;
-      const step = 64;
-      for (let x = 0; x < W; x += step) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-      }
-      for (let y = 0; y < H; y += step) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-      }
-      // Nodes
-      ctx.globalAlpha = 0.08;
-      ctx.fillStyle = cfg.colors[0];
-      for (let i = 0; i < 40; i++) {
-        const x = Math.floor(rand() * (W / step)) * step;
-        const y = Math.floor(rand() * (H / step)) * step;
-        ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
-      }
-    } else if (cfg.style === "organic") {
-      // Flowing curves
-      for (let i = 0; i < 12; i++) {
-        ctx.beginPath();
-        ctx.moveTo(rand() * W, rand() * H);
-        ctx.bezierCurveTo(rand() * W, rand() * H, rand() * W, rand() * H, rand() * W, rand() * H);
-        ctx.strokeStyle = i % 2 === 0 ? cfg.colors[0] : cfg.colors[1];
-        ctx.lineWidth = 0.5;
-        ctx.globalAlpha = 0.05;
-        ctx.stroke();
-      }
-      // Dots
-      for (let i = 0; i < 60; i++) {
-        ctx.beginPath();
-        ctx.arc(rand() * W, rand() * H, rand() * 2 + 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = rand() > 0.5 ? cfg.colors[0] : cfg.colors[1];
-        ctx.globalAlpha = 0.06;
-        ctx.fill();
-      }
-    } else if (cfg.style === "geo") {
-      // Triangles / polygons
-      ctx.globalAlpha = 0.04;
-      for (let i = 0; i < 20; i++) {
-        const x = rand() * W, y = rand() * H, r = rand() * 120 + 40;
-        const sides = Math.floor(rand() * 4) + 3;
-        ctx.beginPath();
-        for (let s = 0; s < sides; s++) {
-          const a = (s / sides) * Math.PI * 2;
-          s === 0 ? ctx.moveTo(x + Math.cos(a) * r, y + Math.sin(a) * r)
-                  : ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
-        }
-        ctx.closePath();
-        ctx.strokeStyle = rand() > 0.5 ? cfg.colors[0] : cfg.colors[1];
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-    } else {
-      // Noise field
-      for (let x = 0; x < W; x += 24) {
-        for (let y = 0; y < H; y += 24) {
-          const angle = (rand() * Math.PI * 2);
+      const cw = W / COLS, ch = H / ROWS;
+
+      for (let col = 0; col <= COLS; col++) {
+        for (let row = 0; row <= ROWS; row++) {
+          const x = col * cw, y = row * ch;
+          const t = now * 0.00042;
+
+          const angle = Math.sin(t + col * 0.38 + row * 0.28) * Math.PI * 0.5
+                      + Math.cos(t * 0.73 + row * 0.52 - col * 0.21) * Math.PI * 0.3;
+
+          const len = 15 + Math.sin(t * 1.8 + col + row) * 5;
+          const xEnd = x + Math.cos(angle) * len;
+          const yEnd = y + Math.sin(angle) * len;
+
+          const c = (col + row) % 3 === 0 ? c1 : (col + row) % 3 === 1 ? c2 : c3;
+          const pulse = 0.022 + Math.abs(Math.sin(t * 1.2 + col * 0.6 + row * 0.4)) * 0.008;
+
           ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(x + Math.cos(angle) * 12, y + Math.sin(angle) * 12);
-          ctx.strokeStyle = rand() > 0.5 ? cfg.colors[0] : cfg.colors[1];
-          ctx.lineWidth = 0.4;
-          ctx.globalAlpha = 0.04;
+          ctx.moveTo(x, y); ctx.lineTo(xEnd, yEnd);
+          ctx.strokeStyle = c;
+          ctx.globalAlpha = pulse;
+          ctx.lineWidth = 0.35;
           ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(x, y, 0.75, 0, Math.PI * 2);
+          ctx.fillStyle = c;
+          ctx.globalAlpha = pulse * 1.6;
+          ctx.fill();
         }
       }
-    }
 
-    ctx.globalAlpha = 1;
+      ctx.globalAlpha = 1;
+      animRef.current = requestAnimationFrame(draw);
+    };
+
+    animRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      window.removeEventListener("resize", setSize);
+    };
   }, [pathname]);
 
   return (
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      style={{
-        position: "fixed", inset: 0, zIndex: 0,
-        pointerEvents: "none", opacity: 1,
-      }}
+      style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
     />
   );
 }

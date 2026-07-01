@@ -18,57 +18,57 @@ const ROLES = [
     id: "electrician", num: "01", icon: "⚡",
     title: "The Electrician",
     color: "#F0C030",
-    body: "Before I wrote a line of code I was inside walls, tracing faults by feel. The trade taught me that physical systems don't lie — they either work or they don't. That honesty changed the way I think about everything.",
+    body: "Before I ever wrote a line of code, I was inside walls — tracing faults by feel, reading current by instinct. The trade taught me that physical systems do not negotiate: they work, or they do not. That absolute honesty reshaped how I think about everything I build.",
     skills: ["Conduit & cable","Panel design","Fault diagnosis","Schematic reading","Safety protocols"],
   },
   {
     id: "developer", num: "02", icon: "◈",
     title: "The Developer",
     color: "#00DFFF",
-    body: "Full-stack by necessity, frontend by love. I build tools for people who work with their hands and interfaces for people who think with their heads. Always in service of a real problem, never a résumé.",
+    body: "Full-stack by necessity, frontend by genuine love. I build tools for people who work with their hands and interfaces for those who think with their heads. Every line of code serves a real problem — not a résumé bullet, not a trend.",
     skills: ["Frontend development","React / Next.js","TypeScript","Backend & APIs","Responsive UI"],
   },
   {
     id: "designer", num: "03", icon: "◉",
     title: "The Designer",
     color: "#B040FF",
-    body: "Figma-native. Motion-aware. Obsessed with the space between things — the margins, the rhythm, the moment an interface becomes honest. Design is not how it looks. It's how it works and whether it respects the person using it.",
+    body: "Figma-native and motion-aware. Obsessed with the space between things — the margins, the rhythm, the precise moment an interface becomes genuinely honest. Design is not what it looks like. It is what it does and whether it respects the person using it.",
     skills: ["UI/UX design","Figma","Design systems","Typography","Motion design"],
   },
   {
     id: "explorer", num: "04", icon: "◎",
     title: "The Explorer",
     color: "#00FF88",
-    body: "The outdoors is not a hobby. It's infrastructure. Hiking taught me patience. Navigation taught me systems thinking. Being disconnected taught me what actually matters when I reconnect.",
+    body: "The outdoors is not a hobby — it is infrastructure for clear thought. Hiking taught me patience. Navigation taught me systems thinking. Complete disconnection revealed what actually matters the moment I return.",
     skills: ["Orientation & navigation","Trail journaling","Photography","Environmental reading","Systems thinking"],
   },
   {
     id: "human", num: "05", icon: "○",
     title: "The Human",
     color: "#F2F4FC",
-    body: "Curious without arrogance. Honest without cruelty. Present. I try to be the kind of person whose work you can trust before you've read a single line of it — because trust is earned by how you show up.",
+    body: "Curious without arrogance. Honest without cruelty. Present. I aim to be the kind of person whose work you trust before you have read a single line of it — because trust is never granted. It is built by showing up, consistently and well.",
     skills: ["Clear communication","Patience","Precision","Problem solving","Honest collaboration"],
   },
 ];
 
 const TIMELINE = [
-  { year: "2016", label: "First electrical apprenticeship — learning to trace faults by hand" },
-  { year: "2018", label: "Qualified electrician, commercial & residential" },
-  { year: "2020", label: "Started teaching myself to code during a quiet season" },
-  { year: "2021", label: "First web project shipped for a trade business" },
-  { year: "2022", label: "Moved into design — Figma, systems, motion" },
-  { year: "2023", label: "First open source design system released" },
-  { year: "2024", label: "Freelancing across electrical, dev, and design simultaneously" },
-  { year: "2026", label: "Building Raw Signal — this is where I am now" },
+  { year: "2016", label: "First electrical apprenticeship — learning to read fault conditions by feel and intuition" },
+  { year: "2018", label: "Qualified as a commercial and residential electrician; confidence in complex panel work" },
+  { year: "2020", label: "Began teaching myself to code during a quieter season in the field" },
+  { year: "2021", label: "First web project shipped — a tool built for a trade business, solving a real problem" },
+  { year: "2022", label: "Moved deliberately into design — Figma, design systems, motion, and typography" },
+  { year: "2023", label: "Released first open-source design system, used by other craftspeople who code" },
+  { year: "2024", label: "Freelancing simultaneously across electrical, development, and design disciplines" },
+  { year: "2026", label: "Building Raw Signal — a platform as precise and honest as the work it represents" },
 ];
 
 const VALUES = [
-  { title: "Precision over speed",  desc: "Do it right. Then do it fast. Never the other way around.", color: "#F0C030" },
-  { title: "Honest craft",          desc: "The detail no one sees is still worth getting right.", color: "#00DFFF" },
-  { title: "Systems thinking",      desc: "Everything is connected. Understanding the whole changes any single part.", color: "#B040FF" },
-  { title: "Humility",              desc: "I don't know everything. I know how to figure things out. That's better.", color: "#00FF88" },
-  { title: "Nature as reset",       desc: "The best thinking happens away from a screen.", color: "#FF8820" },
-  { title: "Human-first design",    desc: "Tools should feel like they were made for the person, not the portfolio.", color: "#F2F4FC" },
+  { title: "Precision over speed",  desc: "Do it right. Then do it fast. Never the other way around — shortcuts compound.", color: "#F0C030" },
+  { title: "Honest craft",          desc: "The detail no one ever notices is still worth getting exactly right. That discipline is what separates lasting work from forgettable work.", color: "#00DFFF" },
+  { title: "Systems thinking",      desc: "Everything connects. Understanding the whole reshapes your understanding of any single part.", color: "#B040FF" },
+  { title: "Calibrated humility",   desc: "I do not know everything. I do know how to figure things out rigorously. That combination is more valuable than either alone.", color: "#00FF88" },
+  { title: "Nature as infrastructure", desc: "The clearest thinking happens well away from a screen. The outdoors is not leisure — it is maintenance.", color: "#FF8820" },
+  { title: "Human-first design",    desc: "Every tool should feel as though it was made specifically for the person holding it — not for the portfolio of the person who built it.", color: "#F2F4FC" },
 ];
 
 /* ── Hero letters ────────────────────────────────────────────────── */
@@ -392,15 +392,15 @@ export default function AboutPage() {
 
             <p style={{
               fontSize: "clamp(0.9375rem,1.5vw,1.0625rem)",
-              lineHeight: 1.85,
+              lineHeight: 1.9,
               color: "#7880A2",
-              maxWidth: 520,
+              maxWidth: 540,
               marginBottom: 36,
               fontWeight: 400,
-              letterSpacing: "0.005em",
+              letterSpacing: "0.006em",
             }}>
-              An electrician who codes. A developer who designs. An explorer who builds.
-              Not a portfolio of skills — a single way of thinking applied across different domains.
+              An electrician who writes code. A developer who reasons in systems. An explorer who creates things that endure.
+              This is not a collection of separate skills — it is one coherent way of thinking, brought to bear across every domain.
             </p>
 
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
