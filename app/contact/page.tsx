@@ -122,9 +122,8 @@ export default function ContactPage() {
 
             <div style={{ display:"flex", flexDirection:"column", gap:28, marginBottom:44 }}>
               {[
-                { label:"Email",    value:"josiah@rawsignal.dev",   href:"mailto:josiah@rawsignal.dev" },
-                { label:"GitHub",   value:"github.com/Jonta254",    href:"https://github.com/Jonta254" },
-                { label:"LinkedIn", value:"linkedin.com/in/josiah", href:"https://linkedin.com/in/josiah" },
+                { label:"Email",  value:"josiah@rawsignal.dev", href:"mailto:josiah@rawsignal.dev" },
+                { label:"GitHub", value:"github.com/Jonta254",  href:"https://github.com/Jonta254" },
               ].map((c) => (
                 <div key={c.label}>
                   <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, letterSpacing:"0.22em", color:"#303450", textTransform:"uppercase", marginBottom:6 }}>{c.label}</p>

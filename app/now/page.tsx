@@ -207,7 +207,7 @@ export default function Now() {
           <div style={{ paddingTop:"2.5rem", borderTop:"1px solid rgba(255,255,255,0.05)", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:16 }}>
             <div>
               <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:"rgba(255,255,255,0.16)", letterSpacing:"0.10em" }}>
-                LAST UPDATED · <span style={{ color:"#C87B2F" }}>JUNE 27, 2026</span>
+                LAST UPDATED · <span style={{ color:"#C87B2F" }}>JULY 2, 2026</span>
               </p>
               <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:"rgba(255,255,255,0.10)", marginTop:4 }}>
                 Inspired by{" "}

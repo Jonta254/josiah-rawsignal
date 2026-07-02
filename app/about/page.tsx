@@ -9,8 +9,6 @@ const CircuitBackground = dynamic(() => import("./CircuitBackground"), { ssr: fa
 /* ── constants ──────────────────────────────────────────────────── */
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-const DIAMOND_GRADIENT =
-  "linear-gradient(105deg,#7A8BAA 0%,#B0BEDD 10%,#DDE5F8 20%,#FFFFFF 30%,#C8D4EE 40%,#96A6C4 50%,#C0CCE8 60%,#FFFFFF 70%,#D8E2F8 80%,#92A2C0 90%,#B4C0DC 100%)";
 
 /* ── data ───────────────────────────────────────────────────────── */
 const ROLES = [
@@ -73,11 +71,21 @@ const VALUES = [
 
 /* ── Hero letters ────────────────────────────────────────────────── */
 const HERO_LETTERS = [
-  { ch: "B", delay: 0.10, floatDur: 3.2, floatDelay: 1.2, shimmerDur: 3.8, glintDur: 5.0 },
-  { ch: "R", delay: 0.22, floatDur: 2.8, floatDelay: 1.4, shimmerDur: 4.2, glintDur: 6.5 },
-  { ch: "I", delay: 0.34, floatDur: 3.6, floatDelay: 1.6, shimmerDur: 3.5, glintDur: 4.8 },
-  { ch: "A", delay: 0.46, floatDur: 2.6, floatDelay: 1.3, shimmerDur: 4.8, glintDur: 7.0 },
-  { ch: "N", delay: 0.58, floatDur: 3.0, floatDelay: 1.5, shimmerDur: 4.0, glintDur: 5.5 },
+  { ch: "B", delay: 0.10, floatDur: 3.2, floatDelay: 1.2, shimmerDur: 3.8, glintDur: 5.0,
+    grad: "linear-gradient(110deg,#C85000 0%,#FF8820 22%,#FFD060 46%,#FF9830 68%,#CC5800 100%)",
+    glowRgb: "255,136,32", glintColor: "rgba(255,220,140,0.88)" },
+  { ch: "R", delay: 0.22, floatDur: 2.8, floatDelay: 1.4, shimmerDur: 4.2, glintDur: 6.5,
+    grad: "linear-gradient(110deg,#0090CC 0%,#00CFFF 22%,#90F4FF 46%,#00D8FF 68%,#0095CC 100%)",
+    glowRgb: "0,210,255", glintColor: "rgba(160,248,255,0.88)" },
+  { ch: "I", delay: 0.34, floatDur: 3.6, floatDelay: 1.6, shimmerDur: 3.5, glintDur: 4.8,
+    grad: "linear-gradient(110deg,#7010C0 0%,#B040FF 22%,#E0A0FF 46%,#C050FF 68%,#7515C5 100%)",
+    glowRgb: "176,64,255", glintColor: "rgba(225,160,255,0.88)" },
+  { ch: "A", delay: 0.46, floatDur: 2.6, floatDelay: 1.3, shimmerDur: 4.8, glintDur: 7.0,
+    grad: "linear-gradient(110deg,#009050 0%,#00EE80 22%,#90FFD0 46%,#00EE80 68%,#009050 100%)",
+    glowRgb: "0,238,128", glintColor: "rgba(160,255,210,0.88)" },
+  { ch: "N", delay: 0.58, floatDur: 3.0, floatDelay: 1.5, shimmerDur: 4.0, glintDur: 5.5,
+    grad: "linear-gradient(110deg,#CC8000 0%,#FFB800 22%,#FFE880 46%,#FFB800 68%,#CC8000 100%)",
+    glowRgb: "255,184,0", glintColor: "rgba(255,238,140,0.88)" },
 ];
 
 const letterVariants = {
@@ -322,7 +330,7 @@ export default function AboutPage() {
             lineHeight: 0.82,
             letterSpacing: "-0.02em",
           }}>
-            {HERO_LETTERS.map(({ ch, delay, floatDur, floatDelay, shimmerDur, glintDur }) => (
+            {HERO_LETTERS.map(({ ch, delay, floatDur, floatDelay, shimmerDur, glintDur, grad, glowRgb, glintColor }) => (
               <motion.span
                 key={ch + delay}
                 custom={delay}
@@ -341,19 +349,19 @@ export default function AboutPage() {
                     fontSize: "clamp(5.5rem,18vw,17rem)",
                     letterSpacing: "-0.02em",
                     lineHeight: 0.82,
-                    background: DIAMOND_GRADIENT,
+                    background: grad,
                     backgroundSize: "300% 100%",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
                     animation: `diamondShimmer ${shimmerDur}s linear infinite ${floatDelay * 0.6}s`,
-                    filter: "drop-shadow(0 0 20px rgba(160,180,255,0.5)) drop-shadow(0 0 5px rgba(255,255,255,0.65))",
+                    filter: `drop-shadow(0 0 22px rgba(${glowRgb},0.88)) drop-shadow(0 0 55px rgba(${glowRgb},0.42))`,
                   }}
                 >
                   {ch}
                   <span aria-hidden="true" style={{
                     position: "absolute", inset: 0,
-                    background: "linear-gradient(105deg,transparent 28%,rgba(255,255,255,0.92) 50%,transparent 72%)",
+                    background: `linear-gradient(110deg, transparent 20%, ${glintColor} 50%, transparent 80%)`,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -678,7 +686,6 @@ export default function AboutPage() {
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
             <Link href="/contact" className="btn btn-primary">Get in Touch</Link>
             <Link href="/portfolio" className="btn btn-ghost">View My Work</Link>
-            <a href="/images/josiah-cv.pdf" className="btn btn-signal">Download CV</a>
           </div>
         </motion.div>
       </section>
