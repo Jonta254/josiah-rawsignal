@@ -1195,3 +1195,259 @@ main { overflow-x: hidden; }
   .proj-name { font-size: 1.75rem; }
   .post-article { grid-template-columns: 38px 1fr; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   FULL SITE UPGRADE — JULY 2026
+   Spectrum letters · Premium UX · Motion depth · Security layer
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Orbitron Rajdhani render smoothing ──────────────────────── */
+.font-orbitron { font-family: 'Orbitron', sans-serif; font-feature-settings: 'kern' 1; }
+.font-mono     { font-family: 'JetBrains Mono', monospace; }
+
+/* ── Nav logo hover glow ─────────────────────────────────────── */
+.nav-logo-wrap { transition: opacity 200ms ease; }
+.nav-logo-wrap:hover { opacity: 0.85; }
+.nav-logo-wrap:hover svg { filter: drop-shadow(0 0 8px rgba(200,123,47,0.45)); }
+.nav-logo-wrap svg { transition: filter 300ms ease; }
+
+/* ── Hero letter aura — ambient color pulse ──────────────────── */
+@keyframes letterAuraPulse {
+  0%,100% { opacity: 0.18; transform: scale(1); }
+  50%      { opacity: 0.32; transform: scale(1.06); }
+}
+
+/* ── Spectrum name bar breathing animation ───────────────────── */
+@keyframes spectrumBreath {
+  0%,100% { opacity: 0.65; }
+  50%      { opacity: 0.90; }
+}
+
+/* ── Premium cursor dot — copper with subtle trail ───────────── */
+.cursor-dot {
+  background: radial-gradient(circle, #FF9840 0%, #FF8820 60%, transparent 100%) !important;
+  box-shadow: 0 0 6px rgba(255,136,32,0.6);
+}
+.cursor-ring {
+  box-shadow: 0 0 12px rgba(255,136,32,0.12) !important;
+}
+
+/* ── Scroll progress — spectrum gradient ─────────────────────── */
+.scroll-progress-bar {
+  background: linear-gradient(90deg, #FF8820 0%, #00DFFF 25%, #B040FF 50%, #00EE80 75%, #FFB800 100%) !important;
+}
+
+/* ── Section label — copper mono tag ────────────────────────── */
+.s-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 18px;
+}
+.s-tag::before {
+  content: ''; display: block; width: 20px; height: 1px;
+  background: var(--copper); opacity: 0.55;
+}
+
+/* ── Glass card upgrade — subtle gradient border on hover ────── */
+.glow-card {
+  transition: border-color 280ms ease, box-shadow 280ms ease, transform 320ms cubic-bezier(0.25,1,0.5,1) !important;
+}
+.glow-card:hover {
+  border-color: rgba(200,123,47,0.28) !important;
+  box-shadow: var(--shadow-card), 0 0 40px rgba(255,136,32,0.10), 0 0 80px rgba(255,136,32,0.04) !important;
+}
+
+/* ── Work card shimmer — enhanced ────────────────────────────── */
+.card-shimmer-wrap::after {
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.055) 50%, transparent 65%) !important;
+}
+
+/* ── Beliefs grid accent line ────────────────────────────────── */
+.belief-accent-line {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, currentColor, transparent 80%);
+  opacity: 0.18; margin-bottom: 16px;
+}
+
+/* ── Belief card hover — subtle lift ────────────────────────── */
+.belief-card {
+  transition: transform 320ms cubic-bezier(0.25,1,0.5,1);
+  cursor: default;
+}
+.belief-card:hover { transform: translateY(-3px); }
+
+/* ── Statistics counter font upgrade ────────────────────────── */
+.stat-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem,6vw,4.5rem);
+  line-height: 1; color: var(--chalk);
+  text-shadow: 0 0 40px rgba(255,255,255,0.08);
+}
+
+/* ── Hero josiah subtitle ────────────────────────────────────── */
+.hero-josiah {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(0.95rem,2.2vw,1.6rem);
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 0.12em;
+  margin-top: 0.5rem;
+  margin-bottom: clamp(0.5rem,1vw,0.85rem);
+}
+
+/* ── Name spectrum bar ───────────────────────────────────────── */
+.name-spectrum {
+  display: flex; height: 3px; border-radius: 3px; overflow: hidden;
+  width: clamp(100px,15vw,260px);
+  margin-bottom: clamp(0.75rem,1.4vw,1.1rem);
+  animation: spectrumBreath 3s ease-in-out infinite;
+}
+.name-spectrum > div { flex: 1; height: 100%; }
+
+/* ── Hero corner bracket decorations ────────────────────────── */
+.hero-corner-tr {
+  position: absolute; top: clamp(4.5rem,9vw,6.5rem); right: clamp(1rem,3vw,2rem);
+  z-index: 6; width: 36px; height: 36px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-right: 1px solid rgba(255,255,255,0.12);
+  pointer-events: none;
+}
+.hero-corner-bl {
+  position: absolute; bottom: clamp(1.5rem,3vw,3rem); left: clamp(1.25rem,4vw,2.5rem);
+  z-index: 6; width: 28px; height: 28px;
+  border-bottom: 1px solid rgba(255,136,32,0.30);
+  border-left: 1px solid rgba(255,136,32,0.30);
+  pointer-events: none;
+}
+
+/* ── Tag chip ────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex; align-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+  letter-spacing: 0.14em; padding: 3px 10px; border-radius: 100px;
+  text-transform: uppercase;
+}
+
+/* ── Writing section post hover ──────────────────────────────── */
+.post-row {
+  display: flex; align-items: center;
+  gap: clamp(1rem,3vw,2.5rem);
+  padding: clamp(1.25rem,3vw,2rem) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  text-decoration: none;
+  transition: gap 300ms cubic-bezier(0.25,1,0.5,1), opacity 200ms;
+}
+.post-row:hover { gap: clamp(1.5rem,4vw,3.5rem) !important; }
+.post-row:hover .post-arrow-icon { transform: translateX(4px); }
+.post-arrow-icon { transition: transform 300ms cubic-bezier(0.25,1,0.5,1); display: inline-block; }
+
+/* ── Available badge glow ────────────────────────────────────── */
+.avail-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(52,211,153,0.07);
+  border: 1px solid rgba(52,211,153,0.22);
+  border-radius: 100px; padding: 5px 14px 5px 8px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: border-color 280ms, background 280ms;
+}
+.avail-badge:hover {
+  border-color: rgba(52,211,153,0.38);
+  background: rgba(52,211,153,0.10);
+}
+
+/* ── Who IS grid link hover ──────────────────────────────────── */
+.who-link {
+  display: flex; align-items: center; gap: 20px;
+  padding: clamp(0.875rem,2vw,1.25rem) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  text-decoration: none;
+  transition: gap 300ms cubic-bezier(0.25,1,0.5,1), background 200ms;
+}
+.who-link:hover { gap: 32px; }
+
+/* ── Manifesto — extra bold weight on mobile ─────────────────── */
+@media (max-width: 640px) {
+  .manifesto-xl { font-size: clamp(3rem,18vw,7rem) !important; }
+}
+
+/* ── Writing section post color accents ─────────────────────── */
+.post-cat-copper { color: #D4A843 !important; }
+.post-cat-violet { color: #A855F7 !important; }
+.post-cat-cyan   { color: #00C8FF !important; }
+.post-cat-emerald{ color: #34D399 !important; }
+
+/* ── Stats grid border accent ────────────────────────────────── */
+.stat-item {
+  border-left: 1px solid rgba(255,136,32,0.12);
+  padding-left: clamp(1rem,3vw,2rem);
+  position: relative; overflow: hidden;
+}
+.stat-item::after {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 1px; height: 0;
+  background: var(--copper);
+  transition: height 1.2s cubic-bezier(0.25,1,0.5,1);
+}
+.stat-item.in-view::after { height: 100%; }
+
+/* ── Button pulse ring on primary hover ──────────────────────── */
+.btn-primary::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(255,136,32,0.4);
+  transition: box-shadow 400ms ease;
+}
+.btn-primary:hover::before { box-shadow: 0 0 0 8px rgba(255,136,32,0); }
+
+/* ── Footer spectrum bar ─────────────────────────────────────── */
+.footer-spectrum {
+  height: 2px; display: flex;
+  position: absolute; top: 0; left: 0; right: 0;
+}
+.footer-spectrum > div { flex: 1; }
+
+/* ── Enhanced focus ring — accessibility ─────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--copper) !important;
+  outline-offset: 4px !important;
+  border-radius: 5px !important;
+}
+
+/* ── Link underline utility ──────────────────────────────────── */
+.link-copper {
+  color: var(--copper); text-decoration: none;
+  border-bottom: 1px solid rgba(200,123,47,0.25);
+  transition: border-color 160ms, color 160ms;
+}
+.link-copper:hover { border-color: var(--copper); }
+
+/* ── Ticker bar color accents ────────────────────────────────── */
+.ticker-copper { color: var(--copper) !important; }
+.ticker-dim    { color: rgba(255,255,255,0.18) !important; }
+
+/* ── WHO grid — left column reveal ──────────────────────────── */
+.who-left-accent {
+  width: 2px; height: 40px;
+  background: linear-gradient(to bottom, var(--violet), transparent);
+  margin-bottom: 20px; border-radius: 2px;
+}
+
+/* ── Smooth section transitions ──────────────────────────────── */
+section { transition: background 400ms ease; }
+
+/* ── Optimise paint for animated elements ────────────────────── */
+.hero-aurora,
+.cursor-glow,
+.cursor-dot,
+.cursor-ring,
+.scroll-progress-bar { contain: strict; }
+
+/* ── Print styles ────────────────────────────────────────────── */
+@media print {
+  .cursor-glow, .cursor-dot, .cursor-ring,
+  .scroll-progress-bar, .hero-aurora,
+  .mobile-drawer { display: none !important; }
+  body { background: white !important; color: black !important; }
+  a { color: black !important; text-decoration: underline !important; }
+}

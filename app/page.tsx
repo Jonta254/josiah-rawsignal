@@ -98,21 +98,49 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   return <span ref={ref}>{n}{suffix}</span>;
 }
 
-/* ─── Brian diamond letter data ──────────────────────────────── */
+/* ─── Brian spectrum letter data — each letter owns a color ──── */
 const BRIAN_LETTERS = [
-  { ch: "B", enterAnim: "letterFromLeft 1.3s cubic-bezier(0.16,1,0.3,1) 0.20s both", floatDur: 3.2, floatDelay: 0.0, shimmerDelay: "0s",   glintDelay: "5.0s" },
-  { ch: "R", enterAnim: "letterRise 1.1s cubic-bezier(0.16,1,0.3,1) 0.40s both",     floatDur: 2.8, floatDelay: 0.4, shimmerDelay: "0.6s",  glintDelay: "6.5s" },
-  { ch: "I", enterAnim: "letterFlash 1.0s cubic-bezier(0.16,1,0.3,1) 0.60s both",    floatDur: 3.6, floatDelay: 0.2, shimmerDelay: "1.2s",  glintDelay: "4.8s" },
-  { ch: "A", enterAnim: "letterFall 1.1s cubic-bezier(0.16,1,0.3,1) 0.80s both",     floatDur: 2.6, floatDelay: 0.6, shimmerDelay: "0.3s",  glintDelay: "7.0s" },
-  { ch: "N", enterAnim: "letterFromRight 1.3s cubic-bezier(0.16,1,0.3,1) 1.00s both",floatDur: 3.0, floatDelay: 0.8, shimmerDelay: "0.9s",  glintDelay: "5.5s" },
+  {
+    ch: "B",
+    grad: "linear-gradient(110deg,#C85000 0%,#FF8820 22%,#FFD060 46%,#FF9830 68%,#CC5800 100%)",
+    glowRgb: "255,136,32", glintColor: "rgba(255,220,140,0.88)",
+    enterAnim: "letterFromLeft 1.3s cubic-bezier(0.16,1,0.3,1) 0.20s both",
+    floatDur: 3.2, floatDelay: 0.0, shimmerDelay: "0s", glintDelay: "5.0s",
+  },
+  {
+    ch: "R",
+    grad: "linear-gradient(110deg,#0090CC 0%,#00CFFF 22%,#90F4FF 46%,#00D8FF 68%,#0095CC 100%)",
+    glowRgb: "0,210,255", glintColor: "rgba(160,248,255,0.88)",
+    enterAnim: "letterRise 1.1s cubic-bezier(0.16,1,0.3,1) 0.40s both",
+    floatDur: 2.8, floatDelay: 0.4, shimmerDelay: "0.7s", glintDelay: "6.5s",
+  },
+  {
+    ch: "I",
+    grad: "linear-gradient(110deg,#7010C0 0%,#B040FF 22%,#E0A0FF 46%,#C050FF 68%,#7515C5 100%)",
+    glowRgb: "176,64,255", glintColor: "rgba(225,160,255,0.88)",
+    enterAnim: "letterFlash 1.0s cubic-bezier(0.16,1,0.3,1) 0.60s both",
+    floatDur: 3.6, floatDelay: 0.2, shimmerDelay: "1.4s", glintDelay: "4.8s",
+  },
+  {
+    ch: "A",
+    grad: "linear-gradient(110deg,#009050 0%,#00EE80 22%,#90FFD0 46%,#00EE80 68%,#009050 100%)",
+    glowRgb: "0,238,128", glintColor: "rgba(160,255,210,0.88)",
+    enterAnim: "letterFall 1.1s cubic-bezier(0.16,1,0.3,1) 0.80s both",
+    floatDur: 2.6, floatDelay: 0.6, shimmerDelay: "0.35s", glintDelay: "7.0s",
+  },
+  {
+    ch: "N",
+    grad: "linear-gradient(110deg,#CC8000 0%,#FFB800 22%,#FFE880 46%,#FFB800 68%,#CC8000 100%)",
+    glowRgb: "255,184,0", glintColor: "rgba(255,238,140,0.88)",
+    enterAnim: "letterFromRight 1.3s cubic-bezier(0.16,1,0.3,1) 1.00s both",
+    floatDur: 3.0, floatDelay: 0.8, shimmerDelay: "1.05s", glintDelay: "5.5s",
+  },
 ];
-
-const DIAMOND_GRAD = "linear-gradient(105deg,#7A8BAA 0%,#B0BEDD 10%,#DDE5F8 20%,#FFFFFF 30%,#C8D4EE 40%,#96A6C4 50%,#C0CCE8 60%,#FFFFFF 70%,#D8E2F8 80%,#92A2C0 90%,#B4C0DC 100%)";
 
 function BrianName() {
   return (
-    <div style={{ perspective: "1800px", display: "inline-block", lineHeight: 0.82 }}>
-      {BRIAN_LETTERS.map(({ ch, enterAnim, floatDur, floatDelay, shimmerDelay, glintDelay }, i) => (
+    <div style={{ perspective: "1800px", display: "inline-flex", lineHeight: 0.82, position: "relative", gap: "0.005em" }}>
+      {BRIAN_LETTERS.map(({ ch, enterAnim, floatDur, floatDelay, shimmerDelay, glintDelay, grad, glowRgb, glintColor }, i) => (
         <span
           key={i}
           style={{
@@ -127,27 +155,45 @@ function BrianName() {
             willChange: "transform, opacity",
           }}
         >
-          {/* Diamond gradient letter */}
+          {/* Per-letter color gradient */}
           <span style={{
-            background: DIAMOND_GRAD,
+            background: grad,
             backgroundSize: "300% 100%",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
-            filter: "drop-shadow(0 0 32px rgba(180,210,255,0.45)) drop-shadow(0 0 80px rgba(140,180,255,0.20))",
-            animation: `heroDiamondShimmer 4s ease-in-out ${shimmerDelay} infinite`,
+            filter: `drop-shadow(0 0 22px rgba(${glowRgb},0.88)) drop-shadow(0 0 55px rgba(${glowRgb},0.42))`,
+            animation: `heroDiamondShimmer 4.5s ease-in-out ${shimmerDelay} infinite`,
+            display: "block",
           }}>{ch}</span>
-          {/* Glint flash overlay */}
+          {/* Colored glint flash */}
           <span aria-hidden="true" style={{
             position: "absolute", inset: 0,
-            background: "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.85) 50%, transparent 80%)",
+            background: `linear-gradient(110deg, transparent 20%, ${glintColor} 50%, transparent 80%)`,
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
             animation: `heroGlint 7s ease-in-out ${glintDelay} infinite`,
             pointerEvents: "none",
           }}>{ch}</span>
+          {/* Ambient color aura behind letter */}
+          <span aria-hidden="true" style={{
+            position: "absolute", inset: "-14% -10%",
+            background: `radial-gradient(ellipse 85% 75% at 50% 58%, rgba(${glowRgb},0.22) 0%, transparent 68%)`,
+            filter: "blur(18px)", pointerEvents: "none", zIndex: -1,
+          }} />
         </span>
+      ))}
+    </div>
+  );
+}
+
+/* ─── 5-color spectrum bar matching each letter ─────────────── */
+function NameSpectrum() {
+  return (
+    <div style={{ display: "flex", width: "clamp(100px,15vw,260px)", height: 3, borderRadius: 3, overflow: "hidden", marginBottom: "clamp(0.75rem,1.4vw,1.1rem)" }}>
+      {BRIAN_LETTERS.map(({ glowRgb }, i) => (
+        <div key={i} style={{ flex: 1, height: "100%", background: `rgb(${glowRgb})`, opacity: i === 2 ? 0.85 : 0.72 }} />
       ))}
     </div>
   );
@@ -340,50 +386,65 @@ export default function Home() {
           </ErrorBoundary>
         )}
 
-        {/* Available badge */}
-        <div style={{ position: "absolute", top: "clamp(5rem,10vw,7rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 6, display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#34D399", boxShadow: "0 0 8px #34D399", animation: "sig-pulse 2s ease-in-out infinite" }} />
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(9px,1.2vw,11px)", letterSpacing: "0.18em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
+        {/* Available badge — glass pill */}
+        <div style={{ position: "absolute", top: "clamp(5rem,10vw,7rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 6, display: "flex", alignItems: "center", gap: 8, background: "rgba(52,211,153,0.07)", border: "1px solid rgba(52,211,153,0.22)", borderRadius: 100, padding: "5px 14px 5px 8px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#34D399", boxShadow: "0 0 8px #34D399", animation: "sig-pulse 2s ease-in-out infinite", flexShrink: 0 }} />
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1.1vw,10px)", letterSpacing: "0.18em", color: "#34D399", textTransform: "uppercase", whiteSpace: "nowrap" }}>
             Available for work
           </span>
         </div>
 
+        {/* ── Top-right corner bracket ── */}
+        <div aria-hidden="true" style={{ position: "absolute", top: "clamp(4.5rem,9vw,6.5rem)", right: "clamp(1rem,3vw,2rem)", zIndex: 6, width: 36, height: 36, borderTop: "1px solid rgba(255,255,255,0.12)", borderRight: "1px solid rgba(255,255,255,0.12)", pointerEvents: "none" }} />
+        {/* ── Bottom-left corner bracket ── */}
+        <div aria-hidden="true" style={{ position: "absolute", bottom: "clamp(1.5rem,3vw,3rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 6, width: 28, height: 28, borderBottom: "1px solid rgba(255,136,32,0.30)", borderLeft: "1px solid rgba(255,136,32,0.30)", pointerEvents: "none" }} />
+
         {/* Hero content — responsive via .hero-content class */}
         <div className="hero-content" style={{ position: "relative", zIndex: 6, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>
 
-          {/* Monospace coordinate label */}
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: "clamp(0.5rem,1vw,0.75rem)" }}>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1vw,10px)", letterSpacing: "0.22em", color: "rgba(255,184,0,0.45)", textTransform: "uppercase" }}>SIGNAL.ID</span>
-            <div style={{ flex: 1, maxWidth: 80, height: 1, background: "rgba(255,184,0,0.2)" }} />
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1vw,10px)", letterSpacing: "0.18em", color: "rgba(255,255,255,0.18)" }}>01°24′S 36°49′E</span>
+          {/* Monospace coordinate / data-HUD label */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: "clamp(0.5rem,1vw,0.75rem)", flexWrap: "wrap" }}>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1vw,10px)", letterSpacing: "0.24em", color: "rgba(255,184,0,0.55)", textTransform: "uppercase" }}>// SIGNAL.ID</span>
+            <div style={{ width: 40, height: 1, background: "rgba(255,184,0,0.18)" }} />
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1vw,10px)", letterSpacing: "0.14em", color: "rgba(255,255,255,0.22)" }}>01°24′S  36°49′E</span>
+            <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.12)" }} />
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1vw,10px)", letterSpacing: "0.14em", color: "rgba(255,255,255,0.14)" }}>2026</span>
           </div>
 
-          <h1 style={{ margin: 0 }}>
+          <h1 style={{ margin: 0, lineHeight: 0.82 }}>
             <BrianName />
           </h1>
 
-          {/* Animated gradient rule under the name */}
-          <div style={{ position: "relative", width: "clamp(80px,14vw,220px)", height: 1, marginBottom: "clamp(1rem,2vw,1.5rem)", overflow: "hidden" }}>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, #FFD060, #FF8820, #00DFFF, #B040FF, #FF8820, #FFD060)", backgroundSize: "400% 100%", animation: "nameSweep 3.5s ease-in-out 2.2s infinite" }} />
+          {/* Josiah — secondary identity label */}
+          <div style={{
+            fontFamily: "'Playfair Display', serif", fontStyle: "italic",
+            fontSize: "clamp(0.95rem,2.2vw,1.6rem)", color: "rgba(255,255,255,0.18)",
+            letterSpacing: "0.12em", marginTop: "0.5rem",
+            marginBottom: "clamp(0.5rem,1vw,0.85rem)", paddingLeft: "0.08em",
+          }}>
+            josiah
           </div>
+
+          {/* Spectrum bar — 5-color identity stripe */}
+          <NameSpectrum />
 
           <div className="hero-bottom">
             <div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2.2vw,1.45rem)", color: "rgba(255,255,255,0.72)", lineHeight: 1.58, width: "min(480px, calc(100vw - 2.5rem))", maxWidth: "100%", marginBottom: 14, overflowWrap: "break-word" }}>
-                Precision-crafted at the intersection of circuits, code, and craft.
+              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2.2vw,1.4rem)", color: "rgba(255,255,255,0.68)", lineHeight: 1.65, width: "min(500px, calc(100vw - 2.5rem))", maxWidth: "100%", marginBottom: 14, overflowWrap: "break-word" }}>
+                Where circuits meet code — and craft is non-negotiable.
               </p>
               {mounted && (
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.3vw,12px)", color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>→</span>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.2vw,11px)", color: "rgba(255,255,255,0.22)", letterSpacing: "0.08em" }}>→</span>
                   <TypeWriter
-                    words={["Electrician.", "Developer.", "3D web.", "Designer.", "Human."]}
-                    style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.3vw,12px)", color: "var(--copper)", letterSpacing: "0.1em" }}
+                    words={["Electrician.", "Developer.", "3D Web.", "Designer.", "Human."]}
+                    style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.2vw,11px)", color: "var(--copper)", letterSpacing: "0.12em" }}
                   />
                 </div>
               )}
             </div>
             <div className="hero-ctas" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <MagneticButton as="a" href="/portfolio" className="btn btn-primary" style={{ fontSize: "clamp(11px,1.2vw,13px)" }}>Enter Work</MagneticButton>
+              <MagneticButton as="a" href="/portfolio" className="btn btn-primary" style={{ fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.12em" }}>Enter Work</MagneticButton>
               <MagneticButton as="a" href="/about"     className="btn btn-ghost"   style={{ fontSize: "clamp(11px,1.2vw,13px)" }}>Read Signal</MagneticButton>
             </div>
           </div>
@@ -623,11 +684,13 @@ export default function Home() {
           </div>
           <div className="beliefs-grid">
             {BELIEFS.map((b) => (
-              <div key={b.n} style={{ borderTop: `1px solid ${b.accent}30`, paddingTop: "clamp(1.25rem,3vw,2rem)" }}>
-                <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(2.5rem,5vw,4.5rem)", color: b.accent, opacity: 0.10, lineHeight: 1, marginBottom: 12, fontWeight: 700 }}>{b.n}</div>
-                <div style={{ width: 24, height: 1, background: b.accent, marginBottom: 18, opacity: 0.6 }} />
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2vw,1.2rem)", color: "var(--chalk)", lineHeight: 1.45, marginBottom: 12 }}>{b.t}</h3>
-                <p style={{ fontSize: "clamp(0.8rem,1.3vw,0.9rem)", color: "rgba(255,255,255,0.40)", lineHeight: 1.75 }}>{b.body}</p>
+              <div key={b.n} style={{ borderTop: `1px solid ${b.accent}28`, paddingTop: "clamp(1.25rem,3vw,2rem)", position: "relative" }}>
+                {/* Accent corner accent */}
+                <div aria-hidden="true" style={{ position: "absolute", top: -1, left: 0, width: 24, height: 3, background: b.accent, borderRadius: "0 0 2px 0", opacity: 0.7 }} />
+                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem,6vw,5.5rem)", color: b.accent, opacity: 0.07, lineHeight: 1, marginBottom: 10 }}>{b.n}</div>
+                <div style={{ width: 20, height: 1, background: b.accent, marginBottom: 16, opacity: 0.55 }} />
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2vw,1.15rem)", color: "var(--chalk)", lineHeight: 1.5, marginBottom: 12 }}>{b.t}</h3>
+                <p style={{ fontSize: "clamp(0.8rem,1.3vw,0.875rem)", color: "rgba(255,255,255,0.38)", lineHeight: 1.82, maxWidth: "100%" }}>{b.body}</p>
               </div>
             ))}
           </div>
@@ -690,7 +753,7 @@ export default function Home() {
               <ScrambleText text="// 005 — Manifesto" trigger={s5visible} delay={200} />
             </p>
           </div>
-          <div style={{ marginBottom: 40 }}>
+          <div style={{ marginBottom: "clamp(2rem,5vw,4rem)" }}>
             <ManifestoStagger lines={[
               { text: "BUILD." },
               { text: "CONNECT.", color: "#00C8FF" },
@@ -698,14 +761,24 @@ export default function Home() {
               { text: "REPEAT." },
             ]} />
           </div>
-          <div style={{ display: "flex", gap: "clamp(1.5rem,4vw,2.5rem)", alignItems: "flex-start", flexWrap: "wrap" }}>
+          {/* Divider */}
+          <div style={{ width: "clamp(60px,10vw,140px)", height: 1, background: "linear-gradient(to right,rgba(255,136,32,0.5),transparent)", marginBottom: "clamp(1.5rem,3vw,2.5rem)" }} />
+          <div style={{ display: "flex", gap: "clamp(1.5rem,5vw,3rem)", alignItems: "flex-start", flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 260 }}>
-              <p style={{ fontSize: "clamp(0.875rem,1.6vw,1.1rem)", color: "rgba(255,255,255,0.38)", maxWidth: 500, lineHeight: 1.82, marginBottom: "1.5rem" }}>
+              <p style={{ fontSize: "clamp(0.875rem,1.6vw,1.08rem)", color: "rgba(255,255,255,0.38)", maxWidth: 500, lineHeight: 1.88, marginBottom: "1.75rem" }}>
                 The finest work emerges where physical systems, digital precision, and human intention converge. I build at that exact intersection — where the signal is honest enough to be trusted and refined enough to ship with confidence.
               </p>
               <Signature color="#C87B2F" width={240} />
             </div>
-            <MagneticButton as="a" href="/contact" className="btn btn-primary">Start a conversation</MagneticButton>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-start" }}>
+              <MagneticButton as="a" href="/contact" className="btn btn-primary">Start a conversation</MagneticButton>
+              <Link href="/portfolio" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: "rgba(255,255,255,0.28)", letterSpacing: "0.14em", textDecoration: "none", transition: "color 200ms" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--copper)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
+              >
+                Or explore the work →
+              </Link>
+            </div>
           </div>
         </div>
       </section>

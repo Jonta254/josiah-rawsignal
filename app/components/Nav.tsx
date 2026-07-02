@@ -41,18 +41,27 @@ export default function Nav() {
       >
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(1.25rem,4vw,2rem)", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           {/* Logo */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <svg viewBox="0 0 28 28" fill="none" style={{ width: 26, height: 26, flexShrink: 0 }}>
-              <rect x="1" y="1" width="26" height="26" rx="5" stroke="rgba(200,123,47,0.4)" strokeWidth="1"/>
-              <circle cx="14" cy="14" r="4" stroke="#C87B2F" strokeWidth="1.5"/>
-              <line x1="14" y1="2" x2="14" y2="8" stroke="#C87B2F" strokeWidth="1" opacity="0.6"/>
-              <line x1="14" y1="20" x2="14" y2="26" stroke="#C87B2F" strokeWidth="1" opacity="0.6"/>
-              <line x1="2" y1="14" x2="8" y2="14" stroke="#C87B2F" strokeWidth="1" opacity="0.6"/>
-              <line x1="20" y1="14" x2="26" y2="14" stroke="#C87B2F" strokeWidth="1" opacity="0.6"/>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 11 }} className="nav-logo-wrap">
+            <svg viewBox="0 0 32 32" fill="none" style={{ width: 28, height: 28, flexShrink: 0 }}>
+              {/* Outer frame */}
+              <rect x="1" y="1" width="30" height="30" rx="7" stroke="rgba(200,123,47,0.30)" strokeWidth="1"/>
+              {/* Corner accents */}
+              <polyline points="1,8 1,1 8,1"  stroke="rgba(200,123,47,0.55)" strokeWidth="1.2" fill="none"/>
+              <polyline points="24,1 31,1 31,8" stroke="rgba(200,123,47,0.55)" strokeWidth="1.2" fill="none"/>
+              <polyline points="1,24 1,31 8,31" stroke="rgba(200,123,47,0.55)" strokeWidth="1.2" fill="none"/>
+              <polyline points="24,31 31,31 31,24" stroke="rgba(200,123,47,0.55)" strokeWidth="1.2" fill="none"/>
+              {/* Signal cross */}
+              <line x1="16" y1="5" x2="16" y2="11"  stroke="#C87B2F" strokeWidth="1.2" opacity="0.7"/>
+              <line x1="16" y1="21" x2="16" y2="27" stroke="#C87B2F" strokeWidth="1.2" opacity="0.7"/>
+              <line x1="5"  y1="16" x2="11" y2="16" stroke="#C87B2F" strokeWidth="1.2" opacity="0.7"/>
+              <line x1="21" y1="16" x2="27" y2="16" stroke="#C87B2F" strokeWidth="1.2" opacity="0.7"/>
+              {/* Center core */}
+              <circle cx="16" cy="16" r="4.5" stroke="#C87B2F" strokeWidth="1.2"/>
+              <circle cx="16" cy="16" r="2"   fill="#C87B2F"/>
             </svg>
             <div>
-              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 600, color: "#EAEDF2", letterSpacing: "0.06em", lineHeight: 1.2 }}>BRIAN</div>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "rgba(200,123,47,0.6)", letterSpacing: "0.15em", lineHeight: 1.2 }}>RAW SIGNAL</div>
+              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 700, color: "#EAEDF2", letterSpacing: "0.08em", lineHeight: 1.15 }}>BRIAN</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8.5, color: "rgba(200,123,47,0.65)", letterSpacing: "0.18em", lineHeight: 1.2 }}>RAW SIGNAL</div>
             </div>
           </Link>
 

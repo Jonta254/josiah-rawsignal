@@ -35,7 +35,13 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "var(--void)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+    <footer style={{ background: "var(--void)", borderTop: "1px solid rgba(255,255,255,0.04)", position: "relative", overflow: "hidden" }}>
+      {/* 5-color spectrum top bar */}
+      <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, display: "flex" }}>
+        {["rgba(255,136,32,0.7)","rgba(0,210,255,0.7)","rgba(176,64,255,0.7)","rgba(0,238,128,0.7)","rgba(255,184,0,0.7)"].map((c, i) => (
+          <div key={i} style={{ flex: 1, background: c }} />
+        ))}
+      </div>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2rem) 2rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "3rem", marginBottom: "3rem" }}>
           {/* Brand */}
