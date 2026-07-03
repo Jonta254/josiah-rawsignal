@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "../components/RevealWrapper";
 
@@ -9,16 +10,18 @@ export const metadata: Metadata = {
 
 const PROJECTS = [
   {
-    slug: "electrimap",
+    slug: "electracore",
     num: "01",
-    title: "ElectriMap",
-    tagline: "Circuit diagramming, reinvented for the field.",
-    status: "Concept", year: "2025",
-    category: "Mobile App",
+    title: "ElectraCore",
+    tagline: "The complete electrical platform for students, engineers, and trade workers.",
+    status: "Live", year: "2025",
+    category: "Web App",
     color: "#F0C030",
     colorAlpha: "rgba(240,192,48,0.07)",
-    desc: "A mobile circuit diagramming tool built for electricians on-site. Offline-first, schematic-aware, and honest. Built for the person in the wall cavity — not the person at the desk.",
-    tools: ["React Native", "TypeScript", "SQLite", "Offline-first"],
+    image: "/images/work-1.jpg",
+    desc: "Calculators, wiring guides, learning paths, load analysis, and job billing — all in one platform built from 8 years on the tools. Free for core tools, Pro for the full library.",
+    tools: ["Next.js", "TypeScript", "React", "PWA", "Offline-first"],
+    liveUrl: "https://electracore.vercel.app",
   },
   {
     slug: "terrain-journal",
@@ -29,6 +32,7 @@ const PROJECTS = [
     category: "Web App",
     color: "#34D399",
     colorAlpha: "rgba(52,211,153,0.07)",
+    image: "/images/work-2.jpg",
     desc: "GPS outdoor journaling with map trail overlays and location-aware photo capture. Built for people who actually go outside — not people who talk about going outside.",
     tools: ["Next.js", "Mapbox", "Supabase", "PWA"],
   },
@@ -41,15 +45,43 @@ const PROJECTS = [
     category: "Design System",
     color: "#B040FF",
     colorAlpha: "rgba(176,64,255,0.07)",
+    image: "/images/work-3.jpg",
     desc: "An open design system for craftspeople who code. Warm, honest, anti-template. Built from the pain of real projects — not from theoretical best practices.",
     tools: ["Figma", "Storybook", "Tailwind", "Design Tokens"],
   },
 ];
 
 const COMING = [
-  { title: "Circuit Planner", desc: "Phase load balancing for residential panels" },
-  { title: "Field Notes", desc: "Voice-to-schematic for on-site documentation" },
-  { title: "Signal Dashboard", desc: "Personal productivity OS" },
+  {
+    title: "SafeSignal",
+    sub: "Lone Worker Safety Platform",
+    tagline: "Because no one should work inside a live panel with nobody knowing where they are.",
+    desc: "Automatic dead-man check-ins, escalating emergency alerts, and GPS sharing for trade workers on the job alone. Built for the person in the wall cavity, the roof void, the basement — not the person at a desk.",
+    color: "#FF6B35",
+    tag: "Mobile · B2B SaaS",
+    href: "https://safesignal-beta.vercel.app",
+    status: "Live Preview",
+  },
+  {
+    title: "ApprenticeLog",
+    sub: "Trade Apprenticeship Logbook",
+    tagline: "The digital logbook that trade apprentices actually deserve.",
+    desc: "Log hours, track skill sign-offs, and generate compliance reports — replacing the paper books that go missing, the spreadsheets nobody submits, and the process that hasn't changed in forty years.",
+    color: "#00C8FF",
+    tag: "Web · Institutional SaaS",
+    href: "https://apprentice-log-xi.vercel.app",
+    status: "Live Preview",
+  },
+  {
+    title: "TrailDesk",
+    sub: "Offline Trip Planning",
+    tagline: "Trip planning that works when your signal doesn't.",
+    desc: "Offline-first route mapping, gear checklists, emergency contacts, and trail archives. For people who take going outside seriously enough to prepare for it.",
+    color: "#34D399",
+    tag: "Mobile · Consumer",
+    href: "https://traildesk.vercel.app",
+    status: "Live Preview",
+  },
 ];
 
 export default function PortfolioPage() {
@@ -145,9 +177,18 @@ export default function PortfolioPage() {
                       ))}
                       <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, letterSpacing:"0.1em", padding:"3px 10px", borderRadius:100, background:"rgba(255,255,255,0.02)", color:"rgba(255,255,255,0.2)", border:"1px solid rgba(255,255,255,0.05)" }}>{p.category}</span>
                     </div>
-                    <span className="proj-arrow" style={{ "--pc": p.color } as React.CSSProperties}>
-                      View Case Study →
-                    </span>
+                    <div style={{ display:"flex", gap:12, alignItems:"center" }}>
+                      {(p as typeof p & { liveUrl?: string }).liveUrl && (
+                        <a href={(p as typeof p & { liveUrl?: string }).liveUrl} target="_blank" rel="noopener"
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:p.color, letterSpacing:"0.1em", textDecoration:"none", border:`1px solid ${p.color}40`, padding:"3px 10px", borderRadius:100, background:`${p.color}0A` }}>
+                          View Live ↗
+                        </a>
+                      )}
+                      <span className="proj-arrow" style={{ "--pc": p.color } as React.CSSProperties}>
+                        View Case Study →
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -156,18 +197,88 @@ export default function PortfolioPage() {
         </div>
 
         {/* Coming next */}
-        <div style={{ maxWidth:1280, margin:"0 auto", padding:"clamp(3rem,6vw,5rem) clamp(1.25rem,5vw,3rem) clamp(4rem,8vw,6rem)" }}>
+        <div style={{ maxWidth:1280, margin:"0 auto", padding:"clamp(4rem,8vw,7rem) clamp(1.25rem,5vw,3rem) clamp(4rem,8vw,6rem)", borderTop:"1px solid rgba(255,255,255,0.05)" }}>
           <Reveal className="reveal">
-            <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:"#303450", letterSpacing:"0.18em", textTransform:"uppercase", marginBottom:"clamp(1.5rem,3vw,2.5rem)" }}>
-              In the pipeline
+            <div style={{ marginBottom:"clamp(2rem,4vw,3.5rem)" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:20 }}>
+                <div style={{ width:24, height:1, background:"rgba(255,184,0,0.40)" }} />
+                <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:"rgba(255,184,0,0.50)", letterSpacing:"0.22em", textTransform:"uppercase" }}>
+                  Next in build
+                </span>
+              </div>
+              <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"clamp(2rem,6vw,4.5rem)", lineHeight:0.9, letterSpacing:"0.02em", color:"rgba(255,255,255,0.12)", marginBottom:12 }}>
+                WHAT&apos;S COMING
+              </h2>
+              <p style={{ fontSize:"clamp(0.875rem,1.4vw,0.9375rem)", color:"rgba(255,255,255,0.28)", maxWidth:520, lineHeight:1.75 }}>
+                Three products in research and design — each solving a real problem for people who work with their hands and their heads.
+              </p>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,240px),1fr))", gap:"clamp(1rem,2vw,1.5rem)" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,300px),1fr))", gap:"clamp(1rem,2vw,1.5rem)", alignItems:"stretch" }}>
               {COMING.map((c, i) => (
-                <Reveal key={c.title} className="reveal-scale" delay={i * 60}>
-                  <div style={{ padding:"clamp(1.25rem,2.5vw,1.75rem)", background:"rgba(255,255,255,0.015)", border:"1px dashed rgba(255,255,255,0.07)", borderRadius:16 }}>
-                    <p style={{ fontFamily:"'Orbitron',sans-serif", fontSize:"0.8125rem", color:"rgba(255,255,255,0.25)", fontWeight:500, letterSpacing:"0.04em", marginBottom:8 }}>{c.title}</p>
-                    <p style={{ fontSize:"0.8125rem", color:"#303450", lineHeight:1.65 }}>{c.desc}</p>
+                <Reveal key={c.title} className="reveal-scale" delay={i * 80}>
+                  <a href={c.href} target="_blank" rel="noopener" style={{ textDecoration:"none", color:"inherit", display:"block", height:"100%" }}>
+                  <div style={{
+                    padding:"clamp(1.5rem,3vw,2rem)",
+                    background:"rgba(255,255,255,0.016)",
+                    border:"1px solid rgba(255,255,255,0.07)",
+                    borderTop:`2px solid ${c.color}40`,
+                    borderRadius:16,
+                    position:"relative", overflow:"hidden",
+                    display:"flex", flexDirection:"column", gap:16,
+                    height:"100%", cursor:"pointer",
+                    transition:"border-color 0.2s, transform 0.2s",
+                  }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = `${c.color}50`; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.07)"; (e.currentTarget as HTMLDivElement).style.transform = "none"; }}
+                  >
+                    {/* Ambient glow */}
+                    <div aria-hidden="true" style={{
+                      position:"absolute", top:0, left:0, right:0, height:80,
+                      background:`radial-gradient(ellipse 80% 100% at 50% 0%, ${c.color}10 0%, transparent 100%)`,
+                      pointerEvents:"none",
+                    }} />
+
+                    {/* Header */}
+                    <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:12 }}>
+                      <div>
+                        <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
+                          <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:8, color:`${c.color}60`, letterSpacing:"0.2em" }}>0{i+1}</span>
+                          <div style={{ width:16, height:1, background:`${c.color}40` }} />
+                        </div>
+                        <p style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"clamp(1.3rem,2.5vw,1.65rem)", letterSpacing:"0.04em", color:"rgba(255,255,255,0.82)", lineHeight:1 }}>{c.title}</p>
+                        <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.625rem", color:`${c.color}80`, letterSpacing:"0.12em", textTransform:"uppercase", marginTop:5 }}>{c.sub}</p>
+                      </div>
+                      <a href={c.href} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{
+                        fontFamily:"'JetBrains Mono',monospace", fontSize:"0.5rem",
+                        color:`${c.color}`, letterSpacing:"0.16em",
+                        padding:"3px 9px", borderRadius:100,
+                        border:`1px solid ${c.color}50`,
+                        background:`${c.color}15`,
+                        flexShrink:0, marginTop:2,
+                        textDecoration:"none", cursor:"pointer",
+                      }}>{c.status}</a>
+                    </div>
+
+                    {/* Tagline */}
+                    <p style={{
+                      fontFamily:"'Playfair Display',serif", fontStyle:"italic",
+                      fontSize:"clamp(0.8125rem,1.4vw,0.9375rem)",
+                      color:"rgba(255,255,255,0.48)", lineHeight:1.6,
+                    }}>{c.tagline}</p>
+
+                    {/* Divider */}
+                    <div style={{ height:1, background:`linear-gradient(to right, ${c.color}30, transparent)` }} />
+
+                    {/* Description */}
+                    <p style={{ fontSize:"0.8125rem", color:"rgba(255,255,255,0.28)", lineHeight:1.78, flex:1 }}>{c.desc}</p>
+
+                    {/* Footer */}
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                      <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.5625rem", color:"rgba(255,255,255,0.18)", letterSpacing:"0.12em" }}>{c.tag}</span>
+                      <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.5625rem", color:c.color, letterSpacing:"0.1em" }}>Open →</span>
+                    </div>
                   </div>
+                  </a>
                 </Reveal>
               ))}
             </div>

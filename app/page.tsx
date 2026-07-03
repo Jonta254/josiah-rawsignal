@@ -264,9 +264,9 @@ function Accent({ word, idx, color = "var(--copper)", size = "clamp(4rem,14vw,11
 
 /* ─── Work data ───────────────────────────────────────────────── */
 const WORK = [
-  { slug: "electrimap",      word: "FIELD",   idx: 1, title: "ElectriMap",     sub: "Mobile circuit diagramming for electricians. Offline-first.",     year: "2025", cat: "Mobile App",    color: "#D4A843" },
-  { slug: "terrain-journal", word: "TERRAIN", idx: 0, title: "Terrain Journal", sub: "GPS outdoor journaling with trail overlays and photo pins.",       year: "2025", cat: "Web App",       color: "#34D399" },
-  { slug: "rawpanel",        word: "SYSTEM",  idx: 3, title: "RawPanel UI",     sub: "An open design system for craftspeople who code.",                 year: "2026", cat: "Design System", color: "#A855F7" },
+  { slug: "electracore",     word: "FIELD",   idx: 1, title: "ElectraCore",     sub: "Circuit tools, electrical learning, load calculations, connection guides, cost estimates, and job billing — one platform, built from 8 years on the tools.",     year: "2025", cat: "Web App",       color: "#D4A843", liveUrl: "https://electracore.vercel.app" },
+  { slug: "terrain-journal", word: "TERRAIN", idx: 0, title: "Terrain Journal", sub: "GPS trail journaling with live overlays and location-aware photo pins. For people who actually go outside.",       year: "2025", cat: "Web App",       color: "#34D399" },
+  { slug: "rawpanel",        word: "SYSTEM",  idx: 3, title: "RawPanel UI",     sub: "An open design system for craftspeople who code. Warm, anti-template, ready to ship.",                 year: "2026", cat: "Design System", color: "#A855F7" },
 ];
 
 const BELIEFS = [
@@ -505,8 +505,8 @@ export default function Home() {
 
       {/* ══════════════════ WHO IS ════════════════════════════════ */}
       <section style={{ background: "radial-gradient(ellipse 60% 80% at 0% 50%, rgba(176,64,255,0.10) 0%, transparent 55%), #060010", padding: "clamp(4rem,10vw,9rem) clamp(1.25rem,4vw,2.5rem)", overflow: "hidden", position: "relative" }}>
-        {/* Interactive constellation */}
-        {mounted && <ConstellationCanvas color="#B040FF" nodeCount={60} connectDist={120} />}
+        {/* Interactive constellation — desktop only, too heavy for mobile */}
+        {mounted && !isMobile() && <ConstellationCanvas color="#B040FF" nodeCount={60} connectDist={120} />}
         <SectionOrbs orbs={[
           { x: "-15%", y: "10%", w: "50vw", color: "rgba(176,64,255,0.10)", blur: 100, op: 1, dur: 12 },
           { x: "60%",  y: "50%", w: "35vw", color: "rgba(0,200,255,0.07)", blur: 80, op: 1, dur: 16, delay: 4 },

@@ -1,28 +1,52 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 const PROJECTS: Record<string, {
   title: string; tagline: string; role: string; timeline: string;
   tools: string[]; status: string; accent: string; accentRgb: string;
+  image: string; liveUrl?: string;
   challenge: string; approach: { step: string; detail: string }[];
   outcome: string; prev?: string; next?: string;
 }> = {
-  electrimap: {
-    title: "ElectriMap",
-    tagline: "Circuit diagramming, reinvented for the field.",
+  electracore: {
+    title: "ElectraCore",
+    tagline: "The complete electrical platform for students, engineers, and trade workers.",
     role: "Product Designer + Developer",
-    timeline: "3 months · 2025",
-    tools: ["React Native", "TypeScript", "SQLite", "Figma"],
-    status: "Concept",
+    timeline: "Ongoing · 2025–2026",
+    tools: ["Next.js", "TypeScript", "React", "PWA", "Figma", "Offline-first"],
+    status: "Live",
     accent: "#F0C030",
     accentRgb: "240,192,48",
-    challenge: "Electricians on job sites need to document circuit layouts quickly, but existing tools are either paper-based or desktop software that doesn't work offline. A solution needed to be fast, offline-first, and intuitive enough to use with one hand in a hard hat.",
+    image: "/images/work-1.jpg",
+    liveUrl: "https://electracore.vercel.app",
+    challenge: "Students, apprentices, engineers, and electricians all need electrical reference tools — but the existing options are either too narrow (one calculator), too expensive (professional software), or written for the textbook rather than the job site. 8 years of field work made the gaps obvious: no single place for calculations, guides, and practical knowledge that works offline and actually makes sense.",
     approach: [
-      { step: "Fieldwork first", detail: "Spent two weeks shadowing electricians on job sites to understand the real workflow — what information they needed to capture, when, and in what conditions. Often one hand occupied, wearing gloves, in low light." },
-      { step: "Gesture-first design", detail: "Designed an interface where common actions — adding a circuit, marking a fault, snapping a photo — required minimal taps. The app had to feel like it was built by someone who has actually held a wire nut." },
-      { step: "Offline architecture", detail: "Built with React Native for cross-platform reach, SQLite for offline storage, and a sync layer that uploads documentation when a connection becomes available. No connection required at the point of capture." },
+      { step: "Platform scope from real problems", detail: "Built around the six problems that come up every day on site: instant calculations (Ohm's law, voltage drop, cable sizing, LED resistors, power factor), wiring connection guides with colour codes and diagrams, structured learning from fundamentals to advanced protection theory, load analysis for design, project cost estimation, and job billing. Not a whiteboard exercise — a list from the field." },
+      { step: "Calculators that show their working", detail: "Every calculator displays the formula being applied and explains the result in plain language. A student learning Ohm's law sees the same tool a working electrician trusts on site — with the formula visible, not hidden." },
+      { step: "Accessible by default, Pro for depth", detail: "Core calculators and guides are free and open — no account required. Learning paths, calculation history, PDF export, and the full guide library sit behind a Pro subscription at $15/mo. The platform has to prove its value before asking for payment." },
     ],
-    outcome: "Proof of concept validated with 12 electricians on active job sites. Average workflow time reduced by 60% versus paper documentation. Design pattern now feeding into RawPanel UI system.",
+    outcome: "Platform live at electracore.vercel.app. 8 working calculators (Ohm's law, power, voltage drop, resistors, LED resistor, power factor, cable sizing, voltage divider), 15 wiring guides across 5 categories, and 5 structured learning paths with 40+ topics. Monetisation: Free for core tools, Pro ($15/mo), Business ($45/mo) for team billing and client portal.",
+    prev: "rawpanel",
+    next: "terrain-journal",
+  },
+  electrimap: {
+    title: "ElectriMap",
+    tagline: "The electrical platform built by an electrician, for electricians.",
+    role: "Product Designer + Developer",
+    timeline: "Ongoing · 2025–2026",
+    tools: ["React Native", "TypeScript", "SQLite", "PWA", "Figma", "Offline-first"],
+    status: "In Progress",
+    accent: "#F0C030",
+    accentRgb: "240,192,48",
+    image: "/images/work-1.jpg",
+    challenge: "Electricians lack a single tool that covers the full job lifecycle — from reading a schematic on-site to billing the client when it's done. Existing solutions are either desktop-only, paper-based, or built by people who have never touched a wire. The gap is real: 8 years of field work confirmed it.",
+    approach: [
+      { step: "Platform scope from the field", detail: "Designed around six core needs proven by real work: circuit diagramming, load and cable calculations, wiring connection guides, material cost estimation, project mapping, and client billing. Not features from a whiteboard — problems from a job site." },
+      { step: "Learning as a monetisation layer", detail: "Built a structured electrical training module covering residential, commercial, and electronic wiring. Practical scenarios, code-referenced guides, and certification-path tracking — priced as a Pro subscription. Real knowledge, not YouTube repackaged." },
+      { step: "Offline-first, always", detail: "SQLite for local storage, background sync when a connection appears. Every feature works in a basement, a conduit trench, or a rural site with no signal. The tool has to be trusted before it can be paid for." },
+    ],
+    outcome: "Core platform architecture defined. Circuit diagramming, connection guides, and cost estimation features scoped and in active development. Learning module designed and ready for content. Monetisation model: free tier for diagramming, Pro ($15/mo) for calculations and learning, Business ($45/mo) for team billing and client portal.",
     prev: "rawpanel",
     next: "terrain-journal",
   },
@@ -35,14 +59,15 @@ const PROJECTS: Record<string, {
     status: "Concept",
     accent: "#34D399",
     accentRgb: "52,211,153",
+    image: "/images/work-2.jpg",
     challenge: "Most outdoor journaling apps are either too lightweight (Instagram) or too data-heavy (Strava/Garmin). There was space for something that captured the texture of an experience — not just the metrics.",
     approach: [
       { step: "Content before interface", detail: "Started with a content-first approach: what does a trail journal entry actually contain? Route, conditions, mood, notes, photos, a moment of reflection. The UI was designed around those content types, not the other way around." },
       { step: "Route as content", detail: "Used Mapbox GL for interactive route visualisation — users trace their actual path rather than logging a distance. Photos attach to GPS coordinates and appear on the map." },
-      { step: "Writing-first editor", detail: "Kept the writing experience minimal. The editor is a single long-form text area. No formatting toolbar. No distraction. Just the blank page." },
+      { step: "Writing-first editor", detail: "Kept the writing experience minimal. The editor is a single long-form text area. No formatting toolbar. No distraction. Just the blank page and what actually happened." },
     ],
-    outcome: "Design prototype tested with 20 trail runners and hikers. 90% preferred it over their current logging method. Core interaction patterns validated for a future MVP build.",
-    prev: "electrimap",
+    outcome: "Concept designed from the perspective of someone who actually uses trails. Writing-first approach, GPS photo attachment, and content-led structure validated as the core interactions to build toward.",
+    prev: "electracore",
     next: "rawpanel",
   },
   rawpanel: {
@@ -54,13 +79,14 @@ const PROJECTS: Record<string, {
     status: "In Progress",
     accent: "#B040FF",
     accentRgb: "176,64,255",
+    image: "/images/work-3.jpg",
     challenge: "Every project I started required rebuilding the same set of components. Most available design systems are too opinionated or too bare. I wanted something warm and craftsperson-like — honest rather than polished, built from real project pain rather than theoretical best practices.",
     approach: [
       { step: "Principles before components", detail: "Started in Figma with a design language rather than a component library — establishing the visual principles first. Warm tones, honest borders, no shadows that don't serve a purpose." },
-      { step: "Documentation as design", detail: "Built components in Storybook to document every variant and state before touching production code. The documentation is part of the design, not an afterthought added when the sprint is almost over." },
-      { step: "API clarity as craft", detail: "Designed the component API to be obvious without reading the docs. If you have to look something up to do the obvious thing, the API is wrong. That is a design failure, not a documentation problem." },
+      { step: "Documentation as design", detail: "Building components in Storybook to document every variant and state before touching production code. The documentation is part of the design, not an afterthought." },
+      { step: "API clarity as craft", detail: "Designing the component API to be obvious without reading the docs. If you have to look something up to do the obvious thing, the API is wrong. That is a design failure, not a documentation problem." },
     ],
-    outcome: "Used in 8 personal projects. First external contributor in week three. Design token system has been adopted independently by two other developers.",
+    outcome: "Core token system and component primitives actively in use across personal projects. Design language stabilising toward a first open release. Built to solve real problems from real projects — not to look good in a README.",
     prev: "terrain-journal",
     next: "electrimap",
   },
@@ -157,9 +183,23 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
           {/* Tagline */}
           <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",
             fontSize:"clamp(1rem,2.2vw,1.35rem)", color:"rgba(255,255,255,0.55)",
-            maxWidth:540, lineHeight:1.55, marginBottom:40 }}>
+            maxWidth:540, lineHeight:1.55, marginBottom: p.liveUrl ? 24 : 40 }}>
             {p.tagline}
           </p>
+
+          {/* Live link */}
+          {p.liveUrl && (
+            <a href={p.liveUrl} target="_blank" rel="noopener" style={{
+              display:"inline-flex", alignItems:"center", gap:8, marginBottom:24,
+              fontFamily:"'JetBrains Mono',monospace", fontSize:11, letterSpacing:"0.12em",
+              color:p.accent, textDecoration:"none",
+              border:`1px solid rgba(${p.accentRgb},0.4)`, borderRadius:100,
+              padding:"6px 16px", background:`rgba(${p.accentRgb},0.08)`,
+              transition:"background 0.2s",
+            }}>
+              ↗ VIEW LIVE APP
+            </a>
+          )}
 
           {/* Meta bar */}
           <div style={{ display:"flex", flexWrap:"wrap", gap:"clamp(1.5rem,3vw,3rem)",
@@ -230,42 +270,12 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
           <div style={{ height:1, marginBottom:"clamp(3rem,7vw,6rem)",
             background:`linear-gradient(to right,transparent,rgba(${p.accentRgb},0.18) 40%,rgba(${p.accentRgb},0.32) 50%,rgba(${p.accentRgb},0.18) 60%,transparent)` }} />
 
-          {/* Visual placeholder */}
+          {/* Project visual */}
           <section style={{ marginBottom:"clamp(3rem,7vw,6rem)" }}>
-            <div style={{ position:"relative", height:"clamp(200px,35vw,320px)",
-              borderRadius:20, overflow:"hidden",
-              border:`1px solid rgba(${p.accentRgb},0.18)`,
-              background:`rgba(${p.accentRgb},0.03)` }}>
-              <svg viewBox="0 0 860 320" style={{ position:"absolute", width:"100%", height:"100%" }}
-                preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <radialGradient id="cs-grad" cx="50%" cy="50%" r="55%">
-                    <stop offset="0%" stopColor={p.accent} stopOpacity="0.18"/>
-                    <stop offset="100%" stopColor={p.accent} stopOpacity="0"/>
-                  </radialGradient>
-                </defs>
-                <rect width="860" height="320" fill={`url(#cs-grad)`}/>
-                {Array.from({length:9},(_,i)=>(
-                  <line key={`v${i}`} x1={i*108} y1="0" x2={i*108} y2="320"
-                    stroke={p.accent} strokeWidth="0.5" opacity="0.07"/>
-                ))}
-                {Array.from({length:7},(_,i)=>(
-                  <line key={`h${i}`} x1="0" y1={i*54} x2="860" y2={i*54}
-                    stroke={p.accent} strokeWidth="0.5" opacity="0.07"/>
-                ))}
-                <circle cx="430" cy="160" r="110" fill="none" stroke={p.accent} strokeWidth="0.7" opacity="0.14"/>
-                <circle cx="430" cy="160" r="55"  fill="none" stroke={p.accent} strokeWidth="0.4" opacity="0.09"/>
-                <text x="430" y="185" textAnchor="middle"
-                  fontFamily="Bebas Neue" fontSize="140" fill={p.accent} opacity="0.04"
-                  letterSpacing="6">{p.title.charAt(0)}</text>
-              </svg>
-              <div style={{ position:"absolute", inset:0, display:"flex",
-                alignItems:"center", justifyContent:"center" }}>
-                <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11,
-                  color:"rgba(255,255,255,0.18)", letterSpacing:"0.14em" }}>
-                  [ {p.title} — Visual ]
-                </span>
-              </div>
+            <div style={{ position:"relative", height:"clamp(220px,35vw,380px)", borderRadius:20, overflow:"hidden", border:`1px solid rgba(${p.accentRgb},0.18)` }}>
+              <Image src={p.image} alt={`${p.title} preview`} fill style={{ objectFit:"cover", opacity:0.72 }} sizes="(max-width:860px) 100vw, 860px" />
+              <div aria-hidden="true" style={{ position:"absolute", inset:0, background:`linear-gradient(135deg,rgba(${p.accentRgb},0.20) 0%,transparent 55%)` }} />
+              <div aria-hidden="true" style={{ position:"absolute", bottom:0, left:0, right:0, height:"55%", background:"linear-gradient(to top,rgba(3,2,21,0.65) 0%,transparent 100%)" }} />
             </div>
           </section>
 
