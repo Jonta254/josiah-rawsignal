@@ -82,6 +82,16 @@ const COMING = [
     href: "https://traildesk.vercel.app",
     status: "Live Preview",
   },
+  {
+    title: "DevForge",
+    sub: "Developer Learning Platform",
+    tagline: "From your first line of code to your first job offer.",
+    desc: "600+ lessons, 40+ projects, 8 structured learning paths — with working authentication, personalized dashboards, and progress tracking. Built for developers who want to actually ship, not just watch tutorials.",
+    color: "#6366F1",
+    tag: "Web · EdTech",
+    href: "https://devforge-delta.vercel.app",
+    status: "Live",
+  },
 ];
 
 export default function PortfolioPage() {
