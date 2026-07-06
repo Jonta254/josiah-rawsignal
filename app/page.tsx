@@ -280,6 +280,21 @@ const POSTS = [
   { slug: "design-second-language",    cat: "Design",     date: "May 2026", title: "Design as a second language",                      color: "#A855F7" },
 ];
 
+const TECH_STACK = [
+  { icon: "⚛",   name: "React/Next.js",  label: "Frontend" },
+  { icon: "TS",  name: "TypeScript",      label: "Language" },
+  { icon: "N",   name: "Node.js",         label: "Backend" },
+  { icon: "Py",  name: "Python",          label: "Scripting" },
+  { icon: "F",   name: "Figma",           label: "Design" },
+  { icon: "3D",  name: "Three.js",        label: "3D Web" },
+  { icon: "Tw",  name: "Tailwind CSS",    label: "Styling" },
+  { icon: "Pg",  name: "PostgreSQL",      label: "Database" },
+  { icon: "▲",   name: "Vercel",          label: "Deployment" },
+  { icon: "Git", name: "Git/GitHub",      label: "Version Control" },
+  { icon: "FM",  name: "Framer Motion",   label: "Animation" },
+  { icon: "⚡",   name: "Electrical",      label: "Trade" },
+];
+
 /* ═══════════════════════════════════════════════════════════════ */
 export default function Home() {
   const parallax1 = useParallax(0.18);
@@ -291,6 +306,7 @@ export default function Home() {
   const [s5ref, s5visible] = useInView();
   const r1 = useReveal(0), r2 = useReveal(80);
   const r3 = useReveal(0), r4 = useReveal(0), r5 = useReveal(0), r6 = useReveal(0);
+  const r7 = useReveal(0);
   const [mounted, setMounted] = useState(false);
   const [ghRepos, setGhRepos] = useState<number | null>(null);
   const mouse       = useRef({ x: 0, y: 0 });
@@ -499,6 +515,57 @@ export default function Home() {
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(9px,1.1vw,11px)", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", lineHeight: 1.4 }}>{s.label}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════ THE STACK ════════════════════════════ */}
+      <section style={{
+        background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(0,180,255,0.06) 0%, transparent 60%), #070010",
+        padding: "clamp(4rem,9vw,8rem) clamp(1.25rem,4vw,2.5rem)",
+        borderTop: "1px solid rgba(0,180,255,0.06)",
+        position: "relative", overflow: "hidden",
+      }}>
+        <div style={{ position: "absolute", right: "-1%", top: "50%", transform: "translateY(-50%)", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(6rem,18vw,14rem)", color: "transparent", WebkitTextStroke: "1px rgba(0,180,255,0.04)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>STACK</div>
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <div ref={r7} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(2.5rem,6vw,4.5rem)" }}>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>
+              // Skills · Tools · Disciplines
+            </p>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem,12vw,9rem)", lineHeight: 0.88, letterSpacing: "0.01em", margin: 0 }}>
+              <span style={{ color: "var(--chalk)" }}>THE </span>
+              <span style={{ color: "var(--cyan)" }}>STACK</span>
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "1rem" }}>
+            {TECH_STACK.map((t, i) => {
+              const ICON_GRADS = [
+                "linear-gradient(135deg, #FF6600 0%, #FF8820 100%)",
+                "linear-gradient(135deg, #0090CC 0%, #00DFFF 100%)",
+                "linear-gradient(135deg, #7010C0 0%, #B040FF 100%)",
+                "linear-gradient(135deg, #009050 0%, #00FF88 100%)",
+              ];
+              return (
+                <div key={t.name} className="tech-card">
+                  <div style={{
+                    width: 40, height: 40, borderRadius: "50%",
+                    background: ICON_GRADS[i % 4],
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: t.icon.length === 1 ? "1.15rem" : t.icon.length === 2 ? "0.8rem" : "0.65rem",
+                    fontFamily: t.icon.length > 1 ? "'JetBrains Mono', monospace" : "inherit",
+                    fontWeight: 700,
+                    color: "#08001A",
+                    flexShrink: 0,
+                    letterSpacing: "-0.02em",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.45)",
+                  }}>
+                    {t.icon}
+                  </div>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", fontWeight: 700, color: "var(--chalk)", lineHeight: 1.2, marginTop: 2 }}>{t.name}</p>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", color: "var(--stone)", letterSpacing: "0.05em" }}>{t.label}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

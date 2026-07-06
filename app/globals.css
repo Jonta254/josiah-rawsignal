@@ -626,6 +626,45 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1 !important; transform: none !important; }
+  /* Override letter entrance keyframes so they resolve to visible */
+  @keyframes letterFromLeft  { from, to { opacity: 1; transform: none; filter: none; } }
+  @keyframes letterRise      { from, to { opacity: 1; transform: none; filter: none; } }
+  @keyframes letterFlash     { from, to { opacity: 1; transform: none; filter: none; } }
+  @keyframes letterFall      { from, to { opacity: 1; transform: none; filter: none; } }
+  @keyframes letterFromRight { from, to { opacity: 1; transform: none; filter: none; } }
+  @keyframes heroFloat       { from, to { transform: none; } }
+  @keyframes heroDiamondShimmer { from, to { background-position: 0% 0; } }
+  @keyframes heroGlint       { from, to { opacity: 0; } }
+  @keyframes heroBreathe     { from, to { opacity: 0.7; transform: none; } }
+  @keyframes floatOrb        { from, to { transform: none; } }
+  @keyframes floatOrbB       { from, to { transform: none; } }
+  @keyframes auroraA         { from, to { } }
+  @keyframes auroraB         { from, to { transform: none; } }
+  @keyframes auroraC         { from, to { opacity: 0.6; transform: none; } }
+  @keyframes manifesto-word  { from, to { opacity: 1; transform: none; filter: none; } }
+  .manifesto-word { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .hero-aurora, .hero-aurora::after { animation: none !important; }
+}
+
+/* ── Mobile animation performance ────────────────────────────── */
+@media (max-width: 768px) {
+  /* Slow aurora saves GPU on small screens */
+  .hero-aurora { animation-duration: 22s !important; opacity: 0.75; }
+  /* Skip shimmer sweep on touch — hover never fires on mobile */
+  .card-shimmer-wrap::after { content: none !important; }
+  /* Pause floating section orbs to reduce repaints */
+  .hero-aurora::after { animation-play-state: paused !important; }
+  /* Stop constellation canvas GPU pressure — handled in JS via !isMobile() */
+  /* Tighten letter spacing on very small screens */
+  .manifesto-xl { letter-spacing: 0 !important; }
+  /* Reduce dot-grid opacity — saves compositing cost */
+  .dot-grid { opacity: 0.25 !important; }
+}
+
+/* ── Touch device tap feedback ───────────────────────────────── */
+@media (pointer: coarse) {
+  .card-shimmer-wrap:active::after { animation: shimmerSweep 0.4s ease forwards !important; display: block !important; }
+  .proj-row-card:active { background: rgba(255,136,32,0.04); }
 }
 
 /* ── Touch / mobile overrides ─────────────────────────────────── */
@@ -1450,4 +1489,31 @@ section { transition: background 400ms ease; }
   .mobile-drawer { display: none !important; }
   body { background: white !important; color: black !important; }
   a { color: black !important; text-decoration: underline !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TECH STACK SECTION
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Tech stack card ─────────────────────────────────────────── */
+.tech-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 1rem 0.75rem;
+  text-align: center;
+  cursor: default;
+  transition:
+    border-color 0.28s ease,
+    box-shadow   0.28s ease,
+    transform    0.28s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.tech-card:hover {
+  border-color: rgba(0, 223, 255, 0.30);
+  box-shadow: 0 0 22px rgba(0, 223, 255, 0.12), 0 4px 18px rgba(0, 0, 0, 0.45);
+  transform: translateY(-3px);
 }
