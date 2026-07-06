@@ -191,7 +191,6 @@ export default function PortfolioPage() {
                     <div style={{ display:"flex", gap:12, alignItems:"center" }}>
                       {(p as typeof p & { liveUrl?: string }).liveUrl && (
                         <a href={(p as typeof p & { liveUrl?: string }).liveUrl} target="_blank" rel="noopener"
-                          onClick={(e) => e.stopPropagation()}
                           style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:p.color, letterSpacing:"0.1em", textDecoration:"none", border:`1px solid ${p.color}40`, padding:"3px 10px", borderRadius:100, background:`${p.color}0A` }}>
                           View Live ↗
                         </a>
