@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "Josiah — Raw Signal",
     images: [{ url: "/images/rawsignal-hero.png", width: 1200, height: 630, alt: "Josiah — Raw Signal" }],
   },
-  twitter: { card: "summary_large_image", creator: "@josiah" },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };
 

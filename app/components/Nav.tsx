@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 const LINKS = [
   { href: "/about",     label: "About" },
   { href: "/portfolio", label: "Work" },
+  { href: "/#services", label: "Services" },
   { href: "/blog",      label: "Writing" },
   { href: "/now",       label: "Now" },
 ];
@@ -60,8 +61,8 @@ export default function Nav() {
               <circle cx="16" cy="16" r="2"   fill="#C87B2F"/>
             </svg>
             <div>
-              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 700, color: "#EAEDF2", letterSpacing: "0.08em", lineHeight: 1.15 }}>BRIAN</div>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8.5, color: "rgba(200,123,47,0.65)", letterSpacing: "0.18em", lineHeight: 1.2 }}>RAW SIGNAL</div>
+              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 700, color: "#EAEDF2", letterSpacing: "0.08em", lineHeight: 1.15 }}>BRIAN JOSIAH</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: "rgba(200,123,47,0.65)", letterSpacing: "0.18em", lineHeight: 1.2 }}>JontAWorld · RAW SIGNAL</div>
             </div>
           </Link>
 
@@ -117,9 +118,14 @@ export default function Nav() {
               Hire Me
             </Link>
           </nav>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(90,96,110,0.5)", letterSpacing: "0.12em", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 20 }}>
-            © 2026 BRIAN · RAW SIGNAL
-          </p>
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 20 }}>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(90,96,110,0.5)", letterSpacing: "0.12em", marginBottom: 6 }}>
+              © 2026 BRIAN JOSIAH · RAW SIGNAL
+            </p>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "rgba(200,123,47,0.55)", letterSpacing: "0.16em", textTransform: "uppercase" }}>
+              JontAWorld
+            </span>
+          </div>
         </div>
       </div>
 
