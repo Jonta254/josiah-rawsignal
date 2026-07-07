@@ -61,8 +61,8 @@ export default function Nav() {
               <circle cx="16" cy="16" r="2"   fill="#C87B2F"/>
             </svg>
             <div>
-              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 700, color: "#EAEDF2", letterSpacing: "0.08em", lineHeight: 1.15 }}>BRIAN JOSIAH</div>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: "rgba(200,123,47,0.65)", letterSpacing: "0.18em", lineHeight: 1.2 }}>JontAWorld · RAW SIGNAL</div>
+              <div style={{ fontFamily: "'Orbitron', sans-serif", fontSize: 13, fontWeight: 700, color: "#FF8820", letterSpacing: "0.06em", lineHeight: 1.15 }}>JontAWorld</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: "rgba(234,237,242,0.38)", letterSpacing: "0.16em", lineHeight: 1.2 }}>Brian Josiah · RAW SIGNAL</div>
             </div>
           </Link>
 

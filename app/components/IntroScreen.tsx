@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const LETTERS = ["J", "O", "S", "I", "A", "H"];
-const ROLES = ["Electrician", "Developer", "Designer", "Explorer", "Human"];
+const LETTERS = ["J", "o", "n", "t", "A", "W", "o", "r", "l", "d"];
+const ROLES = ["Developer", "Designer", "Electrician", "Explorer", "Human"];
 
 export default function IntroScreen() {
   const [step, setStep] = useState(0);
@@ -27,12 +27,12 @@ export default function IntroScreen() {
       }, 420 + i * 30);
     });
 
-    setTimeout(() => setShowTagline(true), 1000);
-    setTimeout(() => setShowRole(true), 1200);
+    setTimeout(() => setShowTagline(true), 1100);
+    setTimeout(() => setShowRole(true), 1350);
     setTimeout(() => {
       setDone(true);
       sessionStorage.setItem("intro-done", "1");
-    }, 2800);
+    }, 3000);
   }, []);
 
   useEffect(() => {
@@ -68,8 +68,14 @@ export default function IntroScreen() {
         {/* Name */}
         <div className="overflow-hidden">
           <h1
-            className="font-bebas tracking-widest leading-none"
-            style={{ fontSize: "clamp(5rem,15vw,10rem)", color: "var(--color-chalk)" }}
+            style={{
+              fontFamily: "'Orbitron', sans-serif",
+              fontSize: "clamp(2.8rem,10vw,7rem)",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              lineHeight: 1,
+              color: "var(--color-chalk)",
+            }}
           >
             {letters.map((l, i) => (
               <span
@@ -77,7 +83,8 @@ export default function IntroScreen() {
                 style={{
                   display: "inline-block",
                   animation: "flipIn 0.3s ease forwards",
-                  animationDelay: `${i * 30}ms`,
+                  animationDelay: `${i * 40}ms`,
+                  color: (l === "A" || l === "W") ? "var(--color-copper, #FF8820)" : undefined,
                 }}
               >
                 {l}
@@ -95,7 +102,7 @@ export default function IntroScreen() {
               animation: "flipIn 0.5s ease forwards",
             }}
           >
-            I wire things — circuits, code, and connections.
+            Brian Josiah · Developer, Designer & Electrician
           </p>
         )}
 
