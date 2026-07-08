@@ -15,80 +15,384 @@
   return <span style={{ fontSize:"0.8rem", color:"white", fontWeight:700 }}>{name[0]}</span>;
 }
 const TECH_STACK = [  { name: "React",       label: "Frontend" },  { name: "TypeScript",  label: "Language" },  { name: "Next.js",     label: "Framework" },  { name: "Node.js",     label: "Backend" },  { name: "Python",      label: "Scripting" },  { name: "Figma",       label: "Design" },  { name: "Three.js",    label: "3D Web" },  { name: "Tailwind",    label: "Styling" },  { name: "PostgreSQL",  label: "Database" },  { name: "Vercel",      label: "Deploy" },  { name: "GitHub",      label: "Version Control" },  { name: "Electrical",  label: "Trade" },];/* â”€â”€â”€ Showcase collage (AI-generated images via Higgsfield) â”€â”€â”€â”€â”€ *//* ─── What I Can Create — realistic UI screenshot showcase ───── */
-function MktCard({ color, label, sub, children }: { color: string; label: string; sub: string; children: React.ReactNode }) {
+/* hex → "r,g,b" for inline SVG rgba() */
+function rgb(hex: string) {
+  const h = hex.replace("#","");
+  return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`;
+}
+
+/* ── SVG UI Mockups ─────────────────────────────── */
+function WebsiteMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#07070F" />
+      <rect width="320" height="24" fill="#0E0E1C" />
+      <circle cx="12" cy="12" r="3.5" fill="#FF5F57" opacity=".75" />
+      <circle cx="22" cy="12" r="3.5" fill="#FEBC2E" opacity=".75" />
+      <circle cx="32" cy="12" r="3.5" fill="#28C840" opacity=".75" />
+      <rect x="48" y="6" width="180" height="12" rx="6" fill="rgba(255,255,255,.04)" stroke={`rgba(${r},.25)`} strokeWidth=".7" />
+      <text x="56" y="14.5" fontSize="6.5" fill={c} opacity=".8" fontFamily="monospace">josiah.dev</text>
+      <rect y="24" width="320" height="26" fill="#0A0A14" />
+      <rect x="12" y="33" width="38" height="8" rx="4" fill={c} opacity=".9" />
+      <rect x="174" y="35" width="24" height="5" rx="2.5" fill="rgba(255,255,255,.15)" />
+      <rect x="205" y="35" width="24" height="5" rx="2.5" fill="rgba(255,255,255,.15)" />
+      <rect x="236" y="35" width="24" height="5" rx="2.5" fill="rgba(255,255,255,.15)" />
+      <rect x="280" y="30" width="30" height="14" rx="7" fill={c} opacity=".9" />
+      <rect y="50" width="320" height="100" fill="#070710" />
+      <rect x="12" y="64" width="136" height="14" rx="3.5" fill="rgba(255,255,255,.88)" />
+      <rect x="12" y="84" width="98" height="14" rx="3.5" fill="rgba(255,255,255,.88)" />
+      <rect x="12" y="106" width="152" height="5" rx="2.5" fill="rgba(255,255,255,.18)" />
+      <rect x="12" y="116" width="122" height="5" rx="2.5" fill="rgba(255,255,255,.12)" />
+      <rect x="12" y="130" width="62" height="17" rx="8.5" fill={c} />
+      <rect x="82" y="130" width="62" height="17" rx="8.5" fill="rgba(255,255,255,.05)" stroke={`rgba(${r},.4)`} strokeWidth="1" />
+      <rect x="196" y="58" width="112" height="84" rx="10" fill={`rgba(${r},.06)`} stroke={`rgba(${r},.16)`} strokeWidth=".8" />
+      <circle cx="252" cy="100" r="28" fill={`rgba(${r},.1)`} />
+      <circle cx="252" cy="100" r="16" fill={`rgba(${r},.18)`} />
+      <circle cx="252" cy="100" r="7" fill={c} opacity=".65" />
+      {([0,1,2,3] as const).map(i => {
+        const a = i * Math.PI / 2;
+        return <line key={i} x1={252+Math.cos(a)*18} y1={100+Math.sin(a)*18} x2={252+Math.cos(a)*26} y2={100+Math.sin(a)*26} stroke={c} strokeWidth="1.2" opacity=".45" />;
+      })}
+      <rect y="150" width="320" height="40" fill="#09091A" />
+      {[0,1,2].map(i => (
+        <g key={i}>
+          <rect x={14+i*96} y="160" width="40" height="5" rx="2.5" fill="rgba(255,255,255,.08)" />
+          <rect x={14+i*96} y="170" width="60" height="4" rx="2" fill="rgba(255,255,255,.04)" />
+          <rect x={14+i*96} y="179" width="50" height="4" rx="2" fill="rgba(255,255,255,.03)" />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function DashboardMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  const bars = [45,62,38,75,88,54,70,92,66,48,80,95];
+  const trend = "71,162 90,150 109,158 128,140 147,125 166,148 185,134 204,110 223,138 242,154 261,122 280,106";
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#07070F" />
+      <rect width="46" height="190" fill="#0C0C1A" />
+      {[20,52,84,116,148].map((y,i) => (
+        <g key={y}>
+          <rect x="11" y={y} width="24" height="24" rx="7" fill={i===0 ? `rgba(${r},.18)` : "rgba(255,255,255,.035)"} />
+          <rect x="15" y={y+8} width="16" height="3" rx="1.5" fill={i===0 ? c : "rgba(255,255,255,.18)"} />
+          <rect x="15" y={y+13} width="10" height="2.5" rx="1.25" fill={i===0 ? c : "rgba(255,255,255,.1)"} opacity=".6" />
+        </g>
+      ))}
+      <rect x="0" y="20" width="3" height="24" rx="1.5" fill={c} />
+      <rect x="46" y="0" width="274" height="20" fill="#0D0D1C" />
+      <rect x="54" y="6" width="80" height="8" rx="4" fill="rgba(255,255,255,.055)" />
+      <circle cx="294" cy="10" r="7" fill={`rgba(${r},.22)`} />
+      <circle cx="278" cy="10" r="7" fill="rgba(255,255,255,.04)" />
+      {([
+        { x:54,  val:"8,241", lbl:"Total Users", d:"+12%" },
+        { x:148, val:"$4.8k", lbl:"Revenue",     d:"+8%"  },
+        { x:242, val:"98.2%", lbl:"Uptime",       d:"↑ 0.3%" },
+      ] as const).map(({ x, val, lbl, d }) => (
+        <g key={x}>
+          <rect x={x} y="26" width="86" height="50" rx="8" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.065)" strokeWidth=".8" />
+          <text x={x+10} y="46" fontSize="13" fontWeight="700" fill="rgba(255,255,255,.85)" fontFamily="'Orbitron',sans-serif">{val}</text>
+          <text x={x+10} y="58" fontSize="7" fill="rgba(255,255,255,.28)" fontFamily="monospace">{lbl}</text>
+          <rect x={x+10} y="64" width="30" height="7" rx="3.5" fill={`rgba(${r},.16)`} />
+          <text x={x+14} y="69.5" fontSize="5.5" fill={c} fontFamily="monospace">{d}</text>
+        </g>
+      ))}
+      <rect x="54" y="84" width="258" height="96" rx="8" fill="rgba(255,255,255,.018)" stroke="rgba(255,255,255,.055)" strokeWidth=".8" />
+      <text x="64" y="97" fontSize="7" fill="rgba(255,255,255,.22)" fontFamily="monospace" letterSpacing="1">TRAFFIC · 30 DAYS</text>
+      {bars.map((h,i) => (
+        <rect key={i} x={66+i*19} y={170-h*.62} width="10" height={h*.62} rx="3" fill={i===11 ? c : `rgba(${r},.32)`} opacity={.45+i*.04} />
+      ))}
+      <line x1="60" y1="170" x2="308" y2="170" stroke="rgba(255,255,255,.055)" strokeWidth=".8" />
+      <line x1="60" y1="145" x2="308" y2="145" stroke="rgba(255,255,255,.03)" strokeWidth=".5" />
+      <line x1="60" y1="120" x2="308" y2="120" stroke="rgba(255,255,255,.025)" strokeWidth=".5" />
+      <polyline points={trend} fill="none" stroke={c} strokeWidth="1.5" opacity=".5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function MobileMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#07070F" />
+      <circle cx="60" cy="95" r="60" fill={`rgba(${r},.04)`} />
+      <circle cx="260" cy="95" r="60" fill={`rgba(${r},.04)`} />
+      <rect x="104" y="8" width="112" height="174" rx="20" fill="#0E0E1E" stroke="rgba(255,255,255,.13)" strokeWidth="1.5" />
+      <rect x="102" y="52" width="3" height="18" rx="1.5" fill="rgba(255,255,255,.16)" />
+      <rect x="102" y="76" width="3" height="28" rx="1.5" fill="rgba(255,255,255,.16)" />
+      <rect x="215" y="60" width="3" height="24" rx="1.5" fill="rgba(255,255,255,.16)" />
+      <rect x="108" y="14" width="104" height="162" rx="16" fill="#080812" />
+      <rect x="108" y="14" width="104" height="22" rx="16" fill="#0E0E1E" />
+      <rect x="108" y="27" width="104" height="9" fill="#0E0E1E" />
+      <text x="116" y="25" fontSize="6" fill="rgba(255,255,255,.5)" fontFamily="monospace">9:41</text>
+      <text x="192" y="25" fontSize="6" fill="rgba(255,255,255,.4)" fontFamily="monospace">●●●</text>
+      <rect x="143" y="16" width="34" height="10" rx="5" fill="#050508" />
+      <rect x="108" y="36" width="104" height="24" fill="#0C0C1C" />
+      <text x="160" y="51" fontSize="9" fill="rgba(255,255,255,.8)" fontFamily="'Bebas Neue',sans-serif" textAnchor="middle" letterSpacing="1">DASHBOARD</text>
+      <rect x="114" y="64" width="92" height="36" rx="9" fill={`rgba(${r},.14)`} stroke={`rgba(${r},.28)`} strokeWidth=".8" />
+      <rect x="120" y="70" width="46" height="6" rx="3" fill="rgba(255,255,255,.6)" />
+      <rect x="120" y="80" width="32" height="4.5" rx="2.25" fill="rgba(255,255,255,.25)" />
+      <circle cx="192" cy="82" r="11" fill={`rgba(${r},.28)`} />
+      <text x="192" y="86" textAnchor="middle" fontSize="10" fill={c}>✓</text>
+      {[0,1,2].map(i => (
+        <g key={i}>
+          <rect x="114" y={106+i*22} width="92" height="18" rx="6" fill="rgba(255,255,255,.028)" stroke="rgba(255,255,255,.06)" strokeWidth=".7" />
+          <circle cx="124" cy={106+i*22+9} r="5" fill={i===0 ? c : "rgba(255,255,255,.1)"} opacity={i===0 ? .9 : 1} />
+          <rect x="134" y={106+i*22+5} width={[42,34,50][i]} height="4" rx="2" fill={i===0 ? "rgba(255,255,255,.55)" : "rgba(255,255,255,.18)"} />
+          <rect x="134" y={106+i*22+11} width={[28,42,22][i]} height="3" rx="1.5" fill="rgba(255,255,255,.1)" />
+        </g>
+      ))}
+      <rect x="108" y="158" width="104" height="18" fill="#0E0E1E" />
+      {["⌂","◈","⊕","◉"].map((ic,i) => (
+        <text key={i} x={120+i*24} y="170" fontSize="9" fill={i===0 ? c : "rgba(255,255,255,.28)"} textAnchor="middle">{ic}</text>
+      ))}
+      <rect x="143" y="174" width="34" height="3" rx="1.5" fill="rgba(255,255,255,.22)" />
+    </svg>
+  );
+}
+
+function SocialMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  const posts = [
+    { x:10,  y:50,  likes:"4.2k", cmt:"186" },
+    { x:166, y:50,  likes:"9.8k", cmt:"432" },
+    { x:10,  y:120, likes:"2.1k", cmt:"94"  },
+    { x:166, y:120, likes:"6.3k", cmt:"278" },
+  ];
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#07070F" />
+      <rect width="320" height="26" fill="#0E0E1C" />
+      <text x="14" y="17.5" fontSize="10" fill="rgba(255,255,255,.8)" fontFamily="'Bebas Neue',sans-serif" letterSpacing="2">CONTENT STUDIO</text>
+      <rect x="220" y="7" width="52" height="12" rx="6" fill={`rgba(${r},.18)`} stroke={`rgba(${r},.38)`} strokeWidth=".8" />
+      <text x="246" y="15.5" fontSize="7" fill={c} textAnchor="middle" fontFamily="monospace">Schedule</text>
+      <circle cx="294" cy="13" r="10" fill="rgba(255,255,255,.04)" />
+      <text x="294" y="17" textAnchor="middle" fontSize="11" fill={c}>+</text>
+      <rect y="26" width="320" height="20" fill="#0A0A15" />
+      {["Instagram","TikTok","X","LinkedIn"].map((t,i) => (
+        <g key={t}>
+          <text x={14+i*78} y="39" fontSize="7.5" fill={i===0 ? c : "rgba(255,255,255,.22)"} fontFamily="monospace">{t}</text>
+          {i===0 && <line x1="14" y1="45.5" x2={14+t.length*4.5} y2="45.5" stroke={c} strokeWidth="1.5" strokeLinecap="round" />}
+        </g>
+      ))}
+      {posts.map(({ x, y, likes, cmt }, i) => (
+        <g key={i}>
+          <rect x={x} y={y} width="144" height="65" rx="8" fill={`rgba(${r},${i===1?.2:.12})`} stroke={`rgba(${r},.18)`} strokeWidth=".8" />
+          <rect x={x+4} y={y+4} width="58" height="57" rx="6" fill={`rgba(${r},.14)`} />
+          <circle cx={x+33} cy={y+32} r="15" fill={`rgba(${r},.28)`} />
+          <circle cx={x+33} cy={y+32} r="7" fill={c} opacity=".55" />
+          <rect x={x+68} y={y+10} width="68" height="6" rx="3" fill="rgba(255,255,255,.5)" />
+          <rect x={x+68} y={y+20} width="54" height="4.5" rx="2.25" fill="rgba(255,255,255,.2)" />
+          <rect x={x+68} y={y+28} width="60" height="4" rx="2" fill="rgba(255,255,255,.12)" />
+          <rect x={x+68} y={y+46} width="34" height="11" rx="5.5" fill="rgba(255,255,255,.055)" />
+          <text x={x+72} y={x+54.5 > 0 ? y+54.5 : y+54} fontSize="6.5" fill={c} fontFamily="monospace">♥ {likes}</text>
+          <rect x={x+106} y={y+46} width="32" height="11" rx="5.5" fill="rgba(255,255,255,.055)" />
+          <text x={x+110} y={y+54.5} fontSize="6.5" fill="rgba(255,255,255,.38)" fontFamily="monospace">💬 {cmt}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function BrandingMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#07070F" />
+      <rect width="134" height="190" fill="#0C0C1A" />
+      <circle cx="67" cy="72" r="40" fill={`rgba(${r},.07)`} stroke={`rgba(${r},.18)`} strokeWidth=".8" />
+      <polygon points="67,36 95,58 83,90 51,90 39,58" fill="none" stroke={c} strokeWidth="1.8" strokeLinejoin="round" opacity=".85" />
+      <polygon points="67,46 86,62 78,84 56,84 48,62" fill={`rgba(${r},.14)`} />
+      <circle cx="67" cy="68" r="7" fill={c} opacity=".9" />
+      <line x1="67" y1="42" x2="67" y2="96" stroke={c} strokeWidth=".9" opacity=".3" />
+      <line x1="38" y1="68" x2="96" y2="68" stroke={c} strokeWidth=".9" opacity=".3" />
+      <text x="67" y="120" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,.85)" fontFamily="'Bebas Neue',sans-serif" letterSpacing="3">JONTAWORLD</text>
+      <text x="67" y="133" textAnchor="middle" fontSize="6" fill="rgba(255,255,255,.3)" fontFamily="monospace" letterSpacing="2">CREATIVE STUDIO</text>
+      {[c,"#00DFFF","#B040FF","#F2F4FC","#1A1A2E"].map((col,i) => (
+        <rect key={col} x={14+i*22} y="150" width="18" height="18" rx="5" fill={col} />
+      ))}
+      <text x="67" y="181" textAnchor="middle" fontSize="5.5" fill="rgba(255,255,255,.2)" fontFamily="monospace">PALETTE · 2026</text>
+      <rect x="142" y="10" width="170" height="170" rx="8" fill="rgba(255,255,255,.018)" stroke="rgba(255,255,255,.048)" strokeWidth=".8" />
+      <text x="152" y="30" fontSize="7" fill="rgba(255,255,255,.22)" fontFamily="monospace" letterSpacing="2">TYPE · SYSTEM</text>
+      <text x="152" y="54" fontSize="24" fill="rgba(255,255,255,.82)" fontFamily="'Bebas Neue',sans-serif" letterSpacing="1">Aa Bb Cc</text>
+      <text x="152" y="69" fontSize="11" fill="rgba(255,255,255,.38)" fontFamily="'Playfair Display',serif" fontStyle="italic">The quick brown fox</text>
+      <rect x="152" y="76" width="152" height=".7" fill="rgba(255,255,255,.06)" />
+      <text x="152" y="90" fontSize="7" fill="rgba(255,255,255,.18)" fontFamily="monospace" letterSpacing="1">USAGE · GUIDE</text>
+      {["H1 — Bebas Neue 96pt","H2 — Bebas Neue 48pt","Body — Inter 16pt","Mono — JetBrains 12pt"].map((t,i) => (
+        <g key={t}>
+          <circle cx="157" cy={99+i*17} r="2.5" fill={i===0 ? c : "rgba(255,255,255,.1)"} />
+          <text x="164" y={103+i*17} fontSize="7.5" fill="rgba(255,255,255,.35)" fontFamily="monospace">{t}</text>
+        </g>
+      ))}
+      <rect x="152" y="168" width="154" height="9" rx="4.5" fill={`rgba(${r},.1)`} />
+      <text x="156" y="174.5" fontSize="7" fill={c} fontFamily="monospace" letterSpacing="1">RAW SIGNAL · IDENTITY</text>
+    </svg>
+  );
+}
+
+function StoreMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  const products = [
+    { x:10,  name:"Wireless Pro X", price:"$129", stars:5, badge:"New"  },
+    { x:114, name:"TrailGear Pack", price:"$89",  stars:4, badge:"Sale" },
+    { x:218, name:"Signal Lamp",    price:"$64",  stars:5, badge:null   },
+  ];
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#07070F" />
+      <rect width="320" height="26" fill="#0E0E1C" />
+      <rect x="10" y="8" width="34" height="10" rx="5" fill={c} opacity=".9" />
+      <rect x="76" y="8" width="138" height="10" rx="5" fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.09)" strokeWidth=".7" />
+      <text x="82" y="15.5" fontSize="6.5" fill="rgba(255,255,255,.22)" fontFamily="monospace">Search products…</text>
+      <rect x="274" y="7" width="36" height="12" rx="6" fill={`rgba(${r},.18)`} stroke={`rgba(${r},.38)`} strokeWidth=".8" />
+      <text x="292" y="15.5" textAnchor="middle" fontSize="7" fill={c} fontFamily="monospace">Cart 3</text>
+      <rect y="26" width="320" height="22" fill="#0A0A14" />
+      {["All","New In","Electronics","Apparel","Deals"].map((t,i) => (
+        <g key={t}>
+          <rect x={10+i*62} y="31.5" width={t.length*5+14} height="11" rx="5.5" fill={i===0 ? c : "rgba(255,255,255,.05)"} />
+          <text x={17+i*62} y="39.5" fontSize="6.5" fill={i===0 ? "#fff" : "rgba(255,255,255,.32)"} fontFamily="monospace">{t}</text>
+        </g>
+      ))}
+      {products.map(({ x, name, price, stars, badge }) => (
+        <g key={x}>
+          <rect x={x} y="52" width="96" height="134" rx="10" fill="rgba(255,255,255,.022)" stroke="rgba(255,255,255,.065)" strokeWidth=".8" />
+          <rect x={x+4} y="56" width="88" height="70" rx="7" fill={`rgba(${r},.07)`} />
+          <circle cx={x+48} cy="91" r="22" fill={`rgba(${r},.14)`} />
+          <circle cx={x+48} cy="91" r="11" fill={`rgba(${r},.24)`} />
+          <circle cx={x+48} cy="91" r="5" fill={c} opacity=".7" />
+          {badge && (
+            <>
+              <rect x={x+6} y="58" width={badge.length*5.2+10} height="12" rx="4" fill={badge==="New" ? c : "#FF6B35"} />
+              <text x={x+9} y="66.5" fontSize="6.5" fill="#fff" fontFamily="monospace">{badge}</text>
+            </>
+          )}
+          <rect x={x+6} y="132" width={name.length*3.8} height="5" rx="2.5" fill="rgba(255,255,255,.5)" />
+          <text x={x+6} y="148" fontSize="7.5" fill={c} fontFamily="monospace">{"★".repeat(stars)}{"☆".repeat(5-stars)}</text>
+          <text x={x+6} y="162" fontSize="11" fontWeight="700" fill="rgba(255,255,255,.88)" fontFamily="'Orbitron',sans-serif">{price}</text>
+          <rect x={x+6} y="165" width="84" height="17" rx="8.5" fill={c} opacity=".9" />
+          <text x={x+48} y="176.5" textAnchor="middle" fontSize="7.5" fill="#fff" fontFamily="monospace">Add to Cart</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+/* ── Service icon SVGs (replaces emojis) ────────────────── */
+function SvcIcon({ id, color: c }: { id: string; color: string }) {
+  const s: React.CSSProperties = { display:"block", width:20, height:20 };
+  if (id==="webapps") return (
+    <svg style={s} viewBox="0 0 20 20" fill="none">
+      <rect x="1" y="2.5" width="18" height="15" rx="3" stroke={c} strokeWidth="1.35" />
+      <rect x="1" y="6" width="18" height=".8" fill={c} opacity=".45" />
+      <circle cx="3.8" cy="4.25" r=".9" fill={c} opacity=".7" />
+      <circle cx="6.6" cy="4.25" r=".9" fill={c} opacity=".5" />
+      <rect x="3.5" y="9" width="5.5" height="5.5" rx="1.5" fill={c} opacity=".28" />
+      <rect x="11" y="9" width="6.5" height="2.5" rx="1.25" fill={c} opacity=".38" />
+      <rect x="11" y="12.5" width="4.5" height="2" rx="1" fill={c} opacity=".22" />
+    </svg>
+  );
+  if (id==="miniapps") return (
+    <svg style={s} viewBox="0 0 20 20" fill="none">
+      <rect x="5.5" y="1" width="9" height="18" rx="3" stroke={c} strokeWidth="1.35" />
+      <rect x="8.5" y="2.2" width="3" height=".9" rx=".45" fill={c} opacity=".55" />
+      <rect x="7.5" y="15.5" width="5" height=".9" rx=".45" fill={c} opacity=".45" />
+      <circle cx="10" cy="9.5" r="2.8" fill={c} opacity=".28" />
+      <circle cx="10" cy="9.5" r="1.2" fill={c} opacity=".75" />
+    </svg>
+  );
+  if (id==="stores") return (
+    <svg style={s} viewBox="0 0 20 20" fill="none">
+      <path d="M2 4.5h16l-1.5 7.5H3.5L2 4.5z" stroke={c} strokeWidth="1.35" strokeLinejoin="round" />
+      <path d="M3.5 12 2.5 17h15l-1-5" stroke={c} strokeWidth="1.2" strokeLinejoin="round" opacity=".6" />
+      <circle cx="7.5" cy="18.5" r="1.3" fill={c} opacity=".8" />
+      <circle cx="14.5" cy="18.5" r="1.3" fill={c} opacity=".8" />
+      <path d="M7.5 4.5 6 1M12.5 4.5 14 1" stroke={c} strokeWidth="1.1" strokeLinecap="round" opacity=".4" />
+    </svg>
+  );
+  if (id==="brand") return (
+    <svg style={s} viewBox="0 0 20 20" fill="none">
+      <polygon points="10,1.5 17.5,7 15,18 5,18 2.5,7" stroke={c} strokeWidth="1.35" strokeLinejoin="round" />
+      <circle cx="10" cy="10.5" r="2.5" fill={c} opacity=".45" />
+      <circle cx="10" cy="10.5" r="1" fill={c} />
+    </svg>
+  );
+  if (id==="forex") return (
+    <svg style={s} viewBox="0 0 20 20" fill="none">
+      {[{x:2,h:5,y:9},{x:5.5,h:9,y:5},{x:9,h:3.5,y:10.5},{x:12.5,h:12,y:2},{x:16,h:7,y:7}].map(({ x, h, y },i) => (
+        <g key={x}>
+          <rect x={x} y={y} width="1.8" height={h} rx=".9" fill={c} opacity={.28+i*.13} />
+          <line x1={x-.8} y1={y+h*.38} x2={x} y2={y+h*.38} stroke={c} strokeWidth=".9" opacity=".7" />
+          <line x1={x+1.8} y1={y+h*.62} x2={x+2.6} y2={y+h*.62} stroke={c} strokeWidth=".9" opacity=".7" />
+        </g>
+      ))}
+      <line x1="1" y1="19" x2="19" y2="19" stroke={c} strokeWidth=".7" opacity=".28" />
+    </svg>
+  );
+  if (id==="apis") return (
+    <svg style={s} viewBox="0 0 20 20" fill="none">
+      <circle cx="4.5" cy="10" r="3.2" stroke={c} strokeWidth="1.35" />
+      <circle cx="15.5" cy="10" r="3.2" stroke={c} strokeWidth="1.35" />
+      <line x1="7.7" y1="10" x2="12.3" y2="10" stroke={c} strokeWidth="1.4" strokeLinecap="round" />
+      <line x1="10" y1="6.5" x2="10" y2="4" stroke={c} strokeWidth="1.1" strokeLinecap="round" opacity=".45" />
+      <line x1="10" y1="13.5" x2="10" y2="16" stroke={c} strokeWidth="1.1" strokeLinecap="round" opacity=".45" />
+    </svg>
+  );
+  return null;
+}
+
+/* ── Showcase card shell ─────────────────────────────────── */
+function ShowcaseCard({ num, title, sub, color, children }: { num:string; title:string; sub:string; color:string; children:React.ReactNode }) {
+  const [hov, setHov] = useState(false);
+  const r = rgb(color);
   return (
     <div
-      className="mkt-card"
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(-6px)";
-        el.style.borderColor = color + "55";
-        el.style.boxShadow = `0 20px 50px rgba(0,0,0,0.75), 0 0 32px ${color}20`;
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "";
-        el.style.borderColor = "";
-        el.style.boxShadow = "";
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        borderRadius:16, overflow:"hidden",
+        background:"#07070F",
+        border:`1px solid ${hov ? `rgba(${r},.38)` : "rgba(255,255,255,.062)"}`,
+        borderTop:`2px solid ${hov ? color : `rgba(${r},.5)`}`,
+        boxShadow:hov ? `0 22px 52px rgba(0,0,0,.72), 0 0 32px rgba(${r},.16)` : "0 4px 24px rgba(0,0,0,.5)",
+        transform:hov ? "translateY(-6px)" : "none",
+        transition:"transform .32s cubic-bezier(.25,1,.5,1), border-color .25s, box-shadow .3s",
+        display:"flex", flexDirection:"column", cursor:"default",
       }}
     >
-      <div style={{ height: 210, overflow: "hidden", position: "relative" }}>
-        {children}
-      </div>
-      <div className="mkt-card-info">
-        <div className="mkt-card-label" style={{ color }}>{label}</div>
-        <div className="mkt-card-desc">{sub}</div>
+      <div style={{ flex:1, overflow:"hidden" }}>{children}</div>
+      <div style={{ padding:"14px 16px 16px", borderTop:"1px solid rgba(255,255,255,.045)", background:"#0A0A16", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div>
+          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"1.1rem", letterSpacing:".06em", color:"rgba(255,255,255,.9)", marginBottom:3 }}>{title}</div>
+          <p style={{ fontFamily:"'Inter',sans-serif", fontSize:"11px", color:"rgba(255,255,255,.3)", lineHeight:1.45, margin:0 }}>{sub}</p>
+        </div>
+        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"9px", color:`rgba(${r},.65)`, letterSpacing:".16em", flexShrink:0, paddingLeft:8 }}>{num}</span>
       </div>
     </div>
   );
 }
 
 function ShowcaseCollage() {
-  type Card = { id:string; title:string; sub:string; color:string; bg:string; num:string; img?:string; tags?:string[] };
-  const cards: Card[] = [
-    { id:"web",    title:"Websites",      sub:"Fast, modern sites that convert",          color:"#34D399", bg:"#051410", num:"01", tags:["Next.js","Tailwind","SEO"] },
-    { id:"apps",   title:"Web Apps",      sub:"SaaS, dashboards and custom tools",        color:"#00DFFF", bg:"#041418", num:"02", tags:["React","Supabase","Full-stack"] },
-    { id:"mobile", title:"Mobile Apps",   sub:"iOS and Android experiences",              color:"#A855F7", bg:"#0e0818", num:"03", img:"/images/services/mobile.jpg" },
-    { id:"social", title:"Social Media",  sub:"Posts, stories and brand visuals",         color:"#F43F5E", bg:"#18060a", num:"04", tags:["Canva","Motion","Content"] },
-    { id:"brand",  title:"Branding",      sub:"Logos, identity and brand guidelines",     color:"#FF8820", bg:"#160c03", num:"05", img:"/images/services/branding.jpg" },
-    { id:"store",  title:"Online Stores", sub:"E-commerce built to sell",                 color:"#F59E0B", bg:"#161003", num:"06", tags:["Shopify","Stripe","UX design"] },
-  ];
   return (
     <div className="showcase-grid">
-      {cards.map(c => (
-        <div key={c.id} style={{ position:"relative", borderRadius:"14px", overflow:"hidden", background:c.bg, border:`1px solid ${c.color}28`, display:"flex", flexDirection:"column", justifyContent:"flex-end", minHeight:"280px" }}>
-          {c.img ? (
-            <>
-              <img src={c.img} alt={c.title} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
-              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(0,0,0,0.88) 45%,transparent 100%)" }} />
-              <div style={{ position:"relative", padding:"18px 16px 16px" }}>
-                <div style={{ fontSize:"9px", color:c.color, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", marginBottom:"4px" }}>{c.num}</div>
-                <div style={{ fontSize:"18px", fontWeight:800, color:"#fff", lineHeight:1.1 }}>{c.title}</div>
-                <div style={{ fontSize:"11px", color:"rgba(255,255,255,0.65)", marginTop:"4px" }}>{c.sub}</div>
-              </div>
-            </>
-          ) : (
-            <div style={{ padding:"22px 18px 20px", height:"100%", display:"flex", flexDirection:"column", justifyContent:"space-between", position:"relative", boxSizing:"border-box", minHeight:"280px" }}>
-              <div style={{ fontSize:"9px", color:c.color, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", opacity:0.85 }}>{c.num}</div>
-              <div>
-                <div style={{ fontSize:"26px", fontWeight:800, color:"#fff", lineHeight:1.1, marginBottom:"8px", fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.03em" }}>{c.title}</div>
-                <div style={{ fontSize:"11px", color:"rgba(255,255,255,0.55)", marginBottom:"16px", lineHeight:1.5 }}>{c.sub}</div>
-                <div style={{ display:"flex", flexWrap:"wrap", gap:"5px" }}>
-                  {c.tags?.map(t => (
-                    <span key={t} style={{ fontSize:"9px", fontWeight:600, color:c.color, background:`${c.color}15`, border:`1px solid ${c.color}35`, borderRadius:"20px", padding:"3px 9px", letterSpacing:"0.05em" }}>{t}</span>
-                  ))}
-                </div>
-              </div>
-              <div style={{ position:"absolute", bottom:0, left:0, right:0, height:"2px", background:`linear-gradient(to right,${c.color},transparent)` }} />
-            </div>
-          )}
-        </div>
+      {[
+        { num:"01", title:"Websites",      sub:"Modern, fast sites that convert",      color:"#34D399", Preview: () => <WebsiteMockup   c="#34D399" /> },
+        { num:"02", title:"Web Apps",      sub:"SaaS, dashboards and custom tools",    color:"#00DFFF", Preview: () => <DashboardMockup c="#00DFFF" /> },
+        { num:"03", title:"Mobile Apps",   sub:"iOS and Android — clean interfaces",   color:"#A855F7", Preview: () => <MobileMockup    c="#A855F7" /> },
+        { num:"04", title:"Social Media",  sub:"Posts, stories and brand content",     color:"#F43F5E", Preview: () => <SocialMockup    c="#F43F5E" /> },
+        { num:"05", title:"Branding",      sub:"Logo, identity and visual system",     color:"#FF8820", Preview: () => <BrandingMockup  c="#FF8820" /> },
+        { num:"06", title:"Online Stores", sub:"E-commerce built to sell",             color:"#F59E0B", Preview: () => <StoreMockup     c="#F59E0B" /> },
+      ].map(({ num, title, sub, color, Preview }) => (
+        <ShowcaseCard key={num} num={num} title={title} sub={sub} color={color}>
+          <Preview />
+        </ShowcaseCard>
       ))}
     </div>
   );
 }
 
-const SERVICES = [  { icon:"⚡", title:"Web Applications", desc:"Full-stack SaaS, dashboards, and tools — from database to polished UI.", color:"#00DFFF", examples:[{ label:"ElectraCore", href:"https://electracore.vercel.app" },{ label:"DigiLearn", href:"https://digilearn-five.vercel.app" }] },  { icon:"📱", title:"Mini Apps", desc:"World App and Telegram mini apps. Verified-human gates, wallet actions, real-time payments.", color:"#B040FF", examples:[{ label:"Tcash (coming)", href:"#" },{ label:"HumanChain (coming)", href:"#" }] },  { icon:"🛒", title:"Online Stores", desc:"Shopify and custom e-commerce — product listings, cart, checkout, and payment flows.", color:"#F59E0B", examples:[{ label:"Custom builds", href:"#contact" }] },  { icon:"🎨", title:"Brand and Design", desc:"Logo suites, social templates, pitch decks, and full brand identity packages.", color:"#FF8820", examples:[{ label:"View showcase", href:"#showcase" }] },  { icon:"🌐", title:"Forex Platforms", desc:"Trading dashboards, live feed integrations, broker-grade UX for financial products.", color:"#34D399", examples:[{ label:"ForexPro", href:"https://fxprorise.org" }] },  { icon:"🔧", title:"APIs and Integrations", desc:"M-Pesa, Stripe, World ID, Supabase, OpenAI — connecting the pieces your product needs.", color:"#00DFFF", examples:[{ label:"Tcash payments", href:"#" }] },];
+const SERVICES = [  { id:"webapps",  title:"Web Applications",    desc:"Full-stack SaaS, dashboards, and tools — from database to polished UI.", color:"#00DFFF", examples:[{ label:"ElectraCore", href:"https://electracore.vercel.app" },{ label:"DigiLearn", href:"https://digilearn-five.vercel.app" }] },  { id:"miniapps", title:"Mini Apps",             desc:"World App and Telegram mini apps. Verified-human gates, wallet actions, real-time payments.", color:"#B040FF", examples:[{ label:"Tcash (coming)", href:"#" },{ label:"HumanChain (coming)", href:"#" }] },  { id:"stores",   title:"Online Stores",         desc:"Shopify and custom e-commerce — product listings, cart, checkout, and payment flows.", color:"#F59E0B", examples:[{ label:"Custom builds", href:"#contact" }] },  { id:"brand",    title:"Brand and Design",      desc:"Logo suites, social templates, pitch decks, and full brand identity packages.", color:"#FF8820", examples:[{ label:"View showcase", href:"#showcase" }] },  { id:"forex",    title:"Forex Platforms",       desc:"Trading dashboards, live feed integrations, broker-grade UX for financial products.", color:"#34D399", examples:[{ label:"ForexPro", href:"https://fxprorise.org" }] },  { id:"apis",     title:"APIs and Integrations", desc:"M-Pesa, Stripe, World ID, Supabase, OpenAI — connecting the pieces your product needs.", color:"#00DFFF", examples:[{ label:"Tcash payments", href:"#" }] },];
 
 export default function Home() {  const parallax1 = useParallax(0.18);  const parallax2 = useParallax(0.12);  const [s1ref, s1visible] = useInView();  const [s2ref, s2visible] = useInView();  const [s3ref, s3visible] = useInView();  const [s4ref, s4visible] = useInView();  const [s5ref, s5visible] = useInView();  const r1 = useReveal(0), r2 = useReveal(80);  const r3 = useReveal(0), r4 = useReveal(0), r5 = useReveal(0), r6 = useReveal(0);  const r7 = useReveal(0), r8 = useReveal(0);  const [mounted, setMounted] = useState(false);  const [ghRepos, setGhRepos] = useState<number | null>(null);  const mouse       = useRef({ x: 0, y: 0 });  const scrollY     = useRef(0);  const progressRef = useRef<HTMLDivElement>(null);  useEffect(() => {    /* eslint-disable-next-line react-hooks/set-state-in-effect */    setMounted(true);    const onMouse = (e: MouseEvent) => {      mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;      mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;    };    const onScroll = () => {      scrollY.current = window.scrollY;      if (progressRef.current) {        const total = document.documentElement.scrollHeight - window.innerHeight;        progressRef.current.style.transform = `scaleX(${Math.min(window.scrollY / total, 1)})`;      }    };    window.addEventListener("mousemove", onMouse);    window.addEventListener("scroll", onScroll, { passive: true });    fetch("https://api.github.com/users/Jonta254")      .then((r) => r.json())      .then((d) => { if (d.public_repos) setGhRepos(d.public_repos); })      .catch(() => {});    return () => {      window.removeEventListener("mousemove", onMouse);      window.removeEventListener("scroll", onScroll);    };  }, []);  return (    <>      {/* Scroll progress */}      <div ref={progressRef} className="scroll-progress-bar" />      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}      <section style={{ position: "relative", minHeight: "100svh", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", background: "linear-gradient(160deg, #08001A 0%, #050012 35%, #020008 70%, #010006 100%)" }}>        {/* â”€â”€ 3D deep-space background scene â”€â”€ */}        {mounted && !isMobile() && (          <ErrorBoundary>            <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>              <HeroScene scrollY={scrollY} mouse={mouse} />            </div>          </ErrorBoundary>        )}        {/* â”€â”€ Moving aurora mesh — always visible â”€â”€ */}        <div className="hero-aurora" style={{ zIndex: 1 }} />        {/* â”€â”€ Secondary breathing glow layer â”€â”€ */}        <div aria-hidden="true" style={{          position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",          background: "radial-gradient(ellipse 60% 40% at 20% 90%, rgba(255,80,0,0.10) 0%, transparent 55%), radial-gradient(ellipse 40% 35% at 90% 20%, rgba(0,200,255,0.08) 0%, transparent 50%)",          animation: "heroBreathe 8s ease-in-out infinite",        }} />        {/* â”€â”€ CSS atmosphere layers â”€â”€ */}        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",          background: "radial-gradient(ellipse 75% 90% at 15% 65%, rgba(255,100,10,0.18) 0%, transparent 65%)" }} />        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",          background: "radial-gradient(ellipse 55% 70% at 85% 50%, rgba(0,180,255,0.12) 0%, transparent 60%)" }} />        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",          background: "radial-gradient(ellipse 45% 55% at 50% 0%, rgba(140,40,255,0.10) 0%, transparent 55%)" }} />        {/* â”€â”€ Dot grid â”€â”€ */}        <div className="dot-grid" style={{ zIndex: 2, opacity: 0.5 }} />        {/* â”€â”€ Subtle radial vignette over 3D scene â”€â”€ */}        <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",          background: "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 25%, rgba(2,0,8,0.50) 100%)" }} />        {/* â”€â”€ Photo texture — very dim, grounds the scene â”€â”€ */}        <div ref={parallax1} style={{ position: "absolute", inset: "-15%", zIndex: 2, pointerEvents: "none", opacity: 0.07, mixBlendMode: "luminosity" }}>          <Image src="/images/rawsignal-hero.png" alt="" fill style={{ objectFit: "cover", objectPosition: "center" }} priority sizes="100vw" />        </div>        {/* â”€â”€ Bottom fade to page â”€â”€ */}        <div style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",          background: "linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(5,0,16,0.88) 80%, #060010 100%)" }} />        {/* â”€â”€ Left text fade â”€â”€ */}        <div style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",          background: "linear-gradient(to right, rgba(5,0,14,0.65) 0%, rgba(5,0,14,0.20) 40%, transparent 65%)" }} />        {/* â”€â”€ 3D orb — desktop right side â”€â”€ */}        {mounted && !isMobile() && (          <ErrorBoundary>            <div className="hero-orb-wrap" style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", width: "52vw", height: "80vh", zIndex: 4, pointerEvents: "none" }}>              <HeroOrb mouse={mouse} scrollY={scrollY} fov={44} distance={5} glowIntensity={2.2} />            </div>          </ErrorBoundary>        )}        {/* Available badge — glass pill */}        <div style={{ position: "absolute", top: "clamp(5rem,10vw,7rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 6, display: "flex", alignItems: "center", gap: 8, background: "rgba(52,211,153,0.07)", border: "1px solid rgba(52,211,153,0.22)", borderRadius: 100, padding: "5px 14px 5px 8px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#34D399", boxShadow: "0 0 8px #34D399", animation: "sig-pulse 2s ease-in-out infinite", flexShrink: 0 }} />          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(8px,1.1vw,10px)", letterSpacing: "0.18em", color: "#34D399", textTransform: "uppercase", whiteSpace: "nowrap" }}>            Available for work          </span>        </div>        {/* â”€â”€ Top-right corner bracket â”€â”€ */}        <div aria-hidden="true" style={{ position: "absolute", top: "clamp(4.5rem,9vw,6.5rem)", right: "clamp(1rem,3vw,2rem)", zIndex: 6, width: 36, height: 36, borderTop: "1px solid rgba(255,255,255,0.12)", borderRight: "1px solid rgba(255,255,255,0.12)", pointerEvents: "none" }} />        {/* â”€â”€ Bottom-left corner bracket â”€â”€ */}        <div aria-hidden="true" style={{ position: "absolute", bottom: "clamp(1.5rem,3vw,3rem)", left: "clamp(1.25rem,4vw,2.5rem)", zIndex: 6, width: 28, height: 28, borderBottom: "1px solid rgba(255,136,32,0.30)", borderLeft: "1px solid rgba(255,136,32,0.30)", pointerEvents: "none" }} />        {/* Hero content — responsive via .hero-content class */}        <div className="hero-content" style={{ position: "relative", zIndex: 6, padding: "0 clamp(1.25rem,4vw,2.5rem) clamp(2.5rem,5vw,4.5rem)" }}>          <h1 style={{ margin: 0, lineHeight: 0.82 }}>            <BrianName />          </h1>          <div style={{ display:"flex", alignItems:"center", gap:"0.65rem", marginTop:"0.75rem", marginBottom:"clamp(0.75rem,1.5vw,1.2rem)", flexWrap:"wrap" }}>            <span style={{ fontFamily:"'Inter',sans-serif", fontWeight:300, fontSize:"clamp(0.85rem,1.8vw,1.1rem)", color:"rgba(255,255,255,0.42)", letterSpacing:"0.06em" }}>Brian Josiah</span>            <span style={{ color:"rgba(255,255,255,0.18)", fontSize:"0.85rem", fontWeight:300 }}>·</span>            <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(0.72rem,1.4vw,0.88rem)", color:"rgba(255,136,32,0.58)", letterSpacing:"0.14em", textTransform:"uppercase" }}>JontAWorld</span>          </div>        <div className="hero-bottom">            <div>              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.95rem,2.2vw,1.4rem)", color: "rgba(255,255,255,0.68)", lineHeight: 1.65, width: "min(500px, calc(100vw - 2.5rem))", maxWidth: "100%", marginBottom: 14, overflowWrap: "break-word" }}>                Electrician turned developer — building products that work in the real world.              </p>              {mounted && (                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.2vw,11px)", color: "rgba(255,255,255,0.22)", letterSpacing: "0.08em" }}>â†’</span>                  <TypeWriter                    words={["Electrician.", "Developer.", "3D Web.", "Designer.", "Human."]}                    style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(10px,1.2vw,11px)", color: "var(--copper)", letterSpacing: "0.12em" }}                  />                </div>              )}            </div>            <div className="hero-ctas" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>              <MagneticButton as="a" href="/portfolio" className="btn btn-primary" style={{ fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.12em" }}>Enter Portfolio</MagneticButton>              <MagneticButton as="a" href="/about"     className="btn btn-ghost"   style={{ fontSize: "clamp(11px,1.2vw,13px)" }}>Read Signal</MagneticButton>            </div>          </div>        </div>        <style>{`          @keyframes sig-pulse{            0%,100%{box-shadow:0 0 7px #34D399; transform:scale(1);}            50%{box-shadow:0 0 20px #34D399,0 0 36px rgba(52,211,153,0.35); transform:scale(1.25);}          }          @keyframes heroFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}          @keyframes heroDiamondShimmer{0%{background-position:200% 0}50%{background-position:0% 0}100%{background-position:-200% 0}}          @keyframes heroGlint{0%,78%,100%{opacity:0;transform:scaleX(0.2) translateX(-80%)}84%{opacity:1;transform:scaleX(1) translateX(0)}90%{opacity:0;transform:scaleX(0.2) translateX(80%)}}          @keyframes heroBreathe{0%,100%{opacity:0.7;transform:scale(1)}50%{opacity:1;transform:scale(1.02)}}        `}</style>      </section>      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TICKER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}      <div style={{ background: "linear-gradient(to right, #06000E, #040009, #06000E)", borderTop: "1px solid rgba(255,184,0,0.08)", overflow: "hidden", padding: "14px 0" }} aria-hidden="true">        <div style={{ display: "flex", animation: "marquee 28s linear infinite", width: "max-content" }}>          {[...Array(3)].fill(["Electrician","Developer","3D Web","Designer","Explorer","Human","Builder","Raw Signal"]).flat().map((w, i) => (            <span key={i} style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(0.85rem,2vw,1.1rem)", letterSpacing: "0.15em", paddingRight: "clamp(1.25rem,3vw,2.5rem)", color: i % 5 === 2 ? "var(--copper)" : "rgba(255,255,255,0.18)" }}>              {w}            </span>          ))}        </div>        <style>{`@keyframes marquee{to{transform:translateX(-33.333%)}}`}</style>      </div>      <SignalCockpit />      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• STATS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}      <section style={{ background: "radial-gradient(ellipse 90% 60% at 80% 0%, rgba(255,136,32,0.08) 0%, transparent 60%), #080012", padding: "clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)", position: "relative", overflow: "hidden" }}>        <SectionOrbs orbs={[          { x: "70%", y: "-20%", w: "40vw", color: "rgba(255,136,32,0.12)", blur: 90, op: 1, dur: 11 },          { x: "-10%", y: "30%", w: "30vw", color: "rgba(255,184,0,0.08)", blur: 70, op: 1, dur: 14, delay: 3 },        ]} />        <div style={{ position: "absolute", right: "2%", top: "50%", transform: "translateY(-50%)", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(6rem,18vw,14rem)", color: "transparent", WebkitTextStroke: "1px rgba(255,136,32,0.05)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>STAT</div>        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>          <div className="stats-grid">            {[              { n: 1,   suf: "+",  label: "Year on site",          live: false },              { n: ghRepos ?? 40, suf: ghRepos ? "" : "+", label: ghRepos ? "GitHub repos" : "Projects shipped", live: !!ghRepos },              { n: 100, suf: "s",  label: "Trails walked",          live: false },              { n: 5,   suf: "",   label: "Disciplines mastered",   live: false },            ].map((s) => (              <div key={s.label} className="stat-card">                <div className="stat-number">                  <Counter end={s.n} suffix={s.suf} />                  {s.live && <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:"#34D399", letterSpacing:"0.12em", paddingBottom:4 }}>LIVE</span>}                </div>                <p className="stat-label">{s.label}</p>              </div>            ))}          </div>        </div>      </section>      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• THE STACK â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}      <section style={{        background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(0,180,255,0.06) 0%, transparent 60%), #070010",        padding: "clamp(4rem,9vw,8rem) clamp(1.25rem,4vw,2.5rem)",        borderTop: "1px solid rgba(0,180,255,0.06)",        position: "relative", overflow: "hidden",      }}>        <div style={{ position: "absolute", right: "-1%", top: "50%", transform: "translateY(-50%)", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(6rem,18vw,14rem)", color: "transparent", WebkitTextStroke: "1px rgba(0,180,255,0.04)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>STACK</div>        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>          <div ref={r7} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(2.5rem,6vw,4.5rem)" }}>            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase", marginBottom: 16 }}>              // Skills Â· Tools Â· Disciplines            </p>            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem,12vw,9rem)", lineHeight: 0.88, letterSpacing: "0.01em", margin: 0 }}>              <span style={{ color: "var(--chalk)" }}>THE </span>              <span style={{ color: "var(--cyan)" }}>STACK</span>            </h2>          </div>          <div className="tech-grid">            {TECH_STACK.map(t => (                <div key={t.name} className="tech-card">                  <div style={{ width:44, height:44, borderRadius:"10px", background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.08)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>                    <TechSvg name={t.name} />                  </div>                  <p style={{ fontFamily:"'Inter',sans-serif", fontSize:"0.82rem", fontWeight:600, color:"var(--chalk)", lineHeight:1.2, marginTop:4 }}>{t.name}</p>                  <p style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.62rem", color:"var(--stone)", letterSpacing:"0.05em" }}>{t.label}</p>                </div>              ))}          </div>        </div>      </section>      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• SERVICES â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}      <section id="services" style={{ background: "radial-gradient(ellipse 65% 50% at 50% 0%, rgba(255,136,32,0.07) 0%, transparent 55%), #060010", padding: "clamp(4rem,9vw,8rem) clamp(1.25rem,4vw,2.5rem)", borderTop: "1px solid rgba(255,136,32,0.07)", position: "relative", overflow: "hidden" }}>        <SectionOrbs orbs={[          { x: "80%",  y: "-15%", w: "40vw", color: "rgba(255,136,32,0.09)",  blur: 90, op: 1, dur: 12 },          { x: "-10%", y: "50%",  w: "30vw", color: "rgba(0,180,255,0.06)",   blur: 80, op: 1, dur: 15, delay: 4 },          { x: "50%",  y: "80%",  w: "25vw", color: "rgba(176,64,255,0.05)",  blur: 70, op: 1, dur: 18, delay: 7 },        ]} />        <div style={{ position: "absolute", right: "-1%", top: "10%", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(6rem,18vw,14rem)", color: "transparent", WebkitTextStroke: "1px rgba(255,136,32,0.04)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>BUILD</div>        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>          {/* Heading */}          <div ref={r8} style={{ opacity: 0, transform: "translateY(24px)", transition: "all 0.85s cubic-bezier(0.25,1,0.5,1)", marginBottom: "clamp(2.5rem,6vw,5rem)" }}>            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20, flexWrap: "wrap" }}>              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.2em", color: "var(--copper)", textTransform: "uppercase" }}>                // What I Build              </p>              <span className="jonta-badge" style={{ fontSize: "clamp(0.55rem,1vw,0.72rem)" }}>JontAWorld Services</span>            </div>            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem,12vw,9rem)", lineHeight: 0.88, letterSpacing: "0.01em", margin: 0, marginBottom: "1rem" }}>              <span style={{ color: "var(--chalk)" }}>SERVICES</span>              <span style={{ color: "var(--copper)", display: "inline", marginLeft: "0.08em" }}>.</span>            </h2>            <p style={{ fontSize: "clamp(0.875rem,1.5vw,1rem)", color: "rgba(255,255,255,0.38)", maxWidth: 560, lineHeight: 1.8 }}>              From concept to live product. I build everything below — solo or alongside your team — with Claude AI as my co-pilot.            </p>          </div>          <ShowcaseCollage />          {/* Services grid */}          <div className="svc-list">
             {SERVICES.map((s, i) => (
@@ -105,7 +409,7 @@ export default function Home() {  const parallax1 = useParallax(0.18);  const pa
                     </div>
                   )}
                 </div>
-                <span className="svc-icon" aria-hidden="true">{s.icon}</span>
+                <span className="svc-icon" aria-hidden="true"><SvcIcon id={s.id} color={s.color} /></span>
               </div>
             ))}
           </div>
