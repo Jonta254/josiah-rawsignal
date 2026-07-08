@@ -1695,3 +1695,49 @@ section { transition: background 400ms ease; }
   .safe-bottom { padding-bottom: max(3.5rem, env(safe-area-inset-bottom, 1rem)); }
   nav, header { padding-top: max(0px, env(safe-area-inset-top, 0px)); }
 }
+
+/* ── Showcase service grid ──────────────────────────────────────── */
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 0 0 40px;
+}
+@media (max-width: 900px) {
+  .showcase-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .showcase-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Tech stack grid ─────────────────────────────────────────────── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+@media (max-width: 480px) {
+  .tech-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .tech-card p:last-child { display: none; }
+}
+
+/* ── Hero mobile fixes ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .hero-content { padding-bottom: clamp(2rem,8vw,3rem) !important; }
+  .hero-ctas { gap: 8px !important; }
+  .hero-ctas .btn { font-size: 11px !important; padding: 10px 18px !important; }
+  .jonta-badge { font-size: 0.7rem !important; }
+}
+
+/* ── Portfolio page grid ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .portfolio-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── Section padding mobile ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  section { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .contact-grid { grid-template-columns: 1fr !important; }
+  .roles-grid   { grid-template-columns: repeat(2, 1fr) !important; }
+  .values-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+}
