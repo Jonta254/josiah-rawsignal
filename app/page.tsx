@@ -342,11 +342,282 @@ function SvcIcon({ id, color: c }: { id: string; color: string }) {
   return null;
 }
 
+/* ── App-specific UI preview mockups ────────────────────── */
+function SafeSignalMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#050A0F" />
+      <rect width="320" height="26" fill="#080F16" />
+      <path d="M12 5.5 L20 7.5 L20 14 C20 17.5 16 20 16 20 C16 20 12 17.5 12 14 Z" stroke={c} strokeWidth="1.1" fill={`rgba(${r},.14)`} />
+      <path d="M14 13 L15.2 14.5 L18 11.5" stroke={c} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="28" y="16" fontSize="7.5" fill="rgba(255,255,255,.75)" fontFamily="monospace" letterSpacing="2.5">SAFESIGNAL</text>
+      <rect x="248" y="6.5" width="60" height="13" rx="6.5" fill={`rgba(${r},.12)`} stroke={`rgba(${r},.4)`} strokeWidth=".75" />
+      <circle cx="258" cy="13" r="3" fill={c} opacity=".9" />
+      <text x="265" y="16.5" fontSize="6" fill={c} fontFamily="monospace" letterSpacing="1.5">ACTIVE</text>
+      <circle cx="102" cy="108" r="52" fill={`rgba(${r},.03)`} stroke="rgba(255,255,255,.05)" strokeWidth="1" />
+      <circle cx="102" cy="108" r="44" fill="none" stroke="rgba(255,255,255,.07)" strokeWidth="9" />
+      <circle cx="102" cy="108" r="44" fill="none" stroke={c} strokeWidth="9" strokeLinecap="round" strokeDasharray="195 82" transform="rotate(-90 102 108)" opacity=".92" />
+      <text x="102" y="102" textAnchor="middle" fontSize="20" fill="rgba(255,255,255,.92)" fontFamily="monospace" fontWeight="700">45:00</text>
+      <text x="102" y="118" textAnchor="middle" fontSize="6.5" fill="rgba(255,255,255,.32)" fontFamily="monospace" letterSpacing="2.5">TIME LEFT</text>
+      <rect x="60" y="155" width="84" height="19" rx="9.5" fill={c} opacity=".92" />
+      <text x="102" y="167.5" textAnchor="middle" fontSize="7" fill="#fff" fontFamily="monospace" letterSpacing="1.5">CHECK IN NOW</text>
+      <rect x="172" y="35" width="136" height="146" rx="10" fill="#080F16" stroke="rgba(255,255,255,.055)" strokeWidth=".75" />
+      <text x="182" y="52" fontSize="6.5" fill="rgba(255,255,255,.25)" fontFamily="monospace" letterSpacing="2">WORKER STATUS</text>
+      {([
+        { name:"M. Webb",     site:"Plant Room B",  col:"#4ADE80", st:"active"  },
+        { name:"S. Okafor",   site:"Rooftop — A",   col:"#FF4444", st:"overdue" },
+        { name:"D. Mitchell", site:"Boiler Room",   col:"#4ADE80", st:"safe"    },
+        { name:"P. Nambiar",  site:"Substation 3B", col:"#4ADE80", st:"active"  },
+      ] as const).map(({ name, site, col, st }, i) => (
+        <g key={name}>
+          <rect x="180" y={60+i*28} width="120" height="20" rx="6" fill="rgba(255,255,255,.022)" stroke="rgba(255,255,255,.05)" strokeWidth=".7" />
+          <circle cx="189" cy={70+i*28} r="3.5" fill={col} />
+          <text x="197" y={68+i*28} fontSize="6.5" fill="rgba(255,255,255,.72)" fontFamily="monospace">{name}</text>
+          <text x="197" y={77+i*28} fontSize="5.5" fill="rgba(255,255,255,.28)" fontFamily="monospace">{site}</text>
+          <text x="295" y={71+i*28} textAnchor="end" fontSize="5.5" fill={col} fontFamily="monospace">{st}</text>
+        </g>
+      ))}
+      <text x="182" y="176" fontSize="5.5" fill={`rgba(${r},.4)`} fontFamily="monospace">📍 -1.292° N, 36.821° E</text>
+    </svg>
+  );
+}
+
+function TrailDeskMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#050E09" />
+      <rect width="320" height="26" fill="#070F0A" />
+      <path d="M13 20 L13 10 L17 14 L21 7 L21 20" stroke={c} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="21" cy="7" r="2" fill={c} opacity=".9" />
+      <text x="30" y="16" fontSize="7.5" fill="rgba(255,255,255,.72)" fontFamily="monospace" letterSpacing="2.5">TRAILDESK</text>
+      <rect x="248" y="7" width="60" height="12" rx="6" fill={`rgba(${r},.12)`} stroke={`rgba(${r},.38)`} strokeWidth=".75" />
+      <text x="278" y="15" textAnchor="middle" fontSize="6" fill={c} fontFamily="monospace" letterSpacing="1">ACTIVE TRIP</text>
+      <rect x="0" y="26" width="320" height="106" fill="#040C07" />
+      {([50,68,86,104,118,130] as const).map((ry,i) => (
+        <ellipse key={ry} cx="160" cy={ry} rx={120-i*8} ry={28-i*3} stroke={`rgba(52,211,153,0.${8-i})`} strokeWidth=".6" fill="none" />
+      ))}
+      {Array.from({length:9},(_,i)=>(
+        <line key={i} x1={30+i*32} y1="26" x2={30+i*32} y2="132" stroke={`rgba(${r},.04)`} strokeWidth=".5" />
+      ))}
+      {([40,60,80,100,120] as const).map(gy=>(
+        <line key={gy} x1="0" y1={gy} x2="320" y2={gy} stroke={`rgba(${r},.04)`} strokeWidth=".5" />
+      ))}
+      <polyline points="42,120 78,92 114,105 155,72 195,80 232,58 275,65" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="6 4" opacity=".85" />
+      {([{x:42,y:120,n:"S"},{x:155,y:72,n:"2"},{x:232,y:58,n:"3"},{x:275,y:65,n:"E"}] as const).map(({x,y,n})=>(
+        <g key={n}>
+          <circle cx={x} cy={y} r="7" fill={`rgba(${r},.18)`} stroke={c} strokeWidth="1.2" />
+          <text x={x} y={y+3.5} textAnchor="middle" fontSize="6.5" fill={c} fontFamily="monospace" fontWeight="700">{n}</text>
+        </g>
+      ))}
+      <circle cx="195" cy="80" r="5" fill={c} opacity=".95" />
+      <circle cx="195" cy="80" r="9" stroke={c} strokeWidth="1" opacity=".4" />
+      <rect x="0" y="132" width="320" height="58" fill="#070F0A" />
+      <line x1="0" y1="132" x2="320" y2="132" stroke={`rgba(${r},.22)`} strokeWidth=".8" />
+      <text x="16" y="150" fontSize="6" fill="rgba(255,255,255,.28)" fontFamily="monospace" letterSpacing="2">TRIP STATS</text>
+      {([
+        {label:"Distance", val:"12.4 km", x:16},
+        {label:"Elevation", val:"680 m",  x:114},
+        {label:"Duration",  val:"3h 22m", x:200},
+        {label:"GPS Pts",   val:"1,420",  x:274},
+      ] as const).map(({label,val,x})=>(
+        <g key={label}>
+          <text x={x} y={168} fontSize="12" fontWeight="700" fill={c} fontFamily="monospace">{val}</text>
+          <text x={x} y={178} fontSize="5.5" fill="rgba(255,255,255,.3)" fontFamily="monospace" letterSpacing="1">{label.toUpperCase()}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function DigiLearnMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  const courses = [
+    { title:"React & Next.js",     cat:"WEB DEV",  pct:72, rating:"4.9" },
+    { title:"Machine Learning",    cat:"AI / ML",  pct:38, rating:"4.8" },
+    { title:"Python Fundamentals", cat:"BACKEND",  pct:55, rating:"4.7" },
+    { title:"Ethical Hacking",     cat:"SECURITY", pct:20, rating:"4.9" },
+  ];
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#0A1628" />
+      <rect width="320" height="26" fill="#0D1C35" />
+      <rect x="10" y="8" width="28" height="10" rx="5" fill={c} opacity=".9" />
+      <text x="14" y="15.5" fontSize="6.5" fill="#050E1E" fontFamily="monospace" fontWeight="700">DIGI</text>
+      <text x="44" y="16" fontSize="7.5" fill="rgba(255,255,255,.72)" fontFamily="monospace" letterSpacing="2">DIGILEARN</text>
+      <rect x="214" y="7" width="42" height="12" rx="6" fill={`rgba(${r},.12)`} stroke={`rgba(${r},.35)`} strokeWidth=".75" />
+      <text x="235" y="15.5" textAnchor="middle" fontSize="6" fill={c} fontFamily="monospace">100+ Free</text>
+      <rect x="260" y="7" width="46" height="12" rx="6" fill={c} opacity=".9" />
+      <text x="283" y="15.5" textAnchor="middle" fontSize="6.5" fill="#050E1E" fontFamily="monospace" fontWeight="700">Browse →</text>
+      {courses.map(({ title, cat, pct, rating }, i) => {
+        const cx = i % 2 === 0 ? 10 : 168;
+        const cy = i < 2 ? 34 : 116;
+        return (
+          <g key={title}>
+            <rect x={cx} y={cy} width="142" height="76" rx="8" fill="#0E1F38" stroke={`rgba(${r},.12)`} strokeWidth=".75" />
+            <rect x={cx} y={cy} width="142" height="26" rx="8" fill={`rgba(${r},.1)`} />
+            <rect x={cx+6} y={cy+8} width={cat.length*5+8} height="10" rx="5" fill={`rgba(${r},.25)`} />
+            <text x={cx+10} y={cy+15.5} fontSize="5.5" fill={c} fontFamily="monospace" letterSpacing="1">{cat}</text>
+            <text x={cx+6} y={cy+40} fontSize="7" fill="rgba(255,255,255,.82)" fontFamily="sans-serif">{title}</text>
+            <text x={cx+6} y={cy+53} fontSize="5.5" fill={`rgba(${r},.7)`} fontFamily="monospace">★ {rating}</text>
+            <rect x={cx+6} y={cy+60} width="130" height="4" rx="2" fill="rgba(255,255,255,.07)" />
+            <rect x={cx+6} y={cy+60} width={130*pct/100} height="4" rx="2" fill={c} opacity=".75" />
+            <text x={cx+138} y={cy+64} textAnchor="end" fontSize="5" fill={`rgba(${r},.6)`} fontFamily="monospace">{pct}%</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function ElectraCoreMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#070810" />
+      <rect width="320" height="26" fill="#0B0C1A" />
+      <polygon points="16,20 12,10 19,10 15,16 22,16 14,24" fill={c} opacity=".9" />
+      <text x="30" y="16" fontSize="7.5" fill="rgba(255,255,255,.72)" fontFamily="monospace" letterSpacing="2">ELECTRACORE</text>
+      <rect x="238" y="7" width="70" height="12" rx="6" fill={`rgba(${r},.12)`} stroke={`rgba(${r},.35)`} strokeWidth=".75" />
+      <text x="273" y="15.5" textAnchor="middle" fontSize="6" fill={c} fontFamily="monospace" letterSpacing=".5">Pro Calculator</text>
+      <rect x="10" y="34" width="176" height="148" rx="10" fill="#0B0C1A" stroke="rgba(255,255,255,.055)" strokeWidth=".75" />
+      <text x="20" y="51" fontSize="7" fill={`rgba(${r},.7)`} fontFamily="monospace" letterSpacing="2">VOLTAGE CALCULATOR</text>
+      {([
+        { label:"Voltage (V)",  val:"230",  unit:"V" },
+        { label:"Current (A)",  val:"20",   unit:"A" },
+        { label:"Power Factor", val:"0.95", unit:""  },
+      ] as const).map(({ label, val, unit }, i) => (
+        <g key={label}>
+          <text x="20" y={68+i*32} fontSize="6" fill="rgba(255,255,255,.38)" fontFamily="monospace">{label}</text>
+          <rect x="20" y={72+i*32} width="156" height="18" rx="5" fill="rgba(255,255,255,.04)" stroke={`rgba(${r},.2)`} strokeWidth=".75" />
+          <text x="30" y={84+i*32} fontSize="9" fill="rgba(255,255,255,.82)" fontFamily="monospace" fontWeight="700">{val}</text>
+          {unit ? <text x="160" y={84+i*32} textAnchor="end" fontSize="7" fill={`rgba(${r},.55)`} fontFamily="monospace">{unit}</text> : null}
+        </g>
+      ))}
+      <rect x="20" y="157" width="156" height="18" rx="5" fill={`rgba(${r},.12)`} stroke={c} strokeWidth=".75" />
+      <text x="28" y="169" fontSize="9" fill={c} fontFamily="monospace" fontWeight="700">P = 4.37 kW</text>
+      <rect x="198" y="34" width="112" height="148" rx="10" fill="#0B0C1A" stroke="rgba(255,255,255,.055)" strokeWidth=".75" />
+      <text x="208" y="51" fontSize="6.5" fill="rgba(255,255,255,.25)" fontFamily="monospace" letterSpacing="1">CIRCUIT</text>
+      <line x1="218" y1="100" x2="228" y2="100" stroke={c} strokeWidth="1.3" opacity=".7" />
+      <circle cx="224" cy="100" r="8" fill="none" stroke={c} strokeWidth="1.2" opacity=".6" />
+      <text x="224" y="103.5" textAnchor="middle" fontSize="7" fill={c} opacity=".9" fontFamily="monospace">∿</text>
+      <line x1="232" y1="100" x2="248" y2="100" stroke={c} strokeWidth="1.3" opacity=".7" />
+      <path d="M248,100 L252,94 L256,106 L260,94 L264,106 L268,94 L272,100" stroke={c} strokeWidth="1.2" fill="none" opacity=".75" />
+      <line x1="272" y1="100" x2="285" y2="100" stroke={c} strokeWidth="1.3" opacity=".7" />
+      <rect x="285" y="92" width="10" height="16" rx="2" fill="none" stroke={c} strokeWidth="1.2" opacity=".65" />
+      <line x1="295" y1="92" x2="295" y2="76" stroke={c} strokeWidth="1.2" opacity=".5" />
+      <line x1="224" y1="92" x2="224" y2="76" stroke={c} strokeWidth="1.2" opacity=".5" />
+      <line x1="224" y1="76" x2="295" y2="76" stroke={c} strokeWidth="1.2" opacity=".5" />
+      <text x="259" y="72" textAnchor="middle" fontSize="7" fill={`rgba(${r},.6)`} fontFamily="monospace">230V</text>
+      <text x="277" y="90" textAnchor="middle" fontSize="6" fill={`rgba(${r},.5)`} fontFamily="monospace">20Ω</text>
+      {(["Ohm","Load","3Ø","Cost"] as const).map((t,i) => (
+        <g key={t}>
+          <rect x={208+i*24} y="145" width="20" height="20" rx="5" fill={`rgba(${r},.1)`} stroke={`rgba(${r},.22)`} strokeWidth=".7" />
+          <text x={218+i*24} y="157.5" textAnchor="middle" fontSize="5.5" fill={`rgba(${r},.65)`} fontFamily="monospace">{t}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function ApprenticeLogMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  const logs = [
+    { task:"Cable install — conduit Level 3", hrs:"6.5h", status:"signed"  },
+    { task:"Switchboard wiring — main DB",    hrs:"4.0h", status:"signed"  },
+    { task:"Testing & tagging appliances",    hrs:"3.5h", status:"pending" },
+    { task:"Motor circuit — 3 phase setup",   hrs:"5.0h", status:"pending" },
+  ];
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#050C14" />
+      <rect width="320" height="26" fill="#080F18" />
+      <path d="M12 22 L18 8 L24 22 M14 18 H22" stroke={c} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="32" y="16" fontSize="7.5" fill="rgba(255,255,255,.72)" fontFamily="monospace" letterSpacing="2">APPRENTICELOG</text>
+      <rect x="240" y="7" width="68" height="12" rx="6" fill={c} opacity=".88" />
+      <text x="274" y="15.5" textAnchor="middle" fontSize="6" fill="#050C14" fontFamily="monospace" fontWeight="700">Export PDF →</text>
+      <rect x="10" y="34" width="300" height="28" rx="8" fill="#080F18" stroke="rgba(255,255,255,.055)" strokeWidth=".75" />
+      <text x="20" y="48" fontSize="7.5" fontWeight="700" fill="rgba(255,255,255,.82)" fontFamily="monospace">2,184h</text>
+      <text x="82" y="47.5" fontSize="6" fill="rgba(255,255,255,.3)" fontFamily="monospace">of 3,200h · 68% complete</text>
+      <rect x="20" y="52" width="280" height="5" rx="2.5" fill="rgba(255,255,255,.06)" />
+      <rect x="20" y="52" width="190" height="5" rx="2.5" fill={c} opacity=".8" />
+      {logs.map(({ task, hrs, status }, i) => (
+        <g key={task}>
+          <rect x="10" y={72+i*27} width="300" height="22" rx="6" fill={i%2===0?"rgba(255,255,255,.02)":"#050C14"} stroke="rgba(255,255,255,.04)" strokeWidth=".7" />
+          <text x="18" y={86+i*27} fontSize="6.5" fill="rgba(255,255,255,.62)" fontFamily="monospace">{task}</text>
+          <text x="222" y={86+i*27} fontSize="7" fill={`rgba(${r},.7)`} fontFamily="monospace" fontWeight="700">{hrs}</text>
+          <rect x="247" y={75+i*27} width={status==="signed"?42:46} height="12" rx="6" fill={status==="signed"?"rgba(74,222,128,.12)":"rgba(251,191,36,.1)"} stroke={status==="signed"?"rgba(74,222,128,.4)":"rgba(251,191,36,.3)"} strokeWidth=".7" />
+          <text x={status==="signed"?268:270} y={83+i*27} textAnchor="middle" fontSize="5.5" fill={status==="signed"?"#4ADE80":"#FBBf24"} fontFamily="monospace">{status==="signed"?"✓ Signed":"⏳ Pending"}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function ForexProMockup({ c }: { c: string }) {
+  const r = rgb(c);
+  const candles = [
+    { o:110, cl:105, h:114, l:102, bear:true  },
+    { o:105, cl:115, h:118, l:103, bear:false },
+    { o:115, cl:108, h:119, l:105, bear:true  },
+    { o:108, cl:122, h:124, l:106, bear:false },
+    { o:122, cl:118, h:126, l:116, bear:true  },
+    { o:118, cl:130, h:132, l:116, bear:false },
+    { o:130, cl:126, h:134, l:123, bear:true  },
+    { o:126, cl:138, h:140, l:124, bear:false },
+  ];
+  const scaleY = (v: number) => 130 - (v - 100) * 2.2;
+  return (
+    <svg viewBox="0 0 320 190" fill="none" style={{ width:"100%", display:"block" }}>
+      <rect width="320" height="190" rx="10" fill="#040F08" />
+      <rect width="320" height="26" fill="#060F0A" />
+      <text x="14" y="16" fontSize="7.5" fill="rgba(255,255,255,.72)" fontFamily="monospace" letterSpacing="2">FOREXPRO</text>
+      <rect x="168" y="7" width="58" height="12" rx="6" fill={`rgba(${r},.12)`} stroke={`rgba(${r},.35)`} strokeWidth=".75" />
+      <text x="197" y="15.5" textAnchor="middle" fontSize="6" fill={c} fontFamily="monospace">EUR/USD</text>
+      <rect x="234" y="7" width="74" height="12" rx="6" fill={`rgba(${r},.12)`} stroke={`rgba(${r},.35)`} strokeWidth=".75" />
+      <text x="271" y="15.5" textAnchor="middle" fontSize="7.5" fill={c} fontFamily="monospace" fontWeight="700">1.0847 ↑</text>
+      <rect x="0" y="26" width="320" height="110" fill="#050E08" />
+      {([40,60,80,100,120] as const).map(gy => (
+        <line key={gy} x1="0" y1={gy} x2="320" y2={gy} stroke="rgba(255,255,255,.035)" strokeWidth=".5" />
+      ))}
+      {([{y:40,p:"1.0870"},{y:70,p:"1.0855"},{y:100,p:"1.0840"},{y:125,p:"1.0825"}] as const).map(({ y, p }) => (
+        <text key={p} x="266" y={y+4} fontSize="5.5" fill="rgba(255,255,255,.22)" fontFamily="monospace">{p}</text>
+      ))}
+      {candles.map(({ o, cl, h, l, bear }, i) => {
+        const x = 22 + i * 32;
+        const oY = scaleY(o); const cY = scaleY(cl); const hY = scaleY(h); const lY = scaleY(l);
+        const col = bear ? "#FF4444" : c;
+        const top = Math.min(oY, cY); const bot = Math.max(oY, cY);
+        return (
+          <g key={i}>
+            <line x1={x+6} y1={hY} x2={x+6} y2={lY} stroke={col} strokeWidth="1" opacity=".7" />
+            <rect x={x} y={top} width="12" height={Math.max(bot-top,2)} rx="1.5" fill={col} opacity={bear ? ".7" : ".85"} />
+          </g>
+        );
+      })}
+      <polyline points="28,113 60,107 92,104 124,97 156,85 188,77 220,68 252,60" stroke={c} strokeWidth="1.2" fill="none" opacity=".55" strokeDasharray="3 2" />
+      <rect x="0" y="136" width="320" height="54" fill="#060F0A" />
+      <line x1="0" y1="136" x2="320" y2="136" stroke={`rgba(${r},.2)`} strokeWidth=".8" />
+      <text x="14" y="152" fontSize="13" fontWeight="700" fill={c} fontFamily="monospace">+2.4%</text>
+      <text x="14" y="165" fontSize="5.5" fill="rgba(255,255,255,.28)" fontFamily="monospace">P&amp;L TODAY</text>
+      {(["BUY","SELL"] as const).map((label, i) => (
+        <g key={label}>
+          <rect x={166+i*78} y="139" width="68" height="44" rx="8" fill={i===0 ? c : "#FF4444"} opacity={i===0 ? ".9" : ".85"} />
+          <text x={200+i*78} y="158" textAnchor="middle" fontSize="9" fontWeight="700" fill="#fff" fontFamily="monospace">{label}</text>
+          <text x={200+i*78} y="172" textAnchor="middle" fontSize="6" fill="rgba(255,255,255,.7)" fontFamily="monospace">{i===0 ? "1.0848" : "1.0846"}</text>
+        </g>
+      ))}
+      <text x="14" y="183" fontSize="5" fill="rgba(255,255,255,.15)" fontFamily="monospace">Spread: 0.2 pips · Leverage: 1:100</text>
+    </svg>
+  );
+}
+
 /* ── Showcase card shell ─────────────────────────────────── */
-function ShowcaseCard({ num, title, sub, color, children }: { num:string; title:string; sub:string; color:string; children:React.ReactNode }) {
+function ShowcaseCard({ num, title, sub, color, href, children }: { num:string; title:string; sub:string; color:string; href?:string; children:React.ReactNode }) {
   const [hov, setHov] = useState(false);
   const r = rgb(color);
-  return (
+  const card = (
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -358,7 +629,7 @@ function ShowcaseCard({ num, title, sub, color, children }: { num:string; title:
         boxShadow:hov ? `0 22px 52px rgba(0,0,0,.72), 0 0 32px rgba(${r},.16)` : "0 4px 24px rgba(0,0,0,.5)",
         transform:hov ? "translateY(-6px)" : "none",
         transition:"transform .32s cubic-bezier(.25,1,.5,1), border-color .25s, box-shadow .3s",
-        display:"flex", flexDirection:"column", cursor:"default",
+        display:"flex", flexDirection:"column", cursor: href ? "pointer" : "default",
       }}
     >
       <div style={{ flex:1, overflow:"hidden" }}>{children}</div>
@@ -367,24 +638,29 @@ function ShowcaseCard({ num, title, sub, color, children }: { num:string; title:
           <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"1.1rem", letterSpacing:".06em", color:"rgba(255,255,255,.9)", marginBottom:3 }}>{title}</div>
           <p style={{ fontFamily:"'Inter',sans-serif", fontSize:"11px", color:"rgba(255,255,255,.3)", lineHeight:1.45, margin:0 }}>{sub}</p>
         </div>
-        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"9px", color:`rgba(${r},.65)`, letterSpacing:".16em", flexShrink:0, paddingLeft:8 }}>{num}</span>
+        <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4, flexShrink:0, paddingLeft:8 }}>
+          {href && <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"7px", color:color, letterSpacing:".14em", padding:"2px 8px", border:`1px solid rgba(${r},.4)`, borderRadius:20, whiteSpace:"nowrap" }}>LIVE ↗</span>}
+          <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"9px", color:`rgba(${r},.65)`, letterSpacing:".16em" }}>{num}</span>
+        </div>
       </div>
     </div>
   );
+  if (href) return <a href={href} target="_blank" rel="noopener" style={{ textDecoration:"none", display:"block" }}>{card}</a>;
+  return card;
 }
 
 function ShowcaseCollage() {
   return (
     <div className="showcase-grid">
       {[
-        { num:"01", title:"Websites",      sub:"Modern, fast sites that convert",      color:"#34D399", Preview: () => <WebsiteMockup   c="#34D399" /> },
-        { num:"02", title:"Web Apps",      sub:"SaaS, dashboards and custom tools",    color:"#00DFFF", Preview: () => <DashboardMockup c="#00DFFF" /> },
-        { num:"03", title:"Mobile Apps",   sub:"iOS and Android — clean interfaces",   color:"#A855F7", Preview: () => <MobileMockup    c="#A855F7" /> },
-        { num:"04", title:"Social Media",  sub:"Posts, stories and brand content",     color:"#F43F5E", Preview: () => <SocialMockup    c="#F43F5E" /> },
-        { num:"05", title:"Branding",      sub:"Logo, identity and visual system",     color:"#FF8820", Preview: () => <BrandingMockup  c="#FF8820" /> },
-        { num:"06", title:"Online Stores", sub:"E-commerce built to sell",             color:"#F59E0B", Preview: () => <StoreMockup     c="#F59E0B" /> },
-      ].map(({ num, title, sub, color, Preview }) => (
-        <ShowcaseCard key={num} num={num} title={title} sub={sub} color={color}>
+        { num:"01", title:"SafeSignal",    sub:"Lone worker safety — dead-man check-ins, GPS, escalating alerts",     color:"#FF6B35", href:"https://safesignal.vercel.app",       Preview: () => <SafeSignalMockup    c="#FF6B35" /> },
+        { num:"02", title:"TrailDesk",     sub:"Trail journaling with real GPS, gear lists and emergency contacts",   color:"#34D399", href:"https://traildesk.vercel.app",        Preview: () => <TrailDeskMockup     c="#34D399" /> },
+        { num:"03", title:"DigiLearn",     sub:"100+ free courses for the AI era — web dev, ML, security and more",  color:"#00DFFF", href:"https://digilearn.vercel.app",        Preview: () => <DigiLearnMockup     c="#00DFFF" /> },
+        { num:"04", title:"ElectraCore",   sub:"Electrical calculators, load analysis, wiring guides and billing",   color:"#FFB800", href:"https://electracore.vercel.app",      Preview: () => <ElectraCoreMockup   c="#FFB800" /> },
+        { num:"05", title:"ApprenticeLog", sub:"Digital trade logbook — hours logging, sign-offs and PDF export",    color:"#00C8FF", href:"https://apprentice-log.vercel.app",   Preview: () => <ApprenticeLogMockup c="#00C8FF" /> },
+        { num:"06", title:"ForexPro",      sub:"Broker-grade trading dashboard with live feeds and positions",        color:"#4ADE80", href:"https://fxprorise.org",               Preview: () => <ForexProMockup      c="#4ADE80" /> },
+      ].map(({ num, title, sub, color, href, Preview }) => (
+        <ShowcaseCard key={num} num={num} title={title} sub={sub} color={color} href={href}>
           <Preview />
         </ShowcaseCard>
       ))}
