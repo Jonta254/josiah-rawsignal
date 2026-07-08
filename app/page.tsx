@@ -16,9 +16,396 @@
 }
 const TECH_STACK = [  { name: "React",       label: "Frontend" },  { name: "TypeScript",  label: "Language" },  { name: "Next.js",     label: "Framework" },  { name: "Node.js",     label: "Backend" },  { name: "Python",      label: "Scripting" },  { name: "Figma",       label: "Design" },  { name: "Three.js",    label: "3D Web" },  { name: "Tailwind",    label: "Styling" },  { name: "PostgreSQL",  label: "Database" },  { name: "Vercel",      label: "Deploy" },  { name: "GitHub",      label: "Version Control" },  { name: "Electrical",  label: "Trade" },];/* â”€â”€â”€ Showcase collage (AI-generated images via Higgsfield) â”€â”€â”€â”€â”€ *//* ─── What I Can Create — realistic UI screenshot showcase ───── */
 /* hex → "r,g,b" for inline SVG rgba() */
-function rgb(hex: string) {
+function hexToRgbStr(hex: string) {
   const h = hex.replace("#","");
   return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`;
+}
+/* backward compat alias used by legacy mockup functions */
+const rgb = hexToRgbStr;
+
+/* ── Browser-chrome frame for showcase cards ─────────────────── */
+function ShowBrowserFrame({ color, url, children }: { color: string; url: string; children: React.ReactNode }) {
+  const r = hexToRgbStr(color);
+  return (
+    <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style={{ width:"100%", height:"100%", display:"block" }}>
+      <rect width="900" height="520" rx="12" fill="#0A0A14"/>
+      <rect width="900" height="40" rx="12" fill="#13131F"/>
+      <rect y="12" width="900" height="28" fill="#13131F"/>
+      <circle cx="22" cy="20" r="5.5" fill="#FF5F57"/>
+      <circle cx="40" cy="20" r="5.5" fill="#FEBC2E"/>
+      <circle cx="58" cy="20" r="5.5" fill="#28C840"/>
+      <rect x="80" y="8" width="640" height="24" rx="8" fill={`rgba(${r},0.07)`} stroke={`rgba(${r},0.18)`} strokeWidth="1"/>
+      <circle cx="97" cy="20" r="5" fill="none" stroke={`rgba(${r},0.4)`} strokeWidth="1.2"/>
+      <line x1="101" y1="24" x2="104" y2="27" stroke={`rgba(${r},0.4)`} strokeWidth="1.2"/>
+      <text x="112" y="24.5" fontFamily="monospace" fontSize="10" fill={`rgba(${r},0.7)`}>{url}</text>
+      <text x="736" y="25" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.2)">&#8635;</text>
+      <text x="754" y="25" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.12)">&#9733;</text>
+      <rect x="772" y="8" width="118" height="24" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"/>
+      <text x="786" y="24" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.15)">&#8943;</text>
+      <rect x="0" y="40" width="900" height="480" fill="#07070F"/>
+      {children}
+    </svg>
+  );
+}
+
+function ElectraCorePreview() {
+  return (
+    <>
+      <rect x="0" y="40" width="900" height="48" fill="#0D0D18"/>
+      <text x="20" y="71" fontFamily="monospace" fontSize="15" fontWeight="700" fill="#D4A843">ElectraCore</text>
+      {["Calculate","Guides","Learn","Load Analysis"].map((t,i)=>(
+        <text key={t} x={160+i*110} y="71" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.35)">{t}</text>
+      ))}
+      <rect x="750" y="54" width="130" height="26" rx="7" fill="#D4A843"/>
+      <text x="768" y="71" fontFamily="monospace" fontSize="11" fill="#07070F" fontWeight="700">Open Calculator</text>
+      <rect x="0" y="88" width="200" height="432" fill="#0C0C1A"/>
+      {[
+        {label:"Voltage Drop",active:true},
+        {label:"Ohm's Law",active:false},
+        {label:"Cable Sizing",active:false},
+        {label:"Load Analysis",active:false},
+        {label:"LED Resistor",active:false},
+        {label:"Battery Calc",active:false},
+        {label:"Power Factor",active:false},
+      ].map((item,i)=>(
+        <g key={i}>
+          <rect x="8" y={100+i*50} width="184" height="40" rx="8" fill={item.active?"rgba(212,168,67,0.12)":"transparent"}/>
+          {item.active && <rect x="8" y={100+i*50} width="3" height="40" rx="1.5" fill="#D4A843"/>}
+          <text x="24" y={125+i*50} fontFamily="monospace" fontSize="11" fill={item.active?"#D4A843":"rgba(255,255,255,0.3)"}>{item.label}</text>
+        </g>
+      ))}
+      <text x="220" y="115" fontFamily="monospace" fontSize="10" fill="rgba(255,255,255,0.3)" letterSpacing="2">VOLTAGE DROP CALCULATOR  BS 7671 COMPLIANT</text>
+      <rect x="210" y="120" width="680" height="1" fill="rgba(212,168,67,0.15)"/>
+      {[
+        {label:"Supply Voltage (V)",val:"230",unit:"V"},
+        {label:"Design Current (A)",val:"16",unit:"A"},
+        {label:"Cable Length (m)",val:"28",unit:"m"},
+        {label:"Cable CSA (mm2)",val:"2.5",unit:"mm2"},
+      ].map(({label,val,unit},i)=>(
+        <g key={i}>
+          <text x="225" y={155+i*58} fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.4)">{label}</text>
+          <rect x="225" y={161+i*58} width="240" height="34" rx="8" fill="rgba(212,168,67,0.05)" stroke="rgba(212,168,67,0.2)" strokeWidth="1"/>
+          <text x="238" y={182+i*58} fontFamily="monospace" fontSize="14" fill="#F2F4FC">{val}</text>
+          <text x="450" y={182+i*58} fontFamily="monospace" fontSize="10" fill="rgba(212,168,67,0.5)">{unit}</text>
+        </g>
+      ))}
+      <rect x="520" y="130" width="360" height="320" rx="14" fill="rgba(212,168,67,0.04)" stroke="rgba(212,168,67,0.18)" strokeWidth="1"/>
+      <text x="540" y="162" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.3)" letterSpacing="2">CALCULATED RESULT</text>
+      <rect x="520" y="170" width="360" height="1" fill="rgba(212,168,67,0.1)"/>
+      <text x="540" y="230" fontFamily="monospace" fontSize="52" fontWeight="900" fill="#D4A843">3.2</text>
+      <text x="640" y="230" fontFamily="monospace" fontSize="18" fill="rgba(212,168,67,0.6)">V drop</text>
+      <text x="540" y="252" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.28)">1.39% of 230V supply</text>
+      <rect x="540" y="268" width="90" height="26" rx="8" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.35)" strokeWidth="1"/>
+      <text x="556" y="285" fontFamily="monospace" fontSize="11" fill="#34D399">SAFE</text>
+      <rect x="540" y="315" width="300" height="1" fill="rgba(255,255,255,0.05)"/>
+      <text x="540" y="338" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.2)">Formula: Vd = (2 x L x I x R) / 1000</text>
+      <rect x="540" y="348" width="300" height="32" rx="7" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.8"/>
+      <text x="552" y="367" fontFamily="monospace" fontSize="9.5" fill="rgba(255,255,255,0.35)">= (2 x 28 x 16 x 0.00741) / 1000</text>
+      <text x="540" y="400" fontFamily="monospace" fontSize="10" fill="rgba(255,255,255,0.25)">BS 7671 limit (lighting): 3%  Margin: 1.61%</text>
+      <rect x="540" y="415" width="300" height="26" rx="8" fill="#D4A843"/>
+      <text x="596" y="432" fontFamily="monospace" fontSize="11" fill="#07070F" fontWeight="700">Recalculate</text>
+    </>
+  );
+}
+
+function DigiLearnPreview() {
+  return (
+    <>
+      <rect x="0" y="40" width="900" height="50" fill="#0C1422"/>
+      <text x="22" y="72" fontFamily="monospace" fontSize="15" fontWeight="700" fill="#0284C7">DigiLearn</text>
+      {["Courses","Tracks","Community","For Teams"].map((t,i)=>(
+        <text key={t} x={140+i*100} y="72" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.35)">{t}</text>
+      ))}
+      <rect x="768" y="55" width="112" height="26" rx="7" fill="#0284C7"/>
+      <text x="784" y="72" fontFamily="monospace" fontSize="11" fill="white" fontWeight="700">Enrol Free</text>
+      <rect x="0" y="90" width="900" height="80" fill="rgba(2,132,199,0.05)"/>
+      <text x="22" y="125" fontFamily="monospace" fontSize="20" fontWeight="900" fill="#F2F4FC">100+ Free Courses for the AI Era</text>
+      <text x="22" y="148" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.3)">Web Dev  Data Science  AI Ethics  Healthcare IT  Fintech  Public Policy</text>
+      {["All","AI Tools","Data Science","Web Dev","Ethics","Healthcare","Fintech"].map((t,i)=>(
+        <g key={t}>
+          <rect x={22+i*114} y="185" width="106" height="24" rx="12" fill={i===0?"#0284C7":"rgba(255,255,255,0.04)"} stroke={i===0?"#0284C7":"rgba(255,255,255,0.08)"} strokeWidth="1"/>
+          <text x={32+i*114} y="201" fontFamily="monospace" fontSize="9.5" fill={i===0?"#fff":"rgba(255,255,255,0.4)"}>{t}</text>
+        </g>
+      ))}
+      {[
+        {x:22,title:"Python for Data Science",tag:"Data Science",lvl:"Beginner",col:"#0284C7",prog:68,students:"4,820"},
+        {x:316,title:"Machine Learning Fundamentals",tag:"ML / AI",lvl:"Intermediate",col:"#7C3AED",prog:34,students:"3,140"},
+        {x:610,title:"AI Ethics & Governance",tag:"Ethics",lvl:"All Levels",col:"#EA580C",prog:0,students:"2,670"},
+      ].map((c)=>(
+        <g key={c.x}>
+          <rect x={c.x} y="224" width="280" height="240" rx="12" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.07)" strokeWidth="1"/>
+          <rect x={c.x} y="224" width="280" height="80" rx="12" fill={`rgba(${hexToRgbStr(c.col)},0.1)`}/>
+          <rect x={c.x} y="288" width="280" height="16" fill={`rgba(${hexToRgbStr(c.col)},0.1)`}/>
+          <text x={c.x+14} y="325" fontFamily="monospace" fontSize="11.5" fontWeight="700" fill="#F2F4FC">{c.title}</text>
+          <rect x={c.x+14} y="334" width="70" height="17" rx="8.5" fill={`rgba(${hexToRgbStr(c.col)},0.15)`}/>
+          <text x={c.x+19} y="346" fontFamily="monospace" fontSize="8.5" fill={c.col}>{c.tag}</text>
+          <text x={c.x+14} y="374" fontFamily="monospace" fontSize="9.5" fill="rgba(255,255,255,0.3)">{c.lvl}  Students: {c.students}  FREE</text>
+          <rect x={c.x+14} y="386" width="252" height="3" rx="1.5" fill="rgba(255,255,255,0.07)"/>
+          {c.prog > 0 && <rect x={c.x+14} y="386" width={252*c.prog/100} height="3" rx="1.5" fill={c.col}/>}
+          {c.prog > 0 && <text x={c.x+14} y="406" fontFamily="monospace" fontSize="8.5" fill={c.col}>{c.prog}% complete</text>}
+          <rect x={c.x+14} y="430" width="252" height="26" rx="8" fill={`rgba(${hexToRgbStr(c.col)},0.12)`} stroke={`rgba(${hexToRgbStr(c.col)},0.3)`} strokeWidth="1"/>
+          <text x={c.x+90} y="447" fontFamily="monospace" fontSize="10" fill={c.col} fontWeight="700">Start Learning</text>
+        </g>
+      ))}
+    </>
+  );
+}
+
+function TrailDeskPreview() {
+  return (
+    <>
+      <rect x="0" y="40" width="210" height="480" fill="#060C0A"/>
+      <text x="16" y="75" fontFamily="monospace" fontSize="14" fontWeight="700" fill="#34D399">TrailDesk</text>
+      {[
+        {label:"My Trips",active:true},
+        {label:"Plan Route",active:false},
+        {label:"Gear Lists",active:false},
+        {label:"Emergency",active:false},
+        {label:"Offline Maps",active:false},
+      ].map((item,i)=>(
+        <g key={i}>
+          <rect x="8" y={98+i*52} width="194" height="42" rx="8" fill={item.active?"rgba(52,211,153,0.10)":"transparent"}/>
+          {item.active && <rect x="8" y={98+i*52} width="3" height="42" rx="1.5" fill="#34D399"/>}
+          <text x="24" y={124+i*52} fontFamily="monospace" fontSize="11" fill={item.active?"#34D399":"rgba(255,255,255,0.28)"}>{item.label}</text>
+        </g>
+      ))}
+      <rect x="10" y="420" width="190" height="72" rx="10" fill="rgba(52,211,153,0.06)" stroke="rgba(52,211,153,0.15)" strokeWidth="1"/>
+      <circle cx="26" cy="440" r="5" fill="#34D399"/>
+      <text x="36" y="444" fontFamily="monospace" fontSize="9.5" fill="#34D399">GPS ACTIVE</text>
+      <text x="12" y="464" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.25)">50+ offline regions ready</text>
+      <text x="12" y="481" fontFamily="monospace" fontSize="8.5" fill="rgba(52,211,153,0.5)">Synced 3 min ago</text>
+      <rect x="210" y="40" width="690" height="480" fill="#0A1210"/>
+      {[0,1,2,3,4].map(i=>(
+        <line key={"h"+i} x1="210" y1={100+i*80} x2="900" y2={100+i*80} stroke="rgba(52,211,153,0.05)" strokeWidth="1"/>
+      ))}
+      {[0,1,2,3,4,5,6].map(i=>(
+        <line key={"v"+i} x1={310+i*90} y1="40" x2={310+i*90} y2="520" stroke="rgba(52,211,153,0.05)" strokeWidth="1"/>
+      ))}
+      <path d="M230 470 Q340 420 430 375 Q510 330 570 280 Q630 228 690 190 Q750 152 830 135" fill="none" stroke="rgba(52,211,153,0.13)" strokeWidth="2"/>
+      <path d="M230 490 Q350 445 450 400 Q530 355 590 305 Q650 252 710 215 Q770 178 855 160" fill="none" stroke="rgba(52,211,153,0.09)" strokeWidth="1.5"/>
+      <path d="M268 468 L332 428 L412 388 L472 346 L532 296 L592 252 L652 212 L712 175 L772 152 L844 140" fill="none" stroke="#34D399" strokeWidth="3.5" strokeDasharray="9,5" strokeLinecap="round"/>
+      {[{x:268,y:468,l:"Start - Lake Te Anau"},{x:532,y:296,l:"Mackinnon Pass 1,154m"},{x:844,y:140,l:"Milford Sound"}].map(({x,y,l},i)=>(
+        <g key={i}>
+          <circle cx={x} cy={y} r="9" fill="#34D399" opacity="0.9"/>
+          <circle cx={x} cy={y} r="16" fill="#34D399" opacity="0.15"/>
+          <rect x={x+18} y={y-13} width={l.length*6.2+16} height="22" rx="6" fill="rgba(6,12,10,0.9)" stroke="rgba(52,211,153,0.2)" strokeWidth="0.8"/>
+          <text x={x+26} y={y+2} fontFamily="monospace" fontSize="9.5" fill="#34D399">{l}</text>
+        </g>
+      ))}
+      <circle cx="592" cy="252" r="6" fill="#FCD34D"/>
+      <circle cx="592" cy="252" r="14" fill="rgba(252,211,77,0.15)"/>
+      <rect x="620" y="358" width="265" height="148" rx="12" fill="rgba(6,12,10,0.92)" stroke="rgba(52,211,153,0.2)" strokeWidth="1"/>
+      <text x="638" y="380" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.4)" letterSpacing="2">MILFORD TRACK - DAY 3</text>
+      {[{l:"Distance",v:"19.4 km"},{l:"Elevation",v:"+1,154 m"},{l:"Duration",v:"7h 20m"},{l:"Conditions",v:"Clear"}].map(({l,v},i)=>(
+        <g key={l}>
+          <text x="638" y={402+i*22} fontFamily="monospace" fontSize="9.5" fill="rgba(255,255,255,0.28)">{l}</text>
+          <text x="782" y={402+i*22} fontFamily="monospace" fontSize="9.5" fill="#34D399" textAnchor="end">{v}</text>
+        </g>
+      ))}
+      <rect x="636" y="484" width="230" height="6" rx="3" fill="rgba(52,211,153,0.1)"/>
+      <rect x="636" y="484" width="138" height="6" rx="3" fill="#34D399"/>
+      <text x="638" y="504" fontFamily="monospace" fontSize="8.5" fill="rgba(255,255,255,0.3)">Day 3 of 4 complete</text>
+    </>
+  );
+}
+
+function SafeSignalPreview() {
+  return (
+    <>
+      <rect x="0" y="40" width="900" height="54" fill="#0C0608"/>
+      <text x="22" y="73" fontFamily="monospace" fontSize="15" fontWeight="700" fill="#FF6B35">SafeSignal</text>
+      <rect x="756" y="52" width="128" height="28" rx="8" fill="rgba(255,107,53,0.12)" stroke="rgba(255,107,53,0.35)" strokeWidth="1"/>
+      <text x="776" y="70" fontFamily="monospace" fontSize="10.5" fill="#FF6B35">Start Session</text>
+      <rect x="0" y="94" width="900" height="44" fill="#08030A"/>
+      {[{l:"Active Workers",v:"6",c:"#34D399"},{l:"Late Check-ins",v:"1",c:"#FEBC2E"},{l:"Alert Running",v:"0",c:"rgba(255,255,255,0.2)"},{l:"Last Check-in",v:"2m ago",c:"rgba(255,255,255,0.5)"}].map(({l,v,c},i)=>(
+        <g key={i}>
+          <text x={28+i*220} y="112" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.3)">{l}</text>
+          <text x={28+i*220} y="128" fontFamily="monospace" fontSize="12" fill={c} fontWeight="700">{v}</text>
+        </g>
+      ))}
+      {[
+        {name:"James Okeke",job:"Electrician",last:"2m",status:"OK"},
+        {name:"Sarah Chen",job:"Plumber",last:"8m",status:"OK"},
+        {name:"Mike Torres",job:"HVAC Tech",last:"47m",status:"LATE"},
+        {name:"Priya Nair",job:"Site Foreman",last:"12m",status:"OK"},
+        {name:"Dan Muriuki",job:"Scaffolder",last:"5m",status:"OK"},
+        {name:"Amy Park",job:"Inspector",last:"19m",status:"OK"},
+      ].map((w,i)=>{
+        const col = i%3, row = Math.floor(i/3);
+        const x = 22+col*290, y = 155+row*148;
+        const sc = w.status==="OK"?"#34D399":"#FEBC2E";
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width="272" height="132" rx="12" fill="rgba(255,255,255,0.02)" stroke={w.status==="LATE"?"rgba(254,188,46,0.25)":"rgba(255,255,255,0.06)"} strokeWidth="1"/>
+            <circle cx={x+24} cy={y+24} r="18" fill={`rgba(${hexToRgbStr(sc)},0.12)`} stroke={`rgba(${hexToRgbStr(sc)},0.25)`} strokeWidth="1"/>
+            <text x={x+24} y={y+30} fontFamily="monospace" fontSize="16" textAnchor="middle" fill={sc}>{w.name[0]}</text>
+            <text x={x+50} y={y+20} fontFamily="monospace" fontSize="11.5" fontWeight="700" fill="#F2F4FC">{w.name}</text>
+            <text x={x+50} y={y+35} fontFamily="monospace" fontSize="9.5" fill="rgba(255,255,255,0.3)">{w.job}</text>
+            <rect x={x+150} y={y+10} width={w.status==="LATE"?54:44} height="20" rx="10" fill={`rgba(${hexToRgbStr(sc)},0.12)`} stroke={`rgba(${hexToRgbStr(sc)},0.3)`} strokeWidth="0.8"/>
+            <text x={x+158} y={y+24} fontFamily="monospace" fontSize="9" fill={sc}>{w.status}</text>
+            <rect x={x+12} y={y+52} width="248" height="1" fill="rgba(255,255,255,0.05)"/>
+            <text x={x+12} y={y+72} fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.25)">Last check-in: {w.last} ago</text>
+            <rect x={x+12} y={y+82} width="248" height="6" rx="3" fill="rgba(255,255,255,0.05)"/>
+            <rect x={x+12} y={y+82} width={w.status==="OK"?220:80} height="6" rx="3" fill={sc} opacity="0.5"/>
+            <text x={x+12} y={y+108} fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.2)">GPS: -1.286, 36.817 - Session active</text>
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
+function ApprenticeLogPreview() {
+  return (
+    <>
+      <rect x="0" y="40" width="900" height="52" fill="#05080F"/>
+      <text x="22" y="72" fontFamily="monospace" fontSize="15" fontWeight="700" fill="#00C8FF">ApprenticeLog</text>
+      {["Log Hours","Dashboard","Supervisor","Export PDF"].map((t,i)=>(
+        <text key={t} x={200+i*120} y="72" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.3)">{t}</text>
+      ))}
+      <rect x="768" y="54" width="112" height="26" rx="7" fill="#00C8FF"/>
+      <text x="784" y="71" fontFamily="monospace" fontSize="11" fill="#050C14" fontWeight="900">Log Hours</text>
+      <rect x="0" y="92" width="260" height="428" fill="#060A10"/>
+      <text x="20" y="122" fontFamily="monospace" fontSize="10" fill="rgba(255,255,255,0.3)" letterSpacing="2">PROGRESS OVERVIEW</text>
+      <circle cx="130" cy="220" r="80" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="14"/>
+      <circle cx="130" cy="220" r="80" fill="none" stroke="#00C8FF" strokeWidth="14"
+        strokeDasharray="353 511" strokeLinecap="round"
+        style={{transform:"rotate(-90deg)",transformOrigin:"130px 220px"}}/>
+      <text x="130" y="210" fontFamily="monospace" fontSize="22" fontWeight="900" fill="#00C8FF" textAnchor="middle">68%</text>
+      <text x="130" y="230" fontFamily="monospace" fontSize="10" fill="rgba(255,255,255,0.3)" textAnchor="middle">2,184 / 3,200 hrs</text>
+      <text x="130" y="248" fontFamily="monospace" fontSize="9" fill="rgba(0,200,255,0.5)" textAnchor="middle">Electrical Trade</text>
+      {[
+        {l:"This Week",v:"42h",c:"#00C8FF"},
+        {l:"Sign-offs",v:"28/40",c:"#34D399"},
+        {l:"Rating",v:"4.8/5",c:"#F0A500"},
+      ].map(({l,v,c},i)=>(
+        <g key={i}>
+          <rect x="16" y={325+i*46} width="228" height="36" rx="8" fill="rgba(255,255,255,0.025)"/>
+          <text x="30" y={347+i*46} fontFamily="monospace" fontSize="9.5" fill="rgba(255,255,255,0.3)">{l}</text>
+          <text x="200" y={347+i*46} fontFamily="monospace" fontSize="11" fill={c} textAnchor="end" fontWeight="700">{v}</text>
+        </g>
+      ))}
+      <text x="278" y="116" fontFamily="monospace" fontSize="10" fill="rgba(255,255,255,0.3)" letterSpacing="2">RECENT LOG ENTRIES</text>
+      <rect x="270" y="122" width="616" height="1" fill="rgba(0,200,255,0.1)"/>
+      {[
+        {date:"02 Jul 2026",task:"Consumer unit installation - domestic rewire",site:"14 Maputo Lane",hours:"8.5h",status:"Signed"},
+        {date:"01 Jul 2026",task:"Ring final circuit testing and certification",site:"Commercial Block C",hours:"7.0h",status:"Signed"},
+        {date:"30 Jun 2026",task:"Three-phase motor starter wiring",site:"Factory Unit 7",hours:"9.0h",status:"Pending"},
+        {date:"29 Jun 2026",task:"Inspection and Testing - EICR report",site:"Riverside Apartments",hours:"8.0h",status:"Signed"},
+        {date:"28 Jun 2026",task:"Bathroom zone wiring - zones 1 and 2",site:"45 Kenyatta Ave",hours:"6.5h",status:"Signed"},
+      ].map((e,i)=>{
+        const sc = e.status==="Signed"?"#34D399":"#F0A500";
+        return (
+          <g key={i}>
+            <rect x="270" y={140+i*72} width="616" height="62" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.055)" strokeWidth="1"/>
+            <rect x="270" y={140+i*72} width="4" height="62" rx="2" fill={sc} opacity="0.7"/>
+            <text x="286" y={158+i*72} fontFamily="monospace" fontSize="10.5" fontWeight="700" fill="#F2F4FC">{e.task}</text>
+            <text x="286" y={174+i*72} fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.28)">{e.site}  {e.hours}  {e.date}</text>
+            <rect x="766" y={148+i*72} width={e.status==="Signed"?74:60} height="22" rx="11" fill={`rgba(${hexToRgbStr(sc)},0.1)`} stroke={`rgba(${hexToRgbStr(sc)},0.3)`} strokeWidth="0.8"/>
+            <text x={e.status==="Signed"?772:774} y={163+i*72} fontFamily="monospace" fontSize="9.5" fill={sc}>{e.status==="Signed"?"Signed":"Pending"}</text>
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
+function ForexProPreview() {
+  return (
+    <>
+      <rect x="0" y="40" width="900" height="52" fill="#080E14"/>
+      <text x="22" y="72" fontFamily="monospace" fontSize="15" fontWeight="700" fill="#4ADE80">ForexPro</text>
+      {["Markets","Positions","Orders","Analysis","News"].map((t,i)=>(
+        <text key={t} x={140+i*100} y="72" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.3)">{t}</text>
+      ))}
+      <rect x="740" y="54" width="56" height="24" rx="6" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.3)" strokeWidth="1"/>
+      <text x="754" y="70" fontFamily="monospace" fontSize="10" fill="#4ADE80">Live</text>
+      <circle cx="748" cy="66" r="3.5" fill="#4ADE80"/>
+      <rect x="806" y="54" width="80" height="24" rx="7" fill="#4ADE80"/>
+      <text x="822" y="70" fontFamily="monospace" fontSize="10" fill="#080E14" fontWeight="700">Trade</text>
+      <rect x="0" y="92" width="900" height="36" fill="#05090D"/>
+      {[
+        {pair:"EUR/USD",bid:"1.0847",ch:"+0.0023",up:true},
+        {pair:"GBP/USD",bid:"1.2641",ch:"-0.0019",up:false},
+        {pair:"USD/JPY",bid:"157.84",ch:"+0.45",up:true},
+        {pair:"XAU/USD",bid:"2,312",ch:"+8.40",up:true},
+      ].map(({pair,bid,ch,up},i)=>(
+        <g key={i}>
+          <text x={22+i*220} y="106" fontFamily="monospace" fontSize="10" fill="rgba(255,255,255,0.45)">{pair}</text>
+          <text x={100+i*220} y="106" fontFamily="monospace" fontSize="11" fontWeight="700" fill="#F2F4FC">{bid}</text>
+          <text x={160+i*220} y="106" fontFamily="monospace" fontSize="9.5" fill={up?"#4ADE80":"#EF4444"}>{ch}</text>
+        </g>
+      ))}
+      <rect x="0" y="128" width="620" height="250" fill="#05090D"/>
+      <text x="18" y="150" fontFamily="monospace" fontSize="10" fill="rgba(255,255,255,0.3)" letterSpacing="1">EUR/USD  H1  1.0847</text>
+      {[0,1,2,3,4].map(i=>(<line key={i} x1="0" y1={168+i*38} x2="620" y2={168+i*38} stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>))}
+      {[
+        {x:28,o:65,c:55,h:70,l:50,bull:false},
+        {x:56,o:55,c:68,h:72,l:52,bull:true},
+        {x:84,o:68,c:62,h:74,l:58,bull:false},
+        {x:112,o:62,c:74,h:78,l:58,bull:true},
+        {x:140,o:74,c:85,h:90,l:70,bull:true},
+        {x:168,o:85,c:78,h:88,l:74,bull:false},
+        {x:196,o:78,c:88,h:94,l:75,bull:true},
+        {x:224,o:88,c:82,h:92,l:78,bull:false},
+        {x:252,o:82,c:95,h:100,l:80,bull:true},
+        {x:280,o:95,c:90,h:102,l:86,bull:false},
+        {x:308,o:90,c:104,h:108,l:88,bull:true},
+        {x:336,o:104,c:98,h:108,l:95,bull:false},
+        {x:364,o:98,c:112,h:116,l:96,bull:true},
+        {x:392,o:112,c:108,h:116,l:104,bull:false},
+        {x:420,o:108,c:120,h:124,l:106,bull:true},
+        {x:448,o:120,c:118,h:126,l:114,bull:false},
+        {x:476,o:118,c:130,h:134,l:116,bull:true},
+        {x:504,o:130,c:125,h:134,l:122,bull:false},
+        {x:532,o:125,c:136,h:140,l:122,bull:true},
+        {x:560,o:136,c:132,h:140,l:128,bull:false},
+      ].map((cd,i)=>{
+        const sy = (v: number) => 320 - v * 1.3;
+        const col = cd.bull?"#4ADE80":"#EF4444";
+        return (
+          <g key={i}>
+            <line x1={cd.x+8} y1={sy(cd.h)} x2={cd.x+8} y2={sy(cd.l)} stroke={col} strokeWidth="1.2" opacity="0.7"/>
+            <rect x={cd.x+2} y={sy(Math.max(cd.o,cd.c))} width="12" height={Math.max(2,Math.abs(sy(cd.o)-sy(cd.c)))} rx="1" fill={col} opacity="0.85"/>
+          </g>
+        );
+      })}
+      <polyline points="32,302 88,290 144,278 200,266 256,248 312,235 368,218 424,202 480,184 536,170 592,155" fill="none" stroke="#F0A500" strokeWidth="1.5" opacity="0.7" strokeDasharray="5,3"/>
+      <rect x="620" y="128" width="280" height="250" fill="#05090D" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
+      <text x="636" y="150" fontFamily="monospace" fontSize="9.5" fill="rgba(255,255,255,0.3)" letterSpacing="1.5">OPEN POSITIONS</text>
+      {[
+        {pair:"EUR/USD",type:"BUY",size:"0.50",pnl:"+$124.80",c:"#4ADE80"},
+        {pair:"GBP/USD",type:"SELL",size:"0.25",pnl:"-$38.20",c:"#EF4444"},
+        {pair:"XAU/USD",type:"BUY",size:"0.10",pnl:"+$84.00",c:"#4ADE80"},
+      ].map(({pair,type,size,pnl,c},i)=>(
+        <g key={i}>
+          <rect x="626" y={168+i*60} width="268" height="50" rx="8" fill="rgba(255,255,255,0.02)"/>
+          <rect x="626" y={168+i*60} width="3" height="50" rx="1.5" fill={c} opacity="0.8"/>
+          <text x="638" y={187+i*60} fontFamily="monospace" fontSize="11" fontWeight="700" fill="#F2F4FC">{pair}</text>
+          <rect x="638" y={194+i*60} width={type==="BUY"?34:38} height="15" rx="7.5" fill={c==="#4ADE80"?"rgba(74,222,128,0.12)":"rgba(239,68,68,0.12)"} stroke={`rgba(${hexToRgbStr(c)},0.3)`} strokeWidth="0.8"/>
+          <text x="648" y={205+i*60} fontFamily="monospace" fontSize="8" fill={c}>{type}</text>
+          <text x="698" y={205+i*60} fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.3)">{size} lots</text>
+          <text x="840" y={190+i*60} fontFamily="monospace" fontSize="12" fill={c} textAnchor="end" fontWeight="700">{pnl}</text>
+        </g>
+      ))}
+      <rect x="626" y="352" width="268" height="22" rx="6" fill="rgba(74,222,128,0.06)"/>
+      <text x="638" y="366" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.3)">Net P&amp;L today</text>
+      <text x="882" y="366" fontFamily="monospace" fontSize="11" fill="#4ADE80" textAnchor="end" fontWeight="700">+$170.60</text>
+      <rect x="0" y="378" width="620" height="102" fill="#05090D" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+      <text x="18" y="400" fontFamily="monospace" fontSize="9.5" fill="rgba(255,255,255,0.3)" letterSpacing="1">QUICK ORDER  EUR/USD</text>
+      {["Lot Size","Stop Loss","Take Profit"].map((l,i)=>(
+        <g key={i}>
+          <text x={18+i*196} y="425" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,0.25)">{l}</text>
+          <rect x={18+i*196} y="430" width="178" height="28" rx="7" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8"/>
+          <text x={30+i*196} y="449" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,0.6)">{["0.50","1.0782","1.0924"][i]}</text>
+        </g>
+      ))}
+      <rect x="18" y="460" width="292" height="32" rx="9" fill="#4ADE80"/>
+      <text x="128" y="481" fontFamily="monospace" fontSize="13" fill="#080E14" fontWeight="900" textAnchor="middle">BUY  1.0847</text>
+      <rect x="322" y="460" width="280" height="32" rx="9" fill="#EF4444"/>
+      <text x="462" y="481" fontFamily="monospace" fontSize="13" fill="white" fontWeight="900" textAnchor="middle">SELL  1.0849</text>
+    </>
+  );
 }
 
 /* ── SVG UI Mockups ─────────────────────────────── */
@@ -614,56 +1001,128 @@ function ForexProMockup({ c }: { c: string }) {
 }
 
 /* ── Showcase card shell ─────────────────────────────────── */
-function ShowcaseCard({ num, title, sub, color, href, children }: { num:string; title:string; sub:string; color:string; href?:string; children:React.ReactNode }) {
+function ShowcaseCard({
+  num, title, sub, color, href, tag, children
+}: {
+  num: string; title: string; sub: string; color: string; href?: string; tag: string; children: React.ReactNode
+}) {
   const [hov, setHov] = useState(false);
-  const r = rgb(color);
-  const card = (
+  const r = hexToRgbStr(color);
+  const inner = (
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        borderRadius:16, overflow:"hidden",
-        background:"#07070F",
-        border:`1px solid ${hov ? `rgba(${r},.38)` : "rgba(255,255,255,.062)"}`,
-        borderTop:`2px solid ${hov ? color : `rgba(${r},.5)`}`,
-        boxShadow:hov ? `0 22px 52px rgba(0,0,0,.72), 0 0 32px rgba(${r},.16)` : "0 4px 24px rgba(0,0,0,.5)",
-        transform:hov ? "translateY(-6px)" : "none",
-        transition:"transform .32s cubic-bezier(.25,1,.5,1), border-color .25s, box-shadow .3s",
-        display:"flex", flexDirection:"column", cursor: href ? "pointer" : "default",
+        borderRadius: 16, overflow: "hidden", background: "#06060F",
+        border: `1px solid ${hov ? `rgba(${r},.4)` : "rgba(255,255,255,.06)"}`,
+        boxShadow: hov
+          ? `0 0 0 1px rgba(${r},.18), 0 24px 64px rgba(0,0,0,.8), 0 0 48px rgba(${r},.12)`
+          : "0 8px 32px rgba(0,0,0,.6)",
+        transform: hov ? "translateY(-6px) scale(1.01)" : "none",
+        transition: "transform .35s cubic-bezier(.25,1,.5,1), border-color .25s, box-shadow .35s",
+        display: "flex", flexDirection: "column", height: "100%",
+        cursor: href ? "pointer" : "default",
+        position: "relative" as const,
       }}
     >
-      <div style={{ flex:1, overflow:"hidden" }}>{children}</div>
-      <div style={{ padding:"14px 16px 16px", borderTop:"1px solid rgba(255,255,255,.045)", background:"#0A0A16", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-        <div>
-          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"1.1rem", letterSpacing:".06em", color:"rgba(255,255,255,.9)", marginBottom:3 }}>{title}</div>
-          <p style={{ fontFamily:"'Inter',sans-serif", fontSize:"11px", color:"rgba(255,255,255,.3)", lineHeight:1.45, margin:0 }}>{sub}</p>
+      <div style={{
+        position: "relative",
+        borderBottom: `1px solid rgba(${r},.12)`,
+        overflow: "hidden",
+        flex: 1,
+      }}>
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: 2,
+          background: `linear-gradient(to right, transparent, rgba(${r},.6) 40%, rgba(${r},.6) 60%, transparent)`,
+          zIndex: 2,
+          opacity: hov ? 1 : 0.5,
+          transition: "opacity .3s",
+        }}/>
+        {children}
+        {href && (
+          <div style={{
+            position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
+            background: `rgba(0,0,0,${hov ? ".45" : "0"})`,
+            transition: "background .3s",
+            zIndex: 3,
+          }}>
+            {hov && (
+              <span style={{
+                background: color, color: "#060610", fontWeight: 900, fontSize: "0.9rem",
+                letterSpacing: "0.08em", padding: "0.65rem 1.75rem", borderRadius: 50,
+                boxShadow: `0 8px 24px rgba(${r},.4)`,
+              }}>
+                Open App
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+      <div style={{
+        padding: "12px 16px 14px",
+        background: "#08080F",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        borderTop: `1px solid rgba(255,255,255,.05)`,
+      }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "1rem", letterSpacing: ".06em", color: "rgba(255,255,255,.9)" }}>{title}</span>
+            <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "0.6rem", color: color, background: `rgba(${r},.1)`, border: `1px solid rgba(${r},.3)`, borderRadius: 100, padding: "1px 7px", letterSpacing: ".12em" }}>{tag}</span>
+          </div>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: "rgba(255,255,255,.28)", lineHeight: 1.4, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{sub}</p>
         </div>
-        <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4, flexShrink:0, paddingLeft:8 }}>
-          {href && <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"7px", color:color, letterSpacing:".14em", padding:"2px 8px", border:`1px solid rgba(${r},.4)`, borderRadius:20, whiteSpace:"nowrap" }}>LIVE ↗</span>}
-          <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"9px", color:`rgba(${r},.65)`, letterSpacing:".16em" }}>{num}</span>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0, paddingLeft: 12 }}>
+          {href && <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "0.55rem", color: color, letterSpacing: ".14em", padding: "2px 8px", border: `1px solid rgba(${r},.35)`, borderRadius: 20 }}>LIVE</span>}
+          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "0.6rem", color: `rgba(${r},.5)`, letterSpacing: ".16em" }}>{num}</span>
         </div>
       </div>
     </div>
   );
-  if (href) return <a href={href} target="_blank" rel="noopener" style={{ textDecoration:"none", display:"block" }}>{card}</a>;
-  return card;
+  if (href) return <a href={href} target="_blank" rel="noopener" style={{ textDecoration: "none", display: "block", height: "100%" }}>{inner}</a>;
+  return <div style={{ height: "100%" }}>{inner}</div>;
 }
 
 function ShowcaseCollage() {
+  const apps = [
+    { num:"01", title:"SafeSignal",    sub:"Lone worker safety — GPS check-ins, escalating alerts, compliance export",    color:"#FF6B35", href:"https://safesignal.vercel.app",     tag:"Safety",     Preview: <SafeSignalPreview />    },
+    { num:"02", title:"TrailDesk",     sub:"Offline trail journaling with GPS, gear lists and emergency contacts",         color:"#34D399", href:"https://traildesk.vercel.app",      tag:"Outdoor",    Preview: <TrailDeskPreview />     },
+    { num:"03", title:"DigiLearn",     sub:"100+ free courses for the AI era — web dev, ML, security and more",           color:"#0284C7", href:"https://digilearn.vercel.app",      tag:"EdTech",     Preview: <DigiLearnPreview />     },
+    { num:"04", title:"ElectraCore",   sub:"Electrical calculators, load analysis, wiring guides and job billing",        color:"#D4A843", href:"https://electracore.vercel.app",    tag:"Web App",    Preview: <ElectraCorePreview />   },
+    { num:"05", title:"ApprenticeLog", sub:"Digital trade logbook — hours logging, sign-offs and PDF export",             color:"#00C8FF", href:"https://apprentice-log.vercel.app", tag:"Trade",      Preview: <ApprenticeLogPreview /> },
+    { num:"06", title:"ForexPro",      sub:"Broker-grade trading platform with live feeds, positions and analysis",        color:"#4ADE80", href:"https://fxprorise.org",             tag:"Fintech",    Preview: <ForexProPreview />      },
+  ] as const;
+
   return (
-    <div className="showcase-grid">
-      {[
-        { num:"01", title:"SafeSignal",    sub:"Lone worker safety — dead-man check-ins, GPS, escalating alerts",     color:"#FF6B35", href:"https://safesignal.vercel.app",       Preview: () => <SafeSignalMockup    c="#FF6B35" /> },
-        { num:"02", title:"TrailDesk",     sub:"Trail journaling with real GPS, gear lists and emergency contacts",   color:"#34D399", href:"https://traildesk.vercel.app",        Preview: () => <TrailDeskMockup     c="#34D399" /> },
-        { num:"03", title:"DigiLearn",     sub:"100+ free courses for the AI era — web dev, ML, security and more",  color:"#00DFFF", href:"https://digilearn.vercel.app",        Preview: () => <DigiLearnMockup     c="#00DFFF" /> },
-        { num:"04", title:"ElectraCore",   sub:"Electrical calculators, load analysis, wiring guides and billing",   color:"#FFB800", href:"https://electracore.vercel.app",      Preview: () => <ElectraCoreMockup   c="#FFB800" /> },
-        { num:"05", title:"ApprenticeLog", sub:"Digital trade logbook — hours logging, sign-offs and PDF export",    color:"#00C8FF", href:"https://apprentice-log.vercel.app",   Preview: () => <ApprenticeLogMockup c="#00C8FF" /> },
-        { num:"06", title:"ForexPro",      sub:"Broker-grade trading dashboard with live feeds and positions",        color:"#4ADE80", href:"https://fxprorise.org",               Preview: () => <ForexProMockup      c="#4ADE80" /> },
-      ].map(({ num, title, sub, color, href, Preview }) => (
-        <ShowcaseCard key={num} num={num} title={title} sub={sub} color={color} href={href}>
-          <Preview />
-        </ShowcaseCard>
-      ))}
+    <div style={{ display: "grid", gap: 16, paddingBottom: 40 }}>
+      {/* Row 1: Large featured + 2 stacked */}
+      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16 }}>
+        <div style={{ aspectRatio: "16/9" }}>
+          <ShowcaseCard num={apps[0].num} title={apps[0].title} sub={apps[0].sub} color={apps[0].color} href={apps[0].href} tag={apps[0].tag}>
+            <ShowBrowserFrame color={apps[0].color} url="safesignal.vercel.app/dashboard">
+              <SafeSignalPreview />
+            </ShowBrowserFrame>
+          </ShowcaseCard>
+        </div>
+        <div style={{ display: "grid", gap: 16 }}>
+          {([apps[1], apps[2]] as const).map((app) => (
+            <ShowcaseCard key={app.num} num={app.num} title={app.title} sub={app.sub} color={app.color} href={app.href} tag={app.tag}>
+              <ShowBrowserFrame color={app.color} url={app.href.replace("https://","")}>
+                {app.Preview}
+              </ShowBrowserFrame>
+            </ShowcaseCard>
+          ))}
+        </div>
+      </div>
+      {/* Row 2: 3 equal */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        {([apps[3], apps[4], apps[5]] as const).map((app) => (
+          <ShowcaseCard key={app.num} num={app.num} title={app.title} sub={app.sub} color={app.color} href={app.href} tag={app.tag}>
+            <ShowBrowserFrame color={app.color} url={app.href.replace("https://","")}>
+              {app.Preview}
+            </ShowBrowserFrame>
+          </ShowcaseCard>
+        ))}
+      </div>
     </div>
   );
 }

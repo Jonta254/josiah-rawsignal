@@ -1985,3 +1985,13 @@ body {
   .svc-row { gap: 0.75rem; }
   .svc-desc { font-size: 0.8rem; }
 }
+
+/* ── Showcase bento grid — responsive ────────────────────────── */
+@media (max-width: 860px) {
+  .showcase-bento-row1 { grid-template-columns: 1fr !important; }
+  .showcase-bento-row2 { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 540px) {
+  .showcase-bento-row1 { grid-template-columns: 1fr !important; }
+  .showcase-bento-row2 { grid-template-columns: 1fr !important; }
+}
