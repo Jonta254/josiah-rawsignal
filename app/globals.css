@@ -1741,3 +1741,243 @@ section { transition: background 400ms ease; }
   .roles-grid   { grid-template-columns: repeat(2, 1fr) !important; }
   .values-grid  { grid-template-columns: repeat(2, 1fr) !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   QUALITY PASS — sharp layout, real typography, clean system
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Section eyebrow / label utility ────────────────────────── */
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(0.6rem, 1.2vw, 1rem);
+}
+.eyebrow-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--copper);
+}
+.eyebrow-line {
+  width: 44px;
+  height: 1px;
+  background: rgba(255,136,32,0.35);
+  flex-shrink: 0;
+}
+
+/* ── Stat cards ──────────────────────────────────────────────── */
+.stat-card {
+  border-left: 1px solid rgba(255,136,32,0.14);
+  padding-left: clamp(1rem, 2.5vw, 1.75rem);
+}
+.stat-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.2rem, 7vw, 5.5rem);
+  line-height: 0.88;
+  color: var(--chalk);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.01em;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(8px, 0.95vw, 10px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  line-height: 1.55;
+}
+
+/* ── Services — numbered list layout ────────────────────────── */
+.svc-list {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 0;
+}
+.svc-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 2rem;
+  align-items: start;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: clamp(1.4rem, 2.8vw, 2rem) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+  position: relative;
+  cursor: default;
+  transition: background 280ms ease;
+}
+.svc-row:hover { background: rgba(255,255,255,0.018); border-radius: 6px; }
+.svc-row:hover .svc-title { color: white; }
+.svc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 0.06em;
+  padding-top: 0.42rem;
+  user-select: none;
+}
+.svc-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 0.45rem;
+  transition: color 240ms;
+}
+.svc-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.78rem, 1.3vw, 0.875rem);
+  color: rgba(255,255,255,0.36);
+  line-height: 1.7;
+  max-width: 540px;
+  margin-bottom: 0.85rem;
+}
+.svc-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.svc-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--copper);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  padding: 3px 10px 3px 9px;
+  border: 1px solid rgba(255,136,32,0.22);
+  border-radius: 3px;
+  transition: border-color 200ms, background 200ms, color 200ms;
+}
+.svc-link:hover {
+  border-color: rgba(255,136,32,0.55);
+  background: rgba(255,136,32,0.06);
+  color: #FFA855;
+}
+.svc-icon {
+  font-size: 1.25rem;
+  opacity: 0.45;
+  padding-top: 0.3rem;
+  text-align: right;
+}
+@media (max-width: 600px) {
+  .svc-row { grid-template-columns: 30px 1fr; }
+  .svc-icon { display: none; }
+  .svc-title { font-size: 1.35rem; }
+}
+
+/* ── Tech cards (refined) ────────────────────────────────────── */
+.tech-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.055);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 0.9rem 0.65rem;
+  text-align: center;
+  cursor: default;
+  transition: border-color 240ms, box-shadow 240ms, transform 240ms cubic-bezier(0.25,1,0.5,1);
+}
+.tech-card:hover {
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset;
+  transform: translateY(-2px);
+}
+
+/* ── Work cards — sharper text ───────────────────────────────── */
+.proj-title-main {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  letter-spacing: 0.04em;
+  color: white;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.proj-detail {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.72rem, 1.3vw, 0.85rem);
+  color: rgba(255,255,255,0.48);
+  line-height: 1.55;
+  max-width: 340px;
+}
+.proj-live-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 3px;
+  transition: border-color 200ms, color 200ms, background 200ms;
+  margin-top: 12px;
+}
+.proj-live-btn:hover {
+  border-color: rgba(255,255,255,0.3);
+  color: white;
+  background: rgba(255,255,255,0.04);
+}
+.proj-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #34D399;
+  box-shadow: 0 0 6px #34D399;
+  animation: sig-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ── Showcase cards — improve image cards ───────────────────── */
+.showcase-grid .svc-img-card img { transition: transform 500ms cubic-bezier(0.25,1,0.5,1); }
+.showcase-grid .svc-img-card:hover img { transform: scale(1.04); }
+
+/* ── Button refinements ──────────────────────────────────────── */
+.btn-primary {
+  background: var(--copper) !important;
+  color: #04000C !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  padding: 11px 26px !important;
+  border-radius: 6px !important;
+  border: none !important;
+  transition: filter 200ms, transform 150ms !important;
+}
+.btn-primary:hover {
+  filter: brightness(1.1) !important;
+  transform: translateY(-1px) !important;
+}
+.btn-ghost {
+  border: 1px solid rgba(255,255,255,0.14) !important;
+  color: rgba(255,255,255,0.72) !important;
+  padding: 10px 22px !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  transition: border-color 200ms, color 200ms, background 200ms !important;
+}
+.btn-ghost:hover {
+  border-color: rgba(255,255,255,0.35) !important;
+  color: white !important;
+  background: rgba(255,255,255,0.04) !important;
+}
+
+/* ── Body font and line height ───────────────────────────────── */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Mobile: svc-row single column ──────────────────────────── */
+@media (max-width: 480px) {
+  .stat-number { font-size: 2.8rem; }
+  .svc-row { gap: 0.75rem; }
+  .svc-desc { font-size: 0.8rem; }
+}
