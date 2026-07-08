@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "../components/RevealWrapper";
-import ComingCards from "./ComingCards";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -20,7 +19,7 @@ const PROJECTS = [
     color: "#F0C030",
     colorAlpha: "rgba(240,192,48,0.07)",
     image: "/images/work-1.jpg",
-    desc: "Calculators, wiring guides, learning paths, load analysis, and job billing — all in one platform built from 8 years on the tools. Free for core tools, Pro for the full library.",
+    desc: "Calculators, wiring guides, learning paths, load analysis, and job billing — all in one platform built from real site experience. Free for core tools, Pro for the full library.",
     tools: ["Next.js", "TypeScript", "React", "PWA", "Offline-first"],
     liveUrl: "https://electracore.vercel.app",
   },
@@ -52,48 +51,6 @@ const PROJECTS = [
   },
 ];
 
-const COMING = [
-  {
-    title: "SafeSignal",
-    sub: "Lone Worker Safety Platform",
-    tagline: "Because no one should work inside a live panel with nobody knowing where they are.",
-    desc: "Automatic dead-man check-ins, escalating emergency alerts, and GPS sharing for trade workers on the job alone. Built for the person in the wall cavity, the roof void, the basement — not the person at a desk.",
-    color: "#FF6B35",
-    tag: "Mobile · B2B SaaS",
-    href: "https://safesignal-beta.vercel.app",
-    status: "Live Preview",
-  },
-  {
-    title: "ApprenticeLog",
-    sub: "Trade Apprenticeship Logbook",
-    tagline: "The digital logbook that trade apprentices actually deserve.",
-    desc: "Log hours, track skill sign-offs, and generate compliance reports — replacing the paper books that go missing, the spreadsheets nobody submits, and the process that hasn't changed in forty years.",
-    color: "#00C8FF",
-    tag: "Web · Institutional SaaS",
-    href: "https://apprentice-log-xi.vercel.app",
-    status: "Live Preview",
-  },
-  {
-    title: "TrailDesk",
-    sub: "Offline Trip Planning",
-    tagline: "Trip planning that works when your signal doesn't.",
-    desc: "Offline-first route mapping, gear checklists, emergency contacts, and trail archives. For people who take going outside seriously enough to prepare for it.",
-    color: "#34D399",
-    tag: "Mobile · Consumer",
-    href: "https://traildesk.vercel.app",
-    status: "Live Preview",
-  },
-  {
-    title: "DigiLearn",
-    sub: "AI & Tech Mastery Platform",
-    tagline: "Master AI tools, coding, automation, and the skills that actually matter in 2026.",
-    desc: "52K+ learners, 800+ lessons, 8 structured paths covering AI tools (ChatGPT, Claude, Midjourney), web development, data science, cybersecurity, and digital entrepreneurship. Working auth, personalized dashboard, and an AI Tools Hub with 9 direct tool links.",
-    color: "#00D4FF",
-    tag: "Web · EdTech",
-    href: "https://digilearn-five.vercel.app",
-    status: "Live",
-  },
-];
 
 export default function PortfolioPage() {
   return (
@@ -206,26 +163,6 @@ export default function PortfolioPage() {
           ))}
         </div>
 
-        {/* Coming next */}
-        <div style={{ maxWidth:1280, margin:"0 auto", padding:"clamp(4rem,8vw,7rem) clamp(1.25rem,5vw,3rem) clamp(4rem,8vw,6rem)", borderTop:"1px solid rgba(255,255,255,0.05)" }}>
-          <Reveal className="reveal">
-            <div style={{ marginBottom:"clamp(2rem,4vw,3.5rem)" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:20 }}>
-                <div style={{ width:24, height:1, background:"rgba(255,184,0,0.40)" }} />
-                <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:"rgba(255,184,0,0.50)", letterSpacing:"0.22em", textTransform:"uppercase" }}>
-                  Next in build
-                </span>
-              </div>
-              <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"clamp(2rem,6vw,4.5rem)", lineHeight:0.9, letterSpacing:"0.02em", color:"rgba(255,255,255,0.12)", marginBottom:12 }}>
-                WHAT&apos;S COMING
-              </h2>
-              <p style={{ fontSize:"clamp(0.875rem,1.4vw,0.9375rem)", color:"rgba(255,255,255,0.28)", maxWidth:520, lineHeight:1.75 }}>
-                Three products in research and design — each solving a real problem for people who work with their hands and their heads.
-              </p>
-            </div>
-            <ComingCards items={COMING} />
-          </Reveal>
-        </div>
       </section>
     </>
   );
