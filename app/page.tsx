@@ -27,9 +27,9 @@ const jsonLd = {
         "Web application development",
         "Mobile and offline-first apps",
         "Full-stack engineering",
+        "E-commerce",
         "Product design",
         "Design systems",
-        "AI-powered features",
         "Brand identity",
       ],
       makesOffer: PROJECTS.map((p) => ({

@@ -63,9 +63,9 @@ export const SERVICES: Service[] = [
   },
   {
     num: "04",
-    title: "AI features & automation",
-    body: "Assistants, smart search, content generation, and the automation of repetitive work, built into a product rather than bolted on beside it. The practical kind that saves someone an hour a day.",
-    deliverables: ["LLM integration", "Assistants & chat", "Smart search", "Automation", "APIs"],
+    title: "E-commerce & online stores",
+    body: "Storefronts that are quick to browse and simple to buy from, with checkout, payments, inventory, and orders handled properly. The parts a customer never notices, built to hold up under real use.",
+    deliverables: ["Storefront", "Cart & checkout", "Payments", "Inventory", "Orders"],
     // Offered on request. No live example is featured here yet, so it is not
     // dressed up as one.
   },

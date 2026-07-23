@@ -19,7 +19,7 @@ export const SITE = {
   role: "Product designer and full-stack engineer",
   /** The services offered, phrased for a search result and a share card. */
   services:
-    "web and mobile apps, AI-powered features, marketing sites, design systems, and brand identities",
+    "web and mobile apps, online stores, marketing sites, design systems, and brand identities",
   /** One line, plain, no metaphor. The signature headline. */
   positioning: "I build software for people who work with their hands.",
   /** Deliberately no city. See docs/design-system.md §11. */
