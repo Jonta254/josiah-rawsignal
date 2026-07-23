@@ -20,10 +20,18 @@ const jsonLd = {
       alternateName: SITE.name,
       url: SITE.url,
       email: `mailto:${SITE.email}`,
-      jobTitle: "Frontend engineer and product designer",
+      jobTitle: SITE.role,
       description: SITE.positioning,
       sameAs: SOCIAL.map((s) => s.href),
-      knowsAbout: ["Frontend engineering", "Product design", "Offline-first applications", "Design systems"],
+      knowsAbout: [
+        "Web application development",
+        "Mobile and offline-first apps",
+        "Full-stack engineering",
+        "Product design",
+        "Design systems",
+        "AI-powered features",
+        "Brand identity",
+      ],
       makesOffer: PROJECTS.map((p) => ({
         "@type": "CreativeWork",
         name: p.name,
@@ -97,7 +105,7 @@ export default function HomePage() {
       <Section
         eyebrow="Services"
         title="What I can be hired to do."
-        lede="Six areas, one standard. Each links to a build you can open."
+        lede="Seven things I build, held to one standard. Most link to a live example you can open right now."
         wide
       >
         <Services />

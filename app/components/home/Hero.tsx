@@ -26,9 +26,10 @@ export default function Hero() {
       </h1>
 
       <p className={styles.lede}>
-        Frontend engineer and product designer. I came to this from the
-        electrical trade, where I learned the only standard that matters. It
-        works, or it does not.
+        {SITE.role}. I design and build web and mobile apps, the marketing and
+        brand around them, and the occasional AI feature. I came to this from
+        the electrical trade, where I learned the only standard that matters.
+        It works, or it does not.
       </p>
 
       <div className={styles.actions}>

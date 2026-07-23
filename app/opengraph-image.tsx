@@ -91,7 +91,7 @@ export default function OgImage() {
             color: MUTED,
           }}
         >
-          <div style={{ display: "flex" }}>Frontend engineer and product designer</div>
+          <div style={{ display: "flex" }}>Product designer and full-stack engineer</div>
           <div style={{ display: "flex", color: ACCENT }}>Five live products</div>
         </div>
       </div>

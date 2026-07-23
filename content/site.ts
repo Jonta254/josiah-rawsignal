@@ -14,7 +14,13 @@ export const SITE = {
   /** Full name for schema.org, the CV, and off-site profiles. */
   fullName: "Brian Josiah",
   brand: "Raw Signal",
-  /** One line, plain, no metaphor. */
+  /** Primary role. Broad enough to carry the full range of work, precise
+   *  enough to stay honest: these are real capabilities, not a wish list. */
+  role: "Product designer and full-stack engineer",
+  /** The services offered, phrased for a search result and a share card. */
+  services:
+    "web and mobile apps, AI-powered features, marketing sites, design systems, and brand identities",
+  /** One line, plain, no metaphor. The signature headline. */
   positioning: "I build software for people who work with their hands.",
   /** Deliberately no city. See docs/design-system.md §11. */
   availability: "Available for remote work across timezones",

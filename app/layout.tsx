@@ -39,20 +39,22 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name}, frontend engineer and product designer`,
+    default: `${SITE.name}, ${SITE.role.toLowerCase()}`,
     // The pipe is the conventional title-tag separator, not prose punctuation.
     template: `%s | ${SITE.name} ${SITE.brand}`,
   },
-  description:
-    "Frontend engineer and product designer building offline-first tools for electricians, apprentices, and people whose work happens away from a desk. Every project here is live.",
+  description: `${SITE.role}. I design and build complete digital products: ${SITE.services}. Every project shown is live and open to anyone.`,
   keywords: [
-    "frontend developer",
     "product designer",
+    "full-stack engineer",
+    "web application developer",
+    "mobile app developer",
+    "AI features",
     "Next.js",
     "React",
     "TypeScript",
-    "offline-first",
     "design systems",
+    "brand identity",
   ],
   authors: [{ name: SITE.fullName }],
   creator: SITE.fullName,
@@ -61,9 +63,8 @@ export const metadata: Metadata = {
     locale: "en_NZ",
     url: SITE.url,
     siteName: `${SITE.name} ${SITE.brand}`,
-    title: `${SITE.name}, frontend engineer and product designer`,
-    description:
-      "Offline-first tools for people who work with their hands. Every project is live, and open to anyone.",
+    title: `${SITE.name}, ${SITE.role.toLowerCase()}`,
+    description: `Design and engineering for digital products, from web and mobile apps to AI features and brand systems. Every project is live and open to anyone.`,
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },

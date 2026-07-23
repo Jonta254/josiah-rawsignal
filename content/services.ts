@@ -51,9 +51,9 @@ export const SERVICES: Service[] = [
   },
   {
     num: "03",
-    title: "Frontend engineering",
-    body: "React and Next.js work on an existing codebase or a new one. Typed throughout, accessible by construction, and fast on the hardware your users actually own.",
-    deliverables: ["React / Next.js", "TypeScript", "Performance", "WCAG AA", "Testing"],
+    title: "Full-stack engineering",
+    body: "React and Next.js on the front, typed APIs and data on the back. Auth, databases, payments, and third-party integrations wired up and tested. Joining an existing codebase or starting a clean one.",
+    deliverables: ["React / Next.js", "TypeScript", "APIs & databases", "Auth & payments", "Testing"],
     example: {
       label: "TrailDesk",
       href: "https://traildesk.vercel.app",
@@ -63,6 +63,14 @@ export const SERVICES: Service[] = [
   },
   {
     num: "04",
+    title: "AI features & automation",
+    body: "Assistants, smart search, content generation, and the automation of repetitive work, built into a product rather than bolted on beside it. The practical kind that saves someone an hour a day.",
+    deliverables: ["LLM integration", "Assistants & chat", "Smart search", "Automation", "APIs"],
+    // Offered on request. No live example is featured here yet, so it is not
+    // dressed up as one.
+  },
+  {
+    num: "05",
     title: "Marketing sites & landing pages",
     body: "Pages built to convert and to load instantly. Copy, layout, and motion decided together, so the page reads as one thing rather than a template with content poured in.",
     deliverables: ["Landing pages", "Copy & layout", "SEO", "Analytics", "A/B ready"],
@@ -74,7 +82,7 @@ export const SERVICES: Service[] = [
     },
   },
   {
-    num: "05",
+    num: "06",
     title: "Design systems & UI",
     body: "Tokens, components, and the documentation that keeps them honest. Colour, type, spacing and motion decided once, so the tenth screen costs less to build than the first.",
     deliverables: ["Design tokens", "Component library", "Figma", "Documentation", "Dark mode"],
@@ -86,7 +94,7 @@ export const SERVICES: Service[] = [
     },
   },
   {
-    num: "06",
+    num: "07",
     title: "Brand & visual identity",
     body: "Logos, wordmarks, and the marketing assets around them, from social templates to app icons to store graphics, drawn to work at every size they will actually appear at.",
     deliverables: ["Logo & wordmark", "App icons", "Social templates", "Store assets", "Brand guide"],
