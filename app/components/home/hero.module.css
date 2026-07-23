@@ -1,0 +1,149 @@
+.hero {
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding: var(--space-10) var(--gutter) var(--space-9);
+  display: flex;
+  flex-direction: column;
+  /* Deliberately tighter than the section rhythm — a hero that breathes too
+     much reads as a splash screen rather than an opening statement. */
+  gap: var(--space-5);
+}
+
+@media (min-width: 1024px) {
+  .hero { padding-block: var(--space-11) var(--space-10); }
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.headline {
+  font-size: var(--text-display);
+  color: var(--ink);
+  /* Optical: the display size needs a touch more negative tracking than the
+     token default to hold together as a shape. */
+  letter-spacing: -0.028em;
+  max-width: 20ch;
+}
+
+/* The one visual gesture — a schematic underline that reads as a conductor
+   rather than a highlighter. Uses text-decoration so it wraps naturally across
+   lines: an absolute-positioned rule overflowed the viewport on mobile when
+   the phrase could not fit on one line. */
+.emphasis {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 42%, transparent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.14em;
+  -webkit-text-decoration-color: color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
+.br { display: none; }
+@media (min-width: 700px) { .br { display: block; } }
+
+.lede {
+  font-size: var(--text-lg);
+  line-height: var(--leading-base);
+  color: var(--muted);
+  max-width: 54ch;
+  margin-top: var(--space-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding-inline: var(--space-6);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.primary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: var(--paper);
+}
+.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+}
+.secondary:hover { border-color: var(--ink); }
+
+.arrow { transition: transform var(--dur-fast) var(--ease-out); }
+.primary:hover .arrow { transform: translateX(var(--nudge)); }
+
+/* ── Proof strip ────────────────────────────────────────────────────────
+   The evidence, above the fold. A quiet mono label + the five live product
+   names as real links. Wraps gracefully; never shouts. */
+.proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.proofLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.proofList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  list-style: none;
+}
+
+.proofLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  /* Full 44px hit area (WCAG 2.5.5) while the visual stays a compact inline
+     link — the padding is invisible but tappable. */
+  min-height: var(--tap);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* Separator dot between products — cheaper than borders, reads as a list. */
+.proofList li:not(:last-child) .proofLink::after {
+  content: "·";
+  position: absolute;
+  right: calc(var(--space-2) * -1 - 0.15em);
+  color: var(--line-strong);
+}
+
+.proofLink:hover { color: var(--accent); }

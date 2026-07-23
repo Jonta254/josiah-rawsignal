@@ -1,58 +1,95 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Nav             from "./components/Nav";
-import Footer          from "./components/Footer";
-import Cursor          from "./components/Cursor";
-import EasterEgg       from "./components/EasterEgg";
-import ClientShell     from "./components/ClientShell";
-import ReadingProgress from "./components/ReadingProgress";
-import CommandPalette  from "./components/CommandPalette";
-import AmbientSound    from "./components/AmbientSound";
-import PageBackground  from "./components/PageBackground";
-import SmoothScroll    from "./components/SmoothScroll";
+import Nav from "./components/site/Nav";
+import Footer from "./components/site/Footer";
+import { SITE } from "@/content/site";
+
+/* Two families, plus a mono restricted to data.
+   Self-hosted by next/font — no render-blocking request to Google, and no
+   layout shift, because the fallback is size-adjusted to match.
+
+   `style: ["normal","italic"]` loads Fraunces' real italic. Without it the
+   emphasis type on About and in the writing was a browser-synthesized slant of
+   the Roman, which is a different, worse letterform. `opsz` keeps optical
+   sizing (letterforms tuned to the size they render at). SOFT and WONK were
+   requested but never used in the CSS, so they are dropped. */
+const serif = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fraunces",
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+});
+
+const sans = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+  weight: ["400", "500"],
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://josiah-rawsignal.vercel.app"),
+  metadataBase: new URL(SITE.url),
   title: {
-    default:  "Josiah — Electrician · Developer · Designer",
-    template: "%s | Josiah — Raw Signal",
+    default: `${SITE.name}, frontend engineer and product designer`,
+    // The pipe is the conventional title-tag separator, not prose punctuation.
+    template: `%s | ${SITE.name} ${SITE.brand}`,
   },
   description:
-    "Josiah Raw is an electrician, full-stack developer, and 3D web designer building field-ready digital systems with a live human signal.",
-  keywords: ["electrician", "developer", "designer", "portfolio", "UI/UX", "Next.js"],
+    "Frontend engineer and product designer building offline-first tools for electricians, apprentices, and people whose work happens away from a desk. Every project here is live.",
+  keywords: [
+    "frontend developer",
+    "product designer",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "offline-first",
+    "design systems",
+  ],
+  authors: [{ name: SITE.fullName }],
+  creator: SITE.fullName,
   openGraph: {
-    type: "website", locale: "en_US",
-    url: "https://josiah-rawsignal.vercel.app",
-    siteName: "Josiah — Raw Signal",
-    images: [{ url: "/images/rawsignal-hero.png", width: 1200, height: 630, alt: "Josiah — Raw Signal" }],
+    type: "website",
+    locale: "en_NZ",
+    url: SITE.url,
+    siteName: `${SITE.name} ${SITE.brand}`,
+    title: `${SITE.name}, frontend engineer and product designer`,
+    description:
+      "Offline-first tools for people who work with their hands. Every project is live, and open to anyone.",
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  // Home canonical. Each page overrides with its own path, so a URL reached via
+  // query strings or an alternate host consolidates to one address.
+  alternates: { canonical: "/" },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      {/* the name is SIAH. you found it. email me. */}
-      <body className="min-h-screen flex flex-col antialiased">
-        <SmoothScroll>
-          {/* Fixed / overlay layers */}
-          <ClientShell />
-          <Cursor />
-          <EasterEgg />
-          <ReadingProgress />
-          <CommandPalette />
-          <AmbientSound />
-          <PageBackground />
-
-          {/* Page chrome */}
-          <Nav />
-          <main id="main-content" className="flex-1" style={{ position: "relative", zIndex: 1 }}>
-            {children}
-          </main>
-          <Footer />
-        </SmoothScroll>
+    <html
+      lang="en"
+      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
+        <Nav />
+        <main id="main-content">{children}</main>
+        <Footer />
         <Analytics />
       </body>
     </html>

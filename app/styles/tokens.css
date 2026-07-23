@@ -1,0 +1,190 @@
+/* ============================================================================
+   Raw Signal — design tokens
+   The single source of truth. Nothing outside this file hard-codes a colour,
+   size, radius, shadow, duration or easing value.
+
+   Every colour pair below was verified with a WCAG contrast calculation before
+   being written here — ratios are in the comments and in docs/design-system.md §3.
+   ========================================================================== */
+
+:root {
+  /* ── Colour · light ─────────────────────────────────────────────────────
+     Warm neutrals (paper, graphite, ink) + a single copper accent.
+     One accent only, so it always means something.                        */
+  --paper:         #FBF9F6;
+  --surface:       #FFFFFF;
+  --sunken:        #F2EEE8;
+
+  --ink:           #17140F;  /* 17.48:1 on paper — AAA */
+  --body:          #3D372E;  /* 11.20:1 — AAA */
+  --muted:         #6B6459;  /*  5.56:1 — AA  */
+  --faint:         #7A7266;  /*  4.51:1 — AA  */
+
+  --line:          #DED7CC;  /* decorative dividers only — not a UI boundary */
+  --line-strong:   #8C8478;  /*  3.51:1 — AA non-text; inputs, interactive edges */
+
+  --accent:        #9A4F1B;  /*  5.70:1 on paper — AA; also 5.70:1 for paper-on-accent */
+  --accent-hover:  #7E3F14;  /*  8.05:1 on surface */
+  --accent-wash:   #9A4F1B14;
+
+  /* Semantic — defined only where a real state exists (form validation).
+     Verified: 6.26:1 on paper. */
+  --danger:        #B42318;
+
+  --focus:         var(--accent);
+
+  /* ── Elevation · light ─────────────────────────────────────────────────
+     Low-opacity, never coloured. Most surfaces are defined by border,
+     not by shadow — --shadow-0 is the default.                            */
+  --shadow-0: none;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / .04), 0 2px 8px rgb(0 0 0 / .04);
+  --shadow-2: 0 2px 4px rgb(0 0 0 / .05), 0 8px 24px rgb(0 0 0 / .07);
+  --shadow-3: 0 8px 16px rgb(0 0 0 / .07), 0 24px 56px rgb(0 0 0 / .10);
+
+  /* ── Type ──────────────────────────────────────────────────────────────
+     Two families. The mono is a restricted third, used only where it
+     carries information.                                                  */
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans:  var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono:  var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-display: clamp(2.75rem, 6vw, 4.5rem);
+  --text-h1:      clamp(2.25rem, 4vw, 3rem);
+  --text-h2:      clamp(1.75rem, 3vw, 2.25rem);
+  --text-h3:      1.5rem;
+  --text-lg:      1.25rem;
+  --text-base:    1.125rem;   /* 18px */
+  --text-sm:      1rem;
+  --text-xs:      0.875rem;
+
+  --leading-tight: 1.08;
+  --leading-snug:  1.25;
+  --leading-base:  1.65;
+
+  --tracking-tight: -0.02em;
+  --tracking-base:   0;
+  --tracking-wide:   0.08em;
+
+  --measure: 68ch;
+
+  /* ── Space · 8px base ──────────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+  --space-11: 160px;
+
+  /* ── Layout ────────────────────────────────────────────────────────── */
+  --container-prose:   68ch;
+  --container-content: 1120px;
+  --container-wide:    1360px;
+  --gutter: var(--space-5);
+
+  /* Minimum interactive target (WCAG 2.5.5 AAA) and the standard
+     hover nudge for directional affordances. Defined once so no component
+     re-invents either. */
+  --tap: 44px;
+  --nudge: 3px;
+
+  /* ── Shape — two radii, nothing else ───────────────────────────────── */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-full: 999px;
+
+  /* ── Motion ────────────────────────────────────────────────────────────
+     Ceiling is 400ms. One house curve for entrances.                      */
+  --dur-instant: 100ms;
+  --dur-fast:    160ms;
+  --dur-base:    240ms;
+  --dur-slow:    400ms;
+
+  --ease-out:    cubic-bezier(.2, .8, .3, 1);
+  --ease-in-out: cubic-bezier(.5, 0, .3, 1);
+
+  color-scheme: light;
+}
+
+@media (min-width: 768px)  { :root { --gutter: var(--space-7); } }
+@media (min-width: 1024px) { :root { --gutter: var(--space-8); } }
+
+/* ── Colour · dark ─────────────────────────────────────────────────────────
+   A genuinely equal mode, not an inversion. Shadows are near-useless on dark,
+   so elevation is carried by --surface and --line instead.                 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:       #12100D;
+    --surface:     #1A1713;
+    --sunken:      #0C0A08;
+
+    --ink:         #F7F4EF;  /* 17.31:1 — AAA */
+    --body:        #D2CBC0;  /* 11.80:1 — AAA */
+    --muted:       #A69D90;  /*  7.10:1 — AAA */
+    --faint:       #9A9184;  /*  6.11:1 — AAA */
+
+    --line:        #2E2925;
+    --line-strong: #6F675E;  /*  3.42:1 — AA non-text */
+
+    --accent:       #E8925A; /*  7.86:1 — AAA */
+    --accent-hover: #F2A870; /*  9.02:1 on surface */
+    --accent-wash:  #E8925A1A;
+
+    --danger:       #F97066; /*  6.41:1 on surface */
+
+    --shadow-1: 0 1px 2px rgb(0 0 0 / .30), 0 2px 8px rgb(0 0 0 / .24);
+    --shadow-2: 0 2px 4px rgb(0 0 0 / .34), 0 8px 24px rgb(0 0 0 / .30);
+    --shadow-3: 0 8px 16px rgb(0 0 0 / .40), 0 24px 56px rgb(0 0 0 / .42);
+
+    color-scheme: dark;
+  }
+}
+
+/* Explicit override — the theme toggle stamps data-theme on :root and must
+   win over the media query in both directions. */
+:root[data-theme="dark"] {
+  --paper:       #12100D;
+  --surface:     #1A1713;
+  --sunken:      #0C0A08;
+  --ink:         #F7F4EF;
+  --body:        #D2CBC0;
+  --muted:       #A69D90;
+  --faint:       #9A9184;
+  --line:        #2E2925;
+  --line-strong: #6F675E;
+  --accent:       #E8925A;
+  --accent-hover: #F2A870;
+  --accent-wash:  #E8925A1A;
+
+  --danger:       #F97066;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / .30), 0 2px 8px rgb(0 0 0 / .24);
+  --shadow-2: 0 2px 4px rgb(0 0 0 / .34), 0 8px 24px rgb(0 0 0 / .30);
+  --shadow-3: 0 8px 16px rgb(0 0 0 / .40), 0 24px 56px rgb(0 0 0 / .42);
+
+  color-scheme: dark;
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────────────
+   A first-class design, not a fallback. Handled once here so no component can
+   forget it: entrance transforms collapse to a short opacity fade and all
+   continuous motion stops.                                                 */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 1ms;
+    --dur-fast:    1ms;
+    --dur-base:    1ms;
+    --dur-slow:    100ms;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

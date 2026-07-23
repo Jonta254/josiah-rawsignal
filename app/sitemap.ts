@@ -1,43 +1,39 @@
 import { MetadataRoute } from "next";
+import { SITE } from "@/content/site";
+import { PROJECTS } from "@/content/projects";
+import { POSTS } from "@/content/blog";
 
-const BASE = "https://josiah-rawsignal.vercel.app";
-
-const BLOG_SLUGS = [
-  "wiring-panel-architecture",
-  "design-second-language",
-];
-
-const PORTFOLIO_SLUGS = [
-  "electrimap",
-  "terrain-journal",
-  "rawpanel",
-];
-
+/* Derived from the real content, not a hand-maintained list — so it can never
+   drift out of sync with the pages that actually exist (the previous version
+   listed three portfolio slugs that had no page). */
 export default function sitemap(): MetadataRoute.Sitemap {
+  const base = SITE.url;
   const now = new Date().toISOString();
 
-  const statics: MetadataRoute.Sitemap = [
-    { url: BASE,                    lastModified: now, changeFrequency: "weekly",  priority: 1.0 },
-    { url: `${BASE}/about`,         lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/portfolio`,     lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
-    { url: `${BASE}/blog`,          lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
-    { url: `${BASE}/now`,           lastModified: now, changeFrequency: "daily",   priority: 0.7 },
-    { url: `${BASE}/contact`,       lastModified: now, changeFrequency: "yearly",  priority: 0.6 },
-  ];
+  const statics: MetadataRoute.Sitemap = (
+    [
+      { url: base, changeFrequency: "weekly", priority: 1.0 },
+      { url: `${base}/portfolio`, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${base}/about`, changeFrequency: "monthly", priority: 0.9 },
+      { url: `${base}/blog`, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${base}/now`, changeFrequency: "weekly", priority: 0.6 },
+      { url: `${base}/contact`, changeFrequency: "yearly", priority: 0.6 },
+    ] as const
+  ).map((e) => ({ ...e, lastModified: now }));
 
-  const blogPages: MetadataRoute.Sitemap = BLOG_SLUGS.map((slug) => ({
-    url: `${BASE}/blog/${slug}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
-  const portfolioPages: MetadataRoute.Sitemap = PORTFOLIO_SLUGS.map((slug) => ({
-    url: `${BASE}/portfolio/${slug}`,
+  const projects: MetadataRoute.Sitemap = PROJECTS.map((p) => ({
+    url: `${base}/portfolio/${p.slug}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.8,
   }));
 
-  return [...statics, ...blogPages, ...portfolioPages];
+  const posts: MetadataRoute.Sitemap = POSTS.map((p) => ({
+    url: `${base}/blog/${p.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...statics, ...projects, ...posts];
 }

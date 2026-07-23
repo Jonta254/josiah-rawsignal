@@ -1,9 +1,20 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Josiah — Raw Signal";
+export const alt = "Josiah. I build software for people who work with their hands.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+/* Share card. Mirrors the site's actual identity — warm paper, one copper
+   accent, editorial serif — rather than the retired neon look. Token values
+   are inlined because Satori (next/og) can't read CSS custom properties.
+   Kept in sync with app/styles/tokens.css by hand. */
+const PAPER = "#FBF9F6";
+const INK = "#17140F";
+const MUTED = "#6B6459";
+const FAINT = "#8C8478";
+const ACCENT = "#9A4F1B";
+const LINE = "#DED7CC";
 
 export default function OgImage() {
   return new ImageResponse(
@@ -14,125 +25,77 @@ export default function OgImage() {
           height: 630,
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-end",
-          padding: "64px 72px",
-          background: "linear-gradient(160deg, #08001A 0%, #050012 40%, #010006 100%)",
-          fontFamily: "sans-serif",
-          position: "relative",
-          overflow: "hidden",
+          justifyContent: "space-between",
+          padding: "72px 80px",
+          background: PAPER,
         }}
       >
-        {/* Grid lines */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(rgba(0,223,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,223,255,0.04) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            display: "flex",
-          }}
-        />
-
-        {/* Glow orb */}
-        <div
-          style={{
-            position: "absolute",
-            top: -120,
-            right: -80,
-            width: 520,
-            height: 520,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(140,80,255,0.18) 0%, transparent 70%)",
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: -60,
-            left: -60,
-            width: 400,
-            height: 400,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(0,223,255,0.12) 0%, transparent 70%)",
-            display: "flex",
-          }}
-        />
-
-        {/* Signal dot */}
-        <div
-          style={{
-            position: "absolute",
-            top: 52,
-            left: 72,
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-          }}
-        >
+        {/* Wordmark */}
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", fontSize: 32, color: INK, fontFamily: "serif" }}>
+            Josiah
+          </div>
           <div
             style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "#00DFFF",
-              boxShadow: "0 0 12px rgba(0,223,255,0.8)",
               display: "flex",
-            }}
-          />
-          <span
-            style={{
-              fontSize: 13,
-              color: "rgba(0,223,255,0.7)",
-              letterSpacing: "0.25em",
+              fontSize: 18,
+              letterSpacing: 4,
+              color: FAINT,
               textTransform: "uppercase",
             }}
           >
-            RAW SIGNAL
-          </span>
+            Raw Signal
+          </div>
         </div>
 
-        {/* Name */}
+        {/* Headline */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              fontSize: 20,
+              letterSpacing: 3,
+              textTransform: "uppercase",
+              color: MUTED,
+            }}
+          >
+            <div style={{ width: 10, height: 10, borderRadius: 5, background: ACCENT, display: "flex" }} />
+            Available for remote work across timezones
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 68,
+              lineHeight: 1.05,
+              letterSpacing: -2,
+              color: INK,
+              fontFamily: "serif",
+              maxWidth: 900,
+            }}
+          >
+            I build software for people who work with their hands.
+          </div>
+        </div>
+
+        {/* Footer row */}
         <div
           style={{
-            fontSize: 96,
-            fontWeight: 900,
-            letterSpacing: "-0.03em",
-            lineHeight: 0.9,
-            color: "#FFFFFF",
-            marginBottom: 24,
             display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderTop: `1px solid ${LINE}`,
+            paddingTop: 28,
+            fontSize: 24,
+            color: MUTED,
           }}
         >
-          JOSIAH
+          <div style={{ display: "flex" }}>Frontend engineer and product designer</div>
+          <div style={{ display: "flex", color: ACCENT }}>Five live products</div>
         </div>
-
-        {/* Tagline */}
-        <div
-          style={{
-            fontSize: 22,
-            color: "rgba(176,190,221,0.7)",
-            letterSpacing: "0.04em",
-            marginBottom: 40,
-            display: "flex",
-          }}
-        >
-          Electrician · Developer · Designer
-        </div>
-
-        {/* Bottom bar */}
-        <div
-          style={{
-            width: "100%",
-            height: 1,
-            background: "linear-gradient(to right, rgba(0,223,255,0.4), transparent)",
-            display: "flex",
-          }}
-        />
       </div>
     ),
-    { ...size }
+    size
   );
 }

@@ -1,0 +1,62 @@
+.flagships {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.supporting { margin-top: var(--space-8); }
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  margin-top: var(--space-7);
+  font-size: var(--text-sm);
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+
+.more:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.arrow { transition: transform var(--dur-fast) var(--ease-out); }
+.more:hover .arrow { transform: translateX(var(--nudge)); }
+
+/* ── Principles ─────────────────────────────────────────────────────────
+   Two columns of prose, not cards. Borders instead of boxes keeps the
+   section quiet and stops it reading as a feature grid. */
+.principles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6) var(--space-8);
+}
+
+@media (min-width: 800px) {
+  .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.principle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+.principleTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  color: var(--ink);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+}
+
+.principleBody {
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  color: var(--muted);
+  max-width: 46ch;
+}

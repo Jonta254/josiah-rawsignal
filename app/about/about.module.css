@@ -1,0 +1,141 @@
+.hero {
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding: var(--space-10) var(--gutter) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+@media (min-width: 1024px) {
+  .hero { padding-block: var(--space-11) var(--space-9); }
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.headline {
+  font-size: var(--text-display);
+  letter-spacing: -0.028em;
+  color: var(--ink);
+  max-width: 17ch;
+}
+
+/* Fraunces has a genuinely good italic — worth using where the sentence
+   turns, rather than reaching for a colour change. */
+.headline em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.lede {
+  font-size: var(--text-lg);
+  line-height: var(--leading-base);
+  color: var(--muted);
+  max-width: 56ch;
+}
+
+/* ── Sequence ───────────────────────────────────────────────────────────
+   A rail with nodes. Order and numbering carry the progression; there are
+   no dates anywhere (docs/design-system.md §10). */
+.sequence {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chapter {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-bottom: var(--space-8);
+}
+
+.chapter:last-child { padding-bottom: 0; }
+
+.marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  /* The rail is the marker column's own background, so it stops exactly at
+     the last node instead of running off the end of the list. */
+  position: relative;
+}
+
+.chapter:not(:last-child) .marker::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--space-6) + var(--space-3));
+  bottom: calc(var(--space-8) * -1);
+  width: 1px;
+  background: var(--line);
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--faint);
+  letter-spacing: var(--tracking-wide);
+  line-height: 1;
+}
+
+.node {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.chapterBody { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.chapterTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  color: var(--ink);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+  /* Optical alignment: pulls the cap-height up level with the number. */
+  margin-top: -0.15em;
+}
+
+.chapterText {
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  color: var(--body);
+  max-width: 62ch;
+}
+
+/* ── Prose blocks ───────────────────────────────────────────────────────── */
+.plain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: var(--measure);
+}
+
+.plain p {
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  color: var(--body);
+}
+
+.close { color: var(--muted); }
+
+.inline {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.inline:hover { color: var(--accent-hover); border-bottom-color: currentColor; }

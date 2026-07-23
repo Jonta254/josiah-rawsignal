@@ -1,0 +1,36 @@
+.header {
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding: var(--space-10) var(--gutter) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .header { padding-block: var(--space-11) var(--space-9); }
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.title {
+  font-size: var(--text-display);
+  letter-spacing: -0.028em;
+  color: var(--ink);
+  max-width: 18ch;
+}
+
+.title em { font-style: italic; color: var(--accent); }
+
+.lede {
+  font-size: var(--text-lg);
+  line-height: var(--leading-base);
+  color: var(--muted);
+  max-width: 58ch;
+}

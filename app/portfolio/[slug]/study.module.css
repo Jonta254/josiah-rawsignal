@@ -1,0 +1,264 @@
+.page { background: var(--paper); padding-bottom: var(--space-10); }
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding: var(--space-9) var(--gutter) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 1024px) { .header { padding-top: var(--space-10); } }
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.back:hover { color: var(--accent); }
+
+.title {
+  font-size: var(--text-display);
+  letter-spacing: -0.028em;
+  color: var(--ink);
+}
+
+.summary {
+  font-size: var(--text-lg);
+  line-height: var(--leading-base);
+  color: var(--muted);
+  max-width: 54ch;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 700px) { .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.fact { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.factLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.factValue { font-size: var(--text-sm); color: var(--body); line-height: var(--leading-snug); }
+
+.factLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Full 44px target; the metadata links sit in a roomy grid, so the height
+     reads as comfortable spacing rather than padding. */
+  min-height: var(--tap);
+  font-family: var(--font-mono);
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.factLink:hover { color: var(--accent-hover); }
+
+/* ── Lead ───────────────────────────────────────────────────────────────── */
+.lead {
+  max-width: var(--container-wide);
+  margin-inline: auto;
+  padding: var(--space-5) var(--gutter) var(--space-8);
+}
+
+.leadMedia { position: relative; max-width: var(--container-content); margin-inline: auto; }
+
+/* ── Body ───────────────────────────────────────────────────────────────── */
+.body {
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-9);
+}
+
+.block {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .block { grid-template-columns: minmax(0, 3fr) minmax(0, 8fr); gap: var(--space-8); }
+}
+
+.blockLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 400;
+  /* Aligns the label baseline with the first line of body text alongside it. */
+  padding-top: var(--space-1);
+}
+
+.blockLede {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+  color: var(--body);
+  max-width: 62ch;
+}
+
+/* ── Approach steps ─────────────────────────────────────────────────────── */
+.steps { display: flex; flex-direction: column; gap: var(--space-6); list-style: none; }
+
+.step { display: grid; grid-template-columns: auto 1fr; gap: var(--space-4); }
+
+.stepNum {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--accent);
+  padding-top: 0.2em;
+}
+
+.stepBody { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.stepTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  color: var(--ink);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+}
+
+.stepDetail {
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  color: var(--muted);
+  max-width: 58ch;
+}
+
+/* ── Technologies ───────────────────────────────────────────────────────── */
+.techList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.tech {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--muted);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+}
+
+/* ── CTAs ───────────────────────────────────────────────────────────────── */
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.openCta,
+.openCtaGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  min-height: var(--tap);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+
+.openCta { color: var(--accent); }
+.openCta:hover { color: var(--accent-hover); border-bottom-color: currentColor; }
+
+.openCtaGhost { color: var(--muted); }
+.openCtaGhost:hover { color: var(--ink); border-bottom-color: currentColor; }
+
+/* The retrospective is the trust move: quietly set apart, never boxed in. */
+.retro .blockLede { font-family: var(--font-serif); font-style: italic; color: var(--body); }
+
+.arrow { display: inline-block; transition: transform var(--dur-fast) var(--ease-out); }
+.factLink:hover .arrow,
+.openCta:hover .arrow,
+.openCtaGhost:hover .arrow,
+.moreLink:hover .arrow { transform: translateX(var(--nudge)); }
+
+/* ── More work ──────────────────────────────────────────────────────────── */
+.more {
+  max-width: var(--container-content);
+  margin: var(--space-10) auto 0;
+  padding: var(--space-7) var(--gutter) 0;
+  border-top: 1px solid var(--line);
+}
+
+.moreTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 400;
+  margin-bottom: var(--space-5);
+}
+
+.moreList { display: flex; flex-direction: column; list-style: none; }
+
+.moreLink {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+}
+.moreList li:first-child .moreLink { border-top: 0; }
+
+.moreName {
+  grid-row: 1;
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  color: var(--ink);
+  letter-spacing: var(--tracking-tight);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.moreLink:hover .moreName { color: var(--accent); }
+
+.moreOutcome {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: var(--text-sm);
+  line-height: var(--leading-base);
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+.moreLink .arrow { grid-column: 2; grid-row: 1; color: var(--muted); }
